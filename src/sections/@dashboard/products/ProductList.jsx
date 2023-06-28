@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
 import ShopProductCard from './ProductCard';
 
+
 // ----------------------------------------------------------------------
 
 ProductList.propTypes = {
