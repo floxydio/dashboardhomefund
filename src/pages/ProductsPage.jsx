@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import { Container, Stack, Typography } from '@mui/material';
 // components
@@ -11,6 +11,7 @@ import PRODUCTS from '../_mock/products';
 
 export default function ProductsPage() {
   const [openFilter, setOpenFilter] = useState(false);
+  const [product, setProduct] = useState("")
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -19,6 +20,11 @@ export default function ProductsPage() {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
+
+  useEffect(() => {
+    
+  },[])
+
 
   return (
     <>
@@ -42,7 +48,7 @@ export default function ProductsPage() {
           </Stack>
         </Stack>
 
-        <ProductList products={PRODUCTS} />
+        <ProductList />
         <ProductCartWidget />
       </Container>
     </>
