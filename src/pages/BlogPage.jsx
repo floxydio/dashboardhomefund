@@ -6,6 +6,8 @@ import Iconify from '../components/iconify';
 import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashboard/blog';
 // mock
 import POSTS from '../_mock/blog';
+import { useEffect, useState } from 'react';
+import axiosNew from '../components/AxiosConfig';
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +19,17 @@ const SORT_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function BlogPage() {
+export default function SliderPage() {
+  const [slider, setSlider] = useState([]);
+
+  useEffect(() => {
+    async function getSlider() {
+      await axiosNew.get('/slider').then((result) => {
+        setSlider(result.data.data);
+      });
+    }
+    getSlider();
+  }, []);
   return (
     <>
       <Helmet>
@@ -27,7 +39,7 @@ export default function BlogPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Blog
+            Slider
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New Post
@@ -40,9 +52,10 @@ export default function BlogPage() {
         </Stack>
 
         <Grid container spacing={3}>
-          {POSTS.map((post, index) => (
-            <BlogPostCard key={post.id} post={post} index={index} />
-          ))}
+          {/* {slider.map((slider, index) => (
+            <BlogPostCard key={slider.id} index={index} />
+          ))} */}
+          <BlogPostCard />
         </Grid>
       </Container>
     </>

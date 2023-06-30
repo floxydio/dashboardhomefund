@@ -1,7 +1,26 @@
 import PropTypes from 'prop-types';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Link, Card, Grid, Avatar, Typography, CardContent } from '@mui/material';
+import {
+  Box,
+  Link,
+  Card,
+  Grid,
+  Avatar,
+  Typography,
+  CardContent,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  Paper,
+  TableBody,
+  Button,
+  Modal,
+  FormControl,
+  TextField,
+} from '@mui/material';
 // utils
 import { fDate } from '../../../utils/formatTime';
 import { fShortenNumber } from '../../../utils/formatNumber';
@@ -10,7 +29,7 @@ import SvgColor from '../../../components/svg-color';
 import Iconify from '../../../components/iconify';
 import { useEffect, useState } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
-import { result } from 'lodash';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 // ----------------------------------------------------------------------
 
@@ -52,6 +71,18 @@ const StyledCover = styled('img')({
   position: 'absolute',
 });
 
+const boxStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 // ----------------------------------------------------------------------
 
 BlogPostCard.propTypes = {
@@ -59,8 +90,17 @@ BlogPostCard.propTypes = {
   index: PropTypes.number,
 };
 
-export default function BlogPostCard({ post, index }) {
+export default function BlogPostCard() {
   const [slider, setSlider] = useState([]);
+  const [imageSlider, setImageSlider] = useState('');
+  const [open, setOpen] = useState(false);
+
+  function handleOpen(image) {
+    setOpen(true);
+    setImageSlider(image);
+  }
+  const handleClose = () => setOpen(false);
+
   useEffect(() => {
     async function getSlider() {
       await axiosNew.get('/slider').then((result) => {
@@ -70,119 +110,61 @@ export default function BlogPostCard({ post, index }) {
     }
     getSlider();
   }, []);
-  const { cover, title, view, comment, share, author, createdAt } = post;
-  const latestPostLarge = index === 0;
-  const latestPost = index === 1 || index === 2;
 
-  const POST_INFO = [
-    { number: comment, icon: 'eva:message-circle-fill' },
-    { number: view, icon: 'eva:eye-fill' },
-    { number: share, icon: 'eva:share-fill' },
-  ];
+  // const POST_INFO = [
+  //   { number: comment, icon: 'eva:message-circle-fill' },
+  //   { number: view, icon: 'eva:eye-fill' },
+  //   { number: share, icon: 'eva:share-fill' },
+  // ];
 
   return (
-    <Grid item xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
-      <Card sx={{ position: 'relative' }}>
-        {slider.map((slider) => {})}
-        <StyledCardMedia
-          sx={{
-            ...((latestPostLarge || latestPost) && {
-              pt: 'calc(100% * 4 / 3)',
-              '&:after': {
-                top: 0,
-                content: "''",
-                width: '100%',
-                height: '100%',
-                position: 'absolute',
-                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
-              },
-            }),
-            ...(latestPostLarge && {
-              pt: {
-                xs: 'calc(100% * 4 / 3)',
-                sm: 'calc(100% * 3 / 4.66)',
-              },
-            }),
-          }}
-        >
-          <SvgColor
-            color="paper"
-            src="/assets/icons/shape-avatar.svg"
-            sx={{
-              width: 80,
-              height: 36,
-              zIndex: 9,
-              bottom: -15,
-              position: 'absolute',
-              color: 'background.paper',
-              ...((latestPostLarge || latestPost) && { display: 'none' }),
-            }}
-          />
-          <StyledAvatar
-            alt={author.name}
-            src={author.avatarUrl}
-            sx={{
-              ...((latestPostLarge || latestPost) && {
-                zIndex: 9,
-                top: 24,
-                left: 24,
-                width: 40,
-                height: 40,
-              }),
-            }}
-          />
-
-          <StyledCover alt={title} src={cover} />
-        </StyledCardMedia>
-
-        <CardContent
-          sx={{
-            pt: 4,
-            ...((latestPostLarge || latestPost) && {
-              bottom: 0,
-              width: '100%',
-              position: 'absolute',
-            }),
-          }}
-        >
-          <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
-            {fDate(createdAt)}
-          </Typography>
-
-          <StyledTitle
-            color="inherit"
-            variant="subtitle2"
-            underline="hover"
-            sx={{
-              ...(latestPostLarge && { typography: 'h5', height: 60 }),
-              ...((latestPostLarge || latestPost) && {
-                color: 'common.white',
-              }),
-            }}
-          >
-            {title}
-          </StyledTitle>
-
-          <StyledInfo>
-            {POST_INFO.map((info, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  ml: index === 0 ? 0 : 1.5,
-                  ...((latestPostLarge || latestPost) && {
-                    color: 'grey.500',
-                  }),
-                }}
-              >
-                <Iconify icon={info.icon} sx={{ width: 16, height: 16, mr: 0.5 }} />
-                <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
-              </Box>
-            ))}
-          </StyledInfo>
-        </CardContent>
-      </Card>
-    </Grid>
+    <>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Detail</TableCell>
+              <TableCell>Image</TableCell>
+              <TableCell>Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {slider.map((result, i) => {
+              return (
+                <TableRow
+                  sx={{
+                    '&:last-child td, &:lastchild th': { border: 0 },
+                  }}
+                >
+                  <TableCell component="th" scope="row">
+                    {i + 1}
+                  </TableCell>
+                  <TableCell align="left">{result.name}</TableCell>
+                  <TableCell align="left">
+                    <Button onClick={() => handleOpen(result.image)}>
+                      <VisibilityIcon />
+                    </Button>
+                  </TableCell>
+                  <TableCell align="left">{result.status}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={boxStyle} noValidate autoComplete="off">
+          {imageSlider ? (
+            <img
+              src={`https://dev.homefund-id.tech/dashboard-api/static/slider/${imageSlider}`}
+              alt="Static API Image"
+            />
+          ) : (
+            <p>Loading Image ...</p>
+          )}
+        </Box>
+      </Modal>
+    </>
   );
 }
