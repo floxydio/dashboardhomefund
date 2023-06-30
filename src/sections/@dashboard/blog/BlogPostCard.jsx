@@ -8,6 +8,9 @@ import { fShortenNumber } from '../../../utils/formatNumber';
 //
 import SvgColor from '../../../components/svg-color';
 import Iconify from '../../../components/iconify';
+import { useEffect, useState } from 'react';
+import axiosNew from '../../../components/AxiosConfig';
+import { result } from 'lodash';
 
 // ----------------------------------------------------------------------
 
@@ -57,6 +60,16 @@ BlogPostCard.propTypes = {
 };
 
 export default function BlogPostCard({ post, index }) {
+  const [slider, setSlider] = useState([]);
+  useEffect(() => {
+    async function getSlider() {
+      await axiosNew.get('/slider').then((result) => {
+        setSlider(result.data.data);
+        console.log(result.data.data);
+      });
+    }
+    getSlider();
+  }, []);
   const { cover, title, view, comment, share, author, createdAt } = post;
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
@@ -70,6 +83,7 @@ export default function BlogPostCard({ post, index }) {
   return (
     <Grid item xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
       <Card sx={{ position: 'relative' }}>
+        {slider.map((slider) => {})}
         <StyledCardMedia
           sx={{
             ...((latestPostLarge || latestPost) && {

@@ -11,7 +11,7 @@ import PRODUCTS from '../_mock/products';
 
 export default function ProductsPage() {
   const [openFilter, setOpenFilter] = useState(false);
-  const [product, setProduct] = useState("")
+  const [product, setProduct] = useState('');
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -21,10 +21,7 @@ export default function ProductsPage() {
     setOpenFilter(false);
   };
 
-  useEffect(() => {
-    
-  },[])
-
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -48,7 +45,7 @@ export default function ProductsPage() {
           </Stack>
         </Stack>
 
-        <ProductList />
+        <ProductList products={PRODUCTS} />
         <ProductCartWidget />
       </Container>
     </>
