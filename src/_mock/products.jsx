@@ -18,7 +18,7 @@ const PRODUCT_NAME = [
   'Nike Air Zoom BB NXT',
   'Nike Air Force 1 07 LX',
   'Nike Air Force 1 Shadow SE',
-  'Nike Air Zoom Tempo NEXT%',
+  'Nike Air Zoom Tempo NEXT',
   'Nike DBreak-Type',
   'Nike Air Max Up',
   'Nike Air Max 270 React ENG',
