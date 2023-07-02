@@ -33,7 +33,7 @@ export default function SliderPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Blog | Minimal UI </title>
+        <title> Dashboard: News Slider | Minimal UI </title>
       </Helmet>
 
       <Container>

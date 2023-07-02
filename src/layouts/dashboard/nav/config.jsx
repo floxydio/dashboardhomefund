@@ -1,5 +1,6 @@
 // component
 import SvgColor from '../../../components/svg-color';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +25,7 @@ const navConfig = [
   {
     title: 'slider',
     path: '/dashboard/slider',
-    icon: icon('ic_blog'),
+    icon: <NewspaperIcon />
   },
   {
     title: 'bussiness',
