@@ -8,6 +8,7 @@ import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashb
 import POSTS from '../_mock/blog';
 import { useEffect, useState } from 'react';
 import axiosNew from '../components/AxiosConfig';
+import NewPost from '../sections/@dashboard/blog/NewsSliderNewPost';
 
 // ----------------------------------------------------------------------
 
@@ -39,11 +40,9 @@ export default function SliderPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Slider
+            News
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New Post
-          </Button>
+          <NewPost />
         </Stack>
 
         <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
