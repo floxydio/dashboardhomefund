@@ -6,8 +6,6 @@ import Iconify from '../components/iconify';
 import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashboard/blog';
 // mock
 import POSTS from '../_mock/blog';
-import { useEffect, useState } from 'react';
-import axiosNew from '../components/AxiosConfig';
 import NewPost from '../sections/@dashboard/blog/NewsSliderNewPost';
 
 // ----------------------------------------------------------------------
@@ -21,16 +19,6 @@ const SORT_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function SliderPage() {
-  const [slider, setSlider] = useState([]);
-
-  useEffect(() => {
-    async function getSlider() {
-      await axiosNew.get('/slider').then((result) => {
-        setSlider(result.data.data);
-      });
-    }
-    getSlider();
-  }, []);
   return (
     <>
       <Helmet>
@@ -51,9 +39,6 @@ export default function SliderPage() {
         </Stack>
 
         <Grid container spacing={3}>
-          {/* {slider.map((slider, index) => (
-            <BlogPostCard key={slider.id} index={index} />
-          ))} */}
           <BlogPostCard />
         </Grid>
       </Container>
