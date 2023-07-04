@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 // @mui
 import { Container, Stack, Typography } from '@mui/material';
 // components
-import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
+import { ProductSort, ProductCartWidget, ProductFilterSidebar, ProductCard } from '../sections/@dashboard/products';
 // mock
 import PRODUCT from '../_mock/products';
 
@@ -44,8 +44,7 @@ export default function ProductsPage() {
             <ProductSort />
           </Stack>
         </Stack>
-
-        <ProductList products={PRODUCT}/>
+        <ProductCard />
         <ProductCartWidget />
       </Container>
     </>
