@@ -3,13 +3,12 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 //
-import BlogPage from './pages/BlogPage';
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
-import BusinessPage from './pages/BusinessPage';
+import SliderPage from './pages/NewsSlidersPage';
 
 // ----------------------------------------------------------------------
 
@@ -23,8 +22,8 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
-        { path: 'business', element: <BusinessPage /> },
+        // { path: 'blog', element: <LoginPage /> },
+        // { path: 'business', element: <BusinessPage /> },
       ],
     },
     {
