@@ -29,7 +29,7 @@ const navConfig = [
   },
   {
     title: 'bussiness',
-    path: '/login',
+    path: '/dashboard/business',
     icon: icon('ic_lock'),
   },
   {

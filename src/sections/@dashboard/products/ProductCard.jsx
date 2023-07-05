@@ -75,6 +75,22 @@ export default function ShopProductCard() {
                   <TableCell component="th" scope="row">
                     {i + 1}
                   </TableCell>
+                  <TableCell align="left">{result.category}</TableCell>
+                  <TableCell align="left">{result.title}</TableCell>
+                  <TableCell align="left">{result.location}</TableCell>
+                  <TableCell align="left">{result.status_investment}</TableCell>
+                  <TableCell align="left">{result.total_invesment}</TableCell>
+                  <TableCell align="left">{result.complete_invesment}</TableCell>
+                  <TableCell align="left">{result.minimum_invesment}</TableCell>
+                  <TableCell align="left">{result.total_lot}</TableCell>
+                  <TableCell align="left">{result.total_investor}</TableCell>
+                  <TableCell align="left">{result.remaining_days}</TableCell>
+                  <TableCell align="left">{result.business_id}</TableCell>
+                  <TableCell align="left">{result.product_image}</TableCell>
+                  <TableCell align="left">{result.status_campaign}</TableCell>
+                  <TableCell align="left">{result.product_detail_id}</TableCell>
+                  <TableCell align="left">{result.createdAt}</TableCell>
+                  <TableCell align="left">{result.updatedAt}</TableCell>
                 </TableRow>
               );
             })}

@@ -22,7 +22,8 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
-        { path: 'Slider', element: <SliderPage /> },
+        // { path: 'blog', element: <LoginPage /> },
+        // { path: 'business', element: <BusinessPage /> },
       ],
     },
     {
