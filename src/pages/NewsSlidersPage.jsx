@@ -22,7 +22,7 @@ export default function SliderPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: News Slider | Minimal UI </title>
+        <title> Dashboard: News Slider | HomeFund </title>
       </Helmet>
 
       <Container>
