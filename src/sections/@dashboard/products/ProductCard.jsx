@@ -15,23 +15,15 @@ import {
   TableBody,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
-
-// ----------------------------------------------------------------------
-
-const StyledProductImg = styled('img')({
-  top: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute',
-});
+import DocViewer from 'react-doc-viewer';
 
 // ----------------------------------------------------------------------
 
 export default function ShopProductCard() {
   const [dataProduct, setDataProduct] = useState([]);
+  const [view, setView] = useState(false);
 
   useEffect(() => {
     async function getProduct() {
@@ -42,6 +34,10 @@ export default function ShopProductCard() {
     }
     getProduct();
   }, []);
+
+  const handleView = () => {
+    setView(!view);
+  };
 
   return (
     <>
@@ -79,14 +75,21 @@ export default function ShopProductCard() {
                   <TableCell align="left">{result.title}</TableCell>
                   <TableCell align="left">{result.location}</TableCell>
                   <TableCell align="left">{result.status_investment}</TableCell>
-                  <TableCell align="left">{result.total_invesment}</TableCell>
-                  <TableCell align="left">{result.complete_invesment}</TableCell>
-                  <TableCell align="left">{result.minimum_invesment}</TableCell>
-                  <TableCell align="left">{result.total_lot}</TableCell>
+                  <TableCell align="left">Rp{result.total_invesment.toLocaleString()}</TableCell>
+                  <TableCell align="left">Rp{result.complete_invesment.toLocaleString()}</TableCell>
+                  <TableCell align="left">Rp{result.minimum_invesment.toLocaleString()}</TableCell>
+                  <TableCell align="left">{result.total_lot.toLocaleString()}</TableCell>
                   <TableCell align="left">{result.total_investor}</TableCell>
                   <TableCell align="left">{result.remaining_days}</TableCell>
                   <TableCell align="left">{result.business_id}</TableCell>
-                  <TableCell align="left">{result.product_image}</TableCell>
+                  <TableCell align="left"><button type="application/pdf" onClick={handleView}>View</button>
+                    {view && (
+                      <DocViewer
+                        pluginRenderers={DocViewerRenderers}
+                        documents={docs}
+                        style={{ width: 300, height: 300 }}
+                      />
+                    )}</TableCell>
                   <TableCell align="left">{result.status_campaign}</TableCell>
                   <TableCell align="left">{result.product_detail_id}</TableCell>
                   <TableCell align="left">{result.createdAt}</TableCell>

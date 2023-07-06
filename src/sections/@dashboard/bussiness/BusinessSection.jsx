@@ -52,7 +52,7 @@ export default function BusinessSection() {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell align="left">{row.name}</TableCell>
-                            <TableCell align="left"><button type="application/pdf" onClick={handleView}>View</button>
+                            <TableCell align="left"><button type="jpeg" onClick={handleView}>View</button>
                                 {view && (
                                     <DocViewer
                                     pluginRenderers={DocViewerRenderers}
