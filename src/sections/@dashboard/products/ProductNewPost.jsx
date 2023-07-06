@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
+import Iconify from '../../../components/iconify';
+import { Box, Button, FormControl, Modal, TextField, Typography } from '@mui/material';
 
 const boxStyle = {
   position: 'absolute',
@@ -20,6 +22,7 @@ const textFieldStyle = {
 export default function ProductNewPost() {
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
+  const [location, setLocation] = useState('');
   const [statusInvesment, setStatusInvesment] = useState(0);
   const [totalInvesment, setTotalInvesment] = useState(0);
   const [completeInvesment, setCompleteInvesment] = useState(0);
@@ -39,4 +42,100 @@ export default function ProductNewPost() {
   const [createdAt, setCreatedAt] = useState(new Date());
   const [updatedAt, setUpdatedAt] = useState(new Date());
   const [viewProduct, setViewProduct] = useState(0);
+
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  async function submitDataProduct(e) {
+    e.preventDefault();
+
+    await axiosNew.post(
+      '/product',
+      {
+        category: category,
+        title: title,
+        location: location,
+        status_invesment: statusInvesment,
+        total_invesment: totalInvesment,
+        complete_invesment: completeInvesment,
+        minimum_invesment: minimumInvesment,
+        total_lot: totalLot,
+        total_investor: totalInvestor,
+        remaining_days: remainingDays,
+        business_id: businessId,
+        product_image: productImage,
+        status_campaign: statusCampaign,
+        // longtitude: longtitude,
+        // langtitude: langtitude,
+        // tenor: tenor,
+        // percentage_imbal: percentageImbal,
+        // detail: detail,
+        product_detail_id: productDetailId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        // view_product:
+      },
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+  }
+
+  return (
+    <>
+      <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpen}>
+        New Post
+      </Button>
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={boxStyle} noValidate autoComplete="off">
+          <Typography
+            style={{
+              textAlign: 'center',
+              marginBottom: 10,
+            }}
+          >
+            Masukan Data Product
+          </Typography>
+          <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField
+              required
+              id="outlined"
+              label="category"
+              type="text"
+              onChange={(e) => setCategory(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="title"
+              type="text"
+              onChange={(e) => setTitle(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="location"
+              type="text"
+              onChange={(e) => setLocation(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Status Invesment"
+              type="number"
+              onChange={(e) => setStatusInvesment(e.target.value)}
+              style={textFieldStyle}
+            />
+          </FormControl>
+        </Box>
+      </Modal>
+    </>
+  );
 }
