@@ -27,7 +27,7 @@ export default function ShopProductCard() {
 
   useEffect(() => {
     async function getProduct() {
-      await axiosNew.get('/products').then((result) => {
+      await axiosNew.get('/product').then((result) => {
         setDataProduct(result.data.data);
         console.log(result.data.data);
       });
@@ -82,14 +82,18 @@ export default function ShopProductCard() {
                   <TableCell align="left">{result.total_investor}</TableCell>
                   <TableCell align="left">{result.remaining_days}</TableCell>
                   <TableCell align="left">{result.business_id}</TableCell>
-                  <TableCell align="left"><button type="application/pdf" onClick={handleView}>View</button>
+                  <TableCell align="left">
+                    <button type="application/pdf" onClick={handleView}>
+                      View
+                    </button>
                     {view && (
                       <DocViewer
                         pluginRenderers={DocViewerRenderers}
                         documents={docs}
                         style={{ width: 300, height: 300 }}
                       />
-                    )}</TableCell>
+                    )}
+                  </TableCell>
                   <TableCell align="left">{result.status_campaign}</TableCell>
                   <TableCell align="left">{result.product_detail_id}</TableCell>
                   <TableCell align="left">{result.createdAt}</TableCell>

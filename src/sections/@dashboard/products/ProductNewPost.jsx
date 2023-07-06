@@ -203,7 +203,7 @@ export default function ProductNewPost() {
               onChange={(e) => setStatusCampaign(e.target.value)}
               style={textFieldStyle}
             />
-            <Typography variant="body1">Created At: {selectedDate.toLocaleString()}</Typography>
+          
           </FormControl>
         </Box>
       </Modal>
