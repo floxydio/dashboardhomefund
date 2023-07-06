@@ -82,13 +82,11 @@ export default function ShopProductCard() {
                   <TableCell align="left">{result.total_investor}</TableCell>
                   <TableCell align="left">{result.remaining_days}</TableCell>
                   <TableCell align="left">{result.business_id}</TableCell>
-                  <TableCell align="left"><button type="jpeg" onClick={handleView}>View</button>
-                    {view && (
-                      <DocViewer
-                        image={img}
-                        style={{ width: 300, height: 300 }}
-                      />
-                    )}
+                  <TableCell align="left">
+                    <button type="jpeg" onClick={handleView}>
+                      View
+                    </button>
+                    {view && <DocViewer image={img} style={{ width: 300, height: 300 }} />}
                   </TableCell>
                   <TableCell align="left">{result.status_campaign}</TableCell>
                   <TableCell align="left">{result.product_detail_id}</TableCell>

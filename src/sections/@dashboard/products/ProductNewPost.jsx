@@ -14,6 +14,8 @@ const boxStyle = {
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
+  overflowY: 'scroll',
+  height: 500,
   p: 4,
 };
 
@@ -53,6 +55,10 @@ export default function ProductNewPost() {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const colorText = {
+    color: 'black',
+  };
 
   async function submitDataProduct(e) {
     e.preventDefault();
@@ -104,12 +110,20 @@ export default function ProductNewPost() {
         open={open}
         onClose={handleClose}
         sx={{
-          overflow: 'scroll',
+          height: 500,
+          overflowY: 'scroll',
+          marginTop: 10,
         }}
-        aria-labelledby="scrollable-modal-title"
       >
         <Box sx={boxStyle} noValidate autoComplete="off">
-          <Typography id="scrollable-modal-title" variant="h6">
+          <Typography
+            style={{
+              textAlign: 'center',
+              marginBottom: '10',
+            }}
+            variant="h6"
+            component="h2"
+          >
             Masukan Data Product
           </Typography>
           <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -203,7 +217,40 @@ export default function ProductNewPost() {
               onChange={(e) => setStatusCampaign(e.target.value)}
               style={textFieldStyle}
             />
-          
+            <TextField
+              required
+              id="outlined"
+              label="Product Detail ID"
+              type="number"
+              onChange={(e) => setProductDetailId(e.target.value)}
+              style={textFieldStyle}
+            />
+            <Box
+              sx={{
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+                padding: '16px',
+                backgroundColor: '#fff',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <Typography>Created At: {createdAt.toLocaleString()}</Typography>
+            </Box>
+            <Button
+              onClick={(e) => submitDataProduct(e)}
+              type="submit"
+              sx={{
+                height: 45,
+                backgroundColor: 'blue',
+                color: 'white',
+                fontWeight: 'bold',
+                borderColor: 'transparent',
+                borderRadius: 20,
+                marginTop: 2,
+              }}
+            >
+              Submit
+            </Button>
           </FormControl>
         </Box>
       </Modal>

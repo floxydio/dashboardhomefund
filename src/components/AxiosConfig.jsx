@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosNew = axios.create({
-  baseURL: '103.250.11.249:3000/dashboard-api',
+  baseURL: 'https://dev.homefund-id.tech/dashboard-api',
 });
 
 export default axiosNew;
