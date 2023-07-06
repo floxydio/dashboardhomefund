@@ -13,17 +13,46 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Button,
+  Modal,
 } from '@mui/material';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import EditIcon from '@mui/icons-material/Edit';
 import { styled } from '@mui/material/styles';
 import { useState, useEffect, useRef } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
-import DocViewer from 'react-doc-viewer';
+import { BarLoader } from 'react-spinners';
 
 // ----------------------------------------------------------------------
 
 export default function ShopProductCard() {
   const [dataProduct, setDataProduct] = useState([]);
-  const [view, setView] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  function handleOpen(image) {
+    setOpen(true);
+  }
+  const handleClose = () => setOpen(false);
+
+  const boxStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const override = {
+    transform: 'translate(-50%, -50%)',
+    top: '50%',
+    left: '50%',
+    position: 'absolute',
+  };
 
   useEffect(() => {
     async function getProduct() {
@@ -34,10 +63,6 @@ export default function ShopProductCard() {
     }
     getProduct();
   }, []);
-
-  const handleView = () => {
-    setView(!view);
-  };
 
   return (
     <>
@@ -62,6 +87,7 @@ export default function ShopProductCard() {
               <TableCell>Product Detail ID</TableCell>
               <TableCell>Created At</TableCell>
               <TableCell>Updated At</TableCell>
+              <TableCell>Edit</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -83,21 +109,44 @@ export default function ShopProductCard() {
                   <TableCell align="left">{result.remaining_days}</TableCell>
                   <TableCell align="left">{result.business_id}</TableCell>
                   <TableCell align="left">
-                    <button type="jpeg" onClick={handleView}>
-                      View
-                    </button>
-                    {view && <DocViewer image={img} style={{ width: 300, height: 300 }} />}
+                  <Button onClick={() => handleOpen(result.product_image)}>
+                      <InsertDriveFileIcon />
+                    </Button>
                   </TableCell>
                   <TableCell align="left">{result.status_campaign}</TableCell>
                   <TableCell align="left">{result.product_detail_id}</TableCell>
                   <TableCell align="left">{result.createdAt}</TableCell>
                   <TableCell align="left">{result.updatedAt}</TableCell>
+                  <TableCell align="left">
+                  <Button onClick="aa">
+                      <EditIcon />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               );
             })}
           </TableBody>
         </Table>
       </TableContainer>
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={boxStyle} noValidate autoComplete="off">
+          {loading ? (
+            <BarLoader
+              color="#274F99"
+              loading={loading}
+              size={30}
+              cssOverride={override}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : (
+            <img
+              src={`https://dev.homefund-id.tech/dashboard-api/static/product`}
+              alt="Image Should be Here"
+            />
+          )}
+        </Box>
+      </Modal>
     </>
   );
 }
