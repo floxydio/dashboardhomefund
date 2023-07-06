@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import Iconify from '../../../components/iconify';
 import { Box, Button, FormControl, Modal, TextField, Typography } from '@mui/material';
+import { LocalizationProvider, DatePicker } from '@mui/lab';
+import DateAdapter from '@mui/lab/AdapterDateFns';
 
 const boxStyle = {
   position: 'absolute',
@@ -17,7 +19,6 @@ const boxStyle = {
 
 const textFieldStyle = {
   marginBottom: 10,
-  marginTop: 10,
 };
 export default function ProductNewPost() {
   const [category, setCategory] = useState('');
@@ -44,6 +45,11 @@ export default function ProductNewPost() {
   const [viewProduct, setViewProduct] = useState(0);
 
   const [open, setOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleDrop = (acceptedFile) => {
+    setSelectedFile(acceptedFile[0]);
+  };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -85,26 +91,32 @@ export default function ProductNewPost() {
     );
   }
 
+  function selectedDate() {
+    setRemainingDays();
+  }
+
   return (
     <>
       <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpen}>
         New Post
       </Button>
-      <Modal open={open} onClose={handleClose}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        sx={{
+          overflow: 'scroll',
+        }}
+        aria-labelledby="scrollable-modal-title"
+      >
         <Box sx={boxStyle} noValidate autoComplete="off">
-          <Typography
-            style={{
-              textAlign: 'center',
-              marginBottom: 10,
-            }}
-          >
+          <Typography id="scrollable-modal-title" variant="h6">
             Masukan Data Product
           </Typography>
           <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
             <TextField
               required
               id="outlined"
-              label="category"
+              label="Category"
               type="text"
               onChange={(e) => setCategory(e.target.value)}
               style={textFieldStyle}
@@ -112,7 +124,7 @@ export default function ProductNewPost() {
             <TextField
               required
               id="outlined"
-              label="title"
+              label="Title"
               type="text"
               onChange={(e) => setTitle(e.target.value)}
               style={textFieldStyle}
@@ -120,7 +132,7 @@ export default function ProductNewPost() {
             <TextField
               required
               id="outlined"
-              label="location"
+              label="Location"
               type="text"
               onChange={(e) => setLocation(e.target.value)}
               style={textFieldStyle}
@@ -133,6 +145,65 @@ export default function ProductNewPost() {
               onChange={(e) => setStatusInvesment(e.target.value)}
               style={textFieldStyle}
             />
+            <TextField
+              required
+              id="outlined"
+              label="Total Invesment"
+              type="number"
+              onChange={(e) => setTotalInvesment(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Complete Invesment"
+              type="number"
+              onChange={(e) => setCompleteInvesment(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Minimum Invesment"
+              type="number"
+              onChange={(e) => setMinimumInvesment(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Total Lot"
+              type="number"
+              onChange={(e) => setTotalLot(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Total Investor"
+              type="number"
+              onChange={(e) => setTotalInvestor(e.target.value)}
+              style={textFieldStyle}
+            />
+            //Remaining Days Belum
+            <TextField
+              required
+              id="outlined"
+              label="Business ID"
+              type="number"
+              onChange={(e) => setBusinessId(e.target.value)}
+              style={textFieldStyle}
+            />
+            //Product Image Belum
+            <TextField
+              required
+              id="outlined"
+              label="Status Campaign"
+              type="number"
+              onChange={(e) => setStatusCampaign(e.target.value)}
+              style={textFieldStyle}
+            />
+            <Typography variant="body1">Created At: {selectedDate.toLocaleString()}</Typography>
           </FormControl>
         </Box>
       </Modal>

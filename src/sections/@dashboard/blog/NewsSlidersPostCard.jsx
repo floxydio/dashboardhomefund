@@ -57,7 +57,6 @@ export default function BlogPostCard() {
   const [imageSlider, setImageSlider] = useState('');
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
- 
 
   function handleOpen(image) {
     setOpen(true);
@@ -75,8 +74,6 @@ export default function BlogPostCard() {
     }
     getSlider();
   }, []);
-
-  
 
   // const POST_INFO = [
   //   { number: comment, icon: 'eva:message-circle-fill' },

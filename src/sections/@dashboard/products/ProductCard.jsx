@@ -35,7 +35,7 @@ export default function ShopProductCard() {
 
   useEffect(() => {
     async function getProduct() {
-      await axiosNew.get('/product').then((result) => {
+      await axiosNew.get('/products').then((result) => {
         setDataProduct(result.data.data);
         console.log(result.data.data);
       });
