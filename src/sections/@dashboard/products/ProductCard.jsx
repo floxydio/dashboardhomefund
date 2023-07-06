@@ -30,8 +30,62 @@ export default function ShopProductCard() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const [editId, setEditId] = useState('');
+  const [editCategory, setEditCategory] = useState('');
+  const [editTitle, setEditTitle] = useState('');
+  const [editLocation, setEditLocation] = useState('');
+  const [editStatusInvesment, setEditStatusInvesment] = useState(0);
+  const [editTotalInvesment, setEditTotalInvesment] = useState(0);
+  const [editCompleteInvesment, setEditCompleteInvesment] = useState(0);
+  const [editMinimumInvesment, setEditMinimumInvesment] = useState(0);
+  const [editTotalLot, setEditTotalLot] = useState(0);
+  const [editTotalInvestor, setEditTotalInvestor] = useState(0);
+  const [editRemainingDays, setEditRemainingDays] = useState(new Date());
+  const [editBusinessId, setEditBusinessId] = useState(0);
+  const [editProductImage, setEditProductImage] = useState('');
+  const [editStatusCampaign, setEditStatusCampaign] = useState(0);
+  const [editProductDetailId, setEditProductDetailId] = useState(0);
+  const [editUpdatedAt, setEditUpdatedAt] = useState(new Date());
+
   function handleOpen(image) {
     setOpen(true);
+  }
+
+  function handleEditProduct(
+    id,
+    category,
+    title,
+    location,
+    status_invesment,
+    total_invesment,
+    complete_invesment,
+    minimum_invesment,
+    total_lot,
+    total_investor,
+    remaining_days,
+    business_id,
+    product_image,
+    status_campaign,
+    product_detail_id,
+    updatedAt
+  ) {
+    setEditId(id);
+    setEditCategory(category);
+    setEditTitle(title);
+    setEditLocation(location);
+    setEditStatusInvesment(status_invesment);
+    setEditTotalInvesment(total_invesment);
+    setEditCompleteInvesment(complete_invesment);
+    setEditMinimumInvesment(minimum_invesment);
+    setEditTotalLot(total_lot);
+    setEditTotalInvesment(total_invesment);
+    setEditTotalInvestor(total_investor);
+    setEditRemainingDays(remaining_days);
+    setEditBusinessId(business_id);
+    setEditProductImage(product_image);
+    setEditStatusCampaign(status_campaign);
+    setEditProductDetailId(product_detail_id);
+    setEditUpdatedAt(updatedAt);
   }
   const handleClose = () => setOpen(false);
 
@@ -109,7 +163,7 @@ export default function ShopProductCard() {
                   <TableCell align="left">{result.remaining_days}</TableCell>
                   <TableCell align="left">{result.business_id}</TableCell>
                   <TableCell align="left">
-                  <Button onClick={() => handleOpen(result.product_image)}>
+                    <Button onClick={() => handleOpen(result.product_image)}>
                       <InsertDriveFileIcon />
                     </Button>
                   </TableCell>
@@ -118,7 +172,7 @@ export default function ShopProductCard() {
                   <TableCell align="left">{result.createdAt}</TableCell>
                   <TableCell align="left">{result.updatedAt}</TableCell>
                   <TableCell align="left">
-                  <Button onClick="aa">
+                    <Button onClick="">
                       <EditIcon />
                     </Button>
                   </TableCell>
@@ -140,10 +194,7 @@ export default function ShopProductCard() {
               data-testid="loader"
             />
           ) : (
-            <img
-              src={`https://dev.homefund-id.tech/dashboard-api/static/product`}
-              alt="Image Should be Here"
-            />
+            <img src={`https://dev.homefund-id.tech/dashboard-api/static/product`} alt="Image Should be Here" />
           )}
         </Box>
       </Modal>
