@@ -9,6 +9,7 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import SliderPage from './pages/NewsSlidersPage';
+import BusinessPage from './pages/BusinessPage';
 
 // ----------------------------------------------------------------------
 
@@ -22,8 +23,8 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
-        // { path: 'blog', element: <LoginPage /> },
-        // { path: 'business', element: <BusinessPage /> },
+        { path: 'slider', element: <SliderPage /> },
+        { path: 'business', element: <BusinessPage /> },
       ],
     },
     {
