@@ -9,6 +9,9 @@ import Logo from '../components/logo';
 import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import axiosNew from '../components/AxiosConfig';
 
 // ----------------------------------------------------------------------
 
@@ -42,6 +45,38 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function LoginPage() {
   const mdUp = useResponsive('up', 'md');
+
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      fetchSignInData();
+    }
+  }
+
+  function fetchSignInData() {
+    axiosNew
+      .post(
+        '/sign-in',
+        {
+          username: username,
+          password: password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          navigate('/dashboard/app');
+        }
+      });
+  }
 
   return (
     <>

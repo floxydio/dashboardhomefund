@@ -15,6 +15,8 @@ import {
   TableBody,
   Button,
   Modal,
+  FormControl,
+  TextField,
 } from '@mui/material';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,6 +26,31 @@ import axiosNew from '../../../components/AxiosConfig';
 import { BarLoader } from 'react-spinners';
 
 // ----------------------------------------------------------------------
+
+const boxStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  overflowY: 'scroll',
+  height: 500,
+  p: 4,
+};
+
+const textFieldStyle = {
+  marginBottom: 10,
+};
+
+const override = {
+  transform: 'translate(-50%, -50%)',
+  top: '50%',
+  left: '50%',
+  position: 'absolute',
+};
 
 export default function ShopProductCard() {
   const [dataProduct, setDataProduct] = useState([]);
@@ -45,7 +72,9 @@ export default function ShopProductCard() {
   const [editProductImage, setEditProductImage] = useState('');
   const [editStatusCampaign, setEditStatusCampaign] = useState(0);
   const [editProductDetailId, setEditProductDetailId] = useState(0);
-  const [editUpdatedAt, setEditUpdatedAt] = useState(new Date());
+  const [editUpdatedAt, setEditUpdatedAt] = useState(() => new Date().toLocaleString());
+
+  const [openEditData, setOpenEditData] = useState(false);
 
   function handleOpen(image) {
     setOpen(true);
@@ -56,7 +85,7 @@ export default function ShopProductCard() {
     category,
     title,
     location,
-    status_invesment,
+    status_investment,
     total_invesment,
     complete_invesment,
     minimum_invesment,
@@ -73,7 +102,7 @@ export default function ShopProductCard() {
     setEditCategory(category);
     setEditTitle(title);
     setEditLocation(location);
-    setEditStatusInvesment(status_invesment);
+    setEditStatusInvesment(status_investment);
     setEditTotalInvesment(total_invesment);
     setEditCompleteInvesment(complete_invesment);
     setEditMinimumInvesment(minimum_invesment);
@@ -86,27 +115,12 @@ export default function ShopProductCard() {
     setEditStatusCampaign(status_campaign);
     setEditProductDetailId(product_detail_id);
     setEditUpdatedAt(updatedAt);
+    setOpenEditData(true);
   }
+
   const handleClose = () => setOpen(false);
 
-  const boxStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 500,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-
-  const override = {
-    transform: 'translate(-50%, -50%)',
-    top: '50%',
-    left: '50%',
-    position: 'absolute',
-  };
+  const handleCloseEditData = () => setOpenEditData(false);
 
   useEffect(() => {
     async function getProduct() {
@@ -172,7 +186,28 @@ export default function ShopProductCard() {
                   <TableCell align="left">{result.createdAt}</TableCell>
                   <TableCell align="left">{result.updatedAt}</TableCell>
                   <TableCell align="left">
-                    <Button onClick="">
+                    <Button
+                      onClick={() =>
+                        handleEditProduct(
+                          result.id,
+                          result.category,
+                          result.title,
+                          result.location,
+                          result.status_investment,
+                          result.total_invesment,
+                          result.complete_invesment,
+                          result.minimum_invesment,
+                          result.total_lot,
+                          result.total_investor,
+                          result.remaining_days,
+                          result.business_id,
+                          result.product_image,
+                          result.status_campaign,
+                          result.product_detail_id,
+                          result.updatedAt
+                        )
+                      }
+                    >
                       <EditIcon />
                     </Button>
                   </TableCell>
@@ -196,6 +231,166 @@ export default function ShopProductCard() {
           ) : (
             <img src={`https://dev.homefund-id.tech/dashboard-api/static/product`} alt="Image Should be Here" />
           )}
+        </Box>
+      </Modal>
+      <Modal
+        open={openEditData}
+        onClose={handleCloseEditData}
+        sx={{
+          height: 500,
+          overflowY: 'scroll',
+          marginTop: 10,
+        }}
+      >
+        <Box sx={boxStyle} noValidate autoComplete="off">
+          <Typography
+            style={{
+              textAlign: 'center',
+              marginBottom: '10',
+            }}
+            variant="h6"
+            component="h2"
+          >
+            Edit Data Product
+          </Typography>
+          <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField
+              required
+              id="outlined"
+              label="Category"
+              type="text"
+              value={editCategory}
+              onChange={(e) => setEditCategory(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Title"
+              type="text"
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Location"
+              type="text"
+              value={editLocation}
+              onChange={(e) => setEditLocation(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Status Invesment"
+              type="number"
+              value={editStatusInvesment}
+              onChange={(e) => setEditStatusInvesment(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Total Invesment"
+              type="number"
+              value={editTotalInvesment}
+              onChange={(e) => setEditTotalInvesment(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Complete Invesment"
+              type="number"
+              value={editCompleteInvesment}
+              onChange={(e) => setEditCompleteInvesment(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Minimum Invesment"
+              type="number"
+              value={editMinimumInvesment}
+              onChange={(e) => setEditMinimumInvesment(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Total Lot"
+              type="number"
+              value={editTotalLot}
+              onChange={(e) => setEditTotalLot(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Total Investor"
+              type="number"
+              value={editTotalInvestor}
+              onChange={(e) => setEditTotalInvestor(e.target.value)}
+              style={textFieldStyle}
+            />
+            //Remaining Days Belum
+            <TextField
+              required
+              id="outlined"
+              label="Business ID"
+              type="number"
+              value={editBusinessId}
+              onChange={(e) => setEditBusinessId(e.target.value)}
+              style={textFieldStyle}
+            />
+            //Product Image Belum
+            <TextField
+              required
+              id="outlined"
+              label="Status Campaign"
+              type="number"
+              value={editStatusCampaign}
+              onChange={(e) => setEditStatusCampaign(e.target.value)}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Product Detail ID"
+              type="number"
+              value={editProductDetailId}
+              onChange={(e) => setEditProductDetailId(e.target.value)}
+              style={textFieldStyle}
+            />
+            <Box
+              sx={{
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+                padding: '16px',
+                backgroundColor: '#fff',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <Typography>Updated At: {editUpdatedAt}</Typography>
+            </Box>
+            <Button
+              onClick={(e) => submitDataProduct(e)}
+              type="submit"
+              sx={{
+                height: 45,
+                backgroundColor: 'blue',
+                color: 'white',
+                fontWeight: 'bold',
+                borderColor: 'transparent',
+                borderRadius: 20,
+                marginTop: 2,
+              }}
+            >
+              Submit
+            </Button>
+          </FormControl>
         </Box>
       </Modal>
     </>
