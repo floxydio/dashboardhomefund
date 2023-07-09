@@ -275,7 +275,7 @@ export default function ShopProductCard() {
               data-testid="loader"
             />
           ) : (
-            <img src={`https://dev.homefund-id.tech/dashboard-api/static/product`} alt="Image Should be Here" />
+            <img src={`http://103.250.11.249:3000/dashboard-api/static/product`} alt="Image Should be Here" />
           )}
         </Box>
       </Modal>

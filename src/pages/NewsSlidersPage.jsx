@@ -7,6 +7,7 @@ import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashb
 // mock
 import POSTS from '../_mock/blog';
 import NewPost from '../sections/@dashboard/blog/NewsSliderNewPost';
+import SliderTable from '../sections/@dashboard/blog/NewsSlidersPostCard';
 
 // ----------------------------------------------------------------------
 
@@ -28,18 +29,19 @@ export default function SliderPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            News
+            Slider
           </Typography>
           <NewPost />
         </Stack>
 
-        <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
+        {/* <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
           <BlogPostsSearch posts={POSTS} />
           <BlogPostsSort options={SORT_OPTIONS} />
-        </Stack>
+        </Stack> */}
 
         <Grid container spacing={3}>
-          <BlogPostCard />
+          {/* Tabel SLider */}
+          <SliderTable />
         </Grid>
       </Container>
     </>
