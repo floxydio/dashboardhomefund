@@ -2,10 +2,7 @@ import PropTypes from 'prop-types';
 // @mui
 import {
   Box,
-  Card,
-  Link,
   Typography,
-  Stack,
   TableContainer,
   Paper,
   Table,
@@ -24,6 +21,9 @@ import { styled } from '@mui/material/styles';
 import { useState, useEffect, useRef } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import { BarLoader } from 'react-spinners';
+import moment from 'moment';
+import { LocalizationProvider, DateCalendar } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 // ----------------------------------------------------------------------
 
@@ -57,24 +57,37 @@ export default function ShopProductCard() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const [editId, setEditId] = useState('');
-  const [editCategory, setEditCategory] = useState('');
-  const [editTitle, setEditTitle] = useState('');
-  const [editLocation, setEditLocation] = useState('');
-  const [editStatusInvesment, setEditStatusInvesment] = useState(0);
-  const [editTotalInvesment, setEditTotalInvesment] = useState(0);
-  const [editCompleteInvesment, setEditCompleteInvesment] = useState(0);
-  const [editMinimumInvesment, setEditMinimumInvesment] = useState(0);
-  const [editTotalLot, setEditTotalLot] = useState(0);
-  const [editTotalInvestor, setEditTotalInvestor] = useState(0);
-  const [editRemainingDays, setEditRemainingDays] = useState(new Date());
-  const [editBusinessId, setEditBusinessId] = useState(0);
-  const [editProductImage, setEditProductImage] = useState('');
-  const [editStatusCampaign, setEditStatusCampaign] = useState(0);
-  const [editProductDetailId, setEditProductDetailId] = useState(0);
-  const [editUpdatedAt, setEditUpdatedAt] = useState(() => new Date().toLocaleString());
+  const [editData, setEditData] = useState({
+    editId: '',
+    editCategory: '',
+    editTitle: '',
+    editLocation: '',
+    editStatusInvestment: 0,
+    editTotalInvesment: 0,
+    editCompleteInvesment: 0,
+    editMinimumInvesment: 0,
+    editTotalLot: 0,
+    editTotalInvestor: 0,
+    editRemainingDays: null,
+    editBusinessId: 0,
+    editProductImage: '',
+    editStatusCampaign: 0,
+    editProductDetailId: 0,
+    editUpdatedAt: new Date(),
+  });
+
+  const [date, setDate] = useState(editData.editRemainingDays);
+
+  const editId = editData.editId;
 
   const [openEditData, setOpenEditData] = useState(false);
+
+  const handleDateChange = (date) => {
+    setEditData({
+      ...editData,
+      editRemainingDays: date,
+    });
+  };
 
   function handleOpen(image) {
     setOpen(true);
@@ -98,23 +111,26 @@ export default function ShopProductCard() {
     product_detail_id,
     updatedAt
   ) {
-    setEditId(id);
-    setEditCategory(category);
-    setEditTitle(title);
-    setEditLocation(location);
-    setEditStatusInvesment(status_investment);
-    setEditTotalInvesment(total_invesment);
-    setEditCompleteInvesment(complete_invesment);
-    setEditMinimumInvesment(minimum_invesment);
-    setEditTotalLot(total_lot);
-    setEditTotalInvesment(total_invesment);
-    setEditTotalInvestor(total_investor);
-    setEditRemainingDays(remaining_days);
-    setEditBusinessId(business_id);
-    setEditProductImage(product_image);
-    setEditStatusCampaign(status_campaign);
-    setEditProductDetailId(product_detail_id);
-    setEditUpdatedAt(updatedAt);
+    const updateData = {
+      editId: id,
+      editCategory: category,
+      editTitle: title,
+      editLocation: location,
+      editStatusInvestment: status_investment,
+      editTotalInvesment: total_invesment,
+      editCompleteInvesment: complete_invesment,
+      editMinimumInvesment: minimum_invesment,
+      editTotalLot: total_lot,
+      editTotalInvestor: total_investor,
+      editRemainingDays: remaining_days,
+      editBusinessId: business_id,
+      editProductImage: product_image,
+      editStatusCampaign: status_campaign,
+      editProductDetailId: product_detail_id,
+      editUpdatedAt: updatedAt,
+    };
+
+    setEditData(updateData);
     setOpenEditData(true);
   }
 
@@ -131,6 +147,28 @@ export default function ShopProductCard() {
     }
     getProduct();
   }, []);
+
+  async function submitEditProduct(e) {
+    e.preventDefault();
+
+    await axiosNew
+      .put(`/product/${editId}`, editData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((result) => {
+        if (result.status === 200 || result.status === 201) {
+          setOpenEditData(false);
+          async function getProduct() {
+            await axiosNew.get('/product').then((result) => {
+              setDataProduct(result.data.data);
+            });
+          }
+          getProduct();
+        }
+      });
+  }
 
   return (
     <>
@@ -174,7 +212,9 @@ export default function ShopProductCard() {
                   <TableCell align="left">Rp{result.minimum_invesment.toLocaleString()}</TableCell>
                   <TableCell align="left">{result.total_lot.toLocaleString()}</TableCell>
                   <TableCell align="left">{result.total_investor}</TableCell>
-                  <TableCell align="left">{result.remaining_days}</TableCell>
+                  <TableCell align="left">
+                    {moment(result.remaining_days).utc().format('MMMM Do YYYY, h:mm:ss a')}
+                  </TableCell>
                   <TableCell align="left">{result.business_id}</TableCell>
                   <TableCell align="left">
                     <Button onClick={() => handleOpen(result.product_image)}>
@@ -183,8 +223,8 @@ export default function ShopProductCard() {
                   </TableCell>
                   <TableCell align="left">{result.status_campaign}</TableCell>
                   <TableCell align="left">{result.product_detail_id}</TableCell>
-                  <TableCell align="left">{result.createdAt}</TableCell>
-                  <TableCell align="left">{result.updatedAt}</TableCell>
+                  <TableCell align="left">{moment(result.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
+                  <TableCell align="left">{moment(result.updatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
                   <TableCell align="left">
                     <Button
                       onClick={() =>
@@ -259,8 +299,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Category"
               type="text"
-              value={editCategory}
-              onChange={(e) => setEditCategory(e.target.value)}
+              value={editData.editCategory}
+              onChange={(e) => setEditData({ ...editData, editCategory: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -268,8 +308,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Title"
               type="text"
-              value={editTitle}
-              onChange={(e) => setEditTitle(e.target.value)}
+              value={editData.editTitle}
+              onChange={(e) => setEditData({ ...editData, editTitle: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -277,8 +317,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Location"
               type="text"
-              value={editLocation}
-              onChange={(e) => setEditLocation(e.target.value)}
+              value={editData.editLocation}
+              onChange={(e) => setEditData({ ...editData, editLocation: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -286,8 +326,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Status Invesment"
               type="number"
-              value={editStatusInvesment}
-              onChange={(e) => setEditStatusInvesment(e.target.value)}
+              value={editData.editStatusInvestment}
+              onChange={(e) => setEditData({ ...editData, editStatusInvestment: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -295,8 +335,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Total Invesment"
               type="number"
-              value={editTotalInvesment}
-              onChange={(e) => setEditTotalInvesment(e.target.value)}
+              value={editData.editTotalInvesment}
+              onChange={(e) => setEditData({ ...editData, editTotalInvestment: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -304,8 +344,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Complete Invesment"
               type="number"
-              value={editCompleteInvesment}
-              onChange={(e) => setEditCompleteInvesment(e.target.value)}
+              value={editData.editCompleteInvesment}
+              onChange={(e) => setEditData({ ...editData, editCompleteInvestment: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -313,8 +353,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Minimum Invesment"
               type="number"
-              value={editMinimumInvesment}
-              onChange={(e) => setEditMinimumInvesment(e.target.value)}
+              value={editData.editMinimumInvesment}
+              onChange={(e) => setEditData({ ...editData, editMinimumInvestment: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -322,8 +362,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Total Lot"
               type="number"
-              value={editTotalLot}
-              onChange={(e) => setEditTotalLot(e.target.value)}
+              value={editData.editTotalLot}
+              onChange={(e) => setEditData({ ...editData, editTotalLot: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -331,18 +371,21 @@ export default function ShopProductCard() {
               id="outlined"
               label="Total Investor"
               type="number"
-              value={editTotalInvestor}
-              onChange={(e) => setEditTotalInvestor(e.target.value)}
+              value={editData.editTotalInvestor}
+              onChange={(e) => setEditData({ ...editData, editTotalInvestor: e.target.value })}
               style={textFieldStyle}
             />
-            //Remaining Days Belum
+            //ini remaining_days
+            <LocalizationProvider dateAdapter={dayjs}>
+              <DateCalendar value={date} onChange={(newDate) => setDate(newDate)} />
+            </LocalizationProvider>
             <TextField
               required
               id="outlined"
               label="Business ID"
               type="number"
-              value={editBusinessId}
-              onChange={(e) => setEditBusinessId(e.target.value)}
+              value={editData.editBusinessId}
+              onChange={(e) => setEditData({ ...editData, editBusinessId: e.target.value })}
               style={textFieldStyle}
             />
             //Product Image Belum
@@ -351,8 +394,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Status Campaign"
               type="number"
-              value={editStatusCampaign}
-              onChange={(e) => setEditStatusCampaign(e.target.value)}
+              value={editData.editStatusCampaign}
+              onChange={(e) => setEditData({ ...editData, editStatusCampaign: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -360,8 +403,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Product Detail ID"
               type="number"
-              value={editProductDetailId}
-              onChange={(e) => setEditProductDetailId(e.target.value)}
+              value={editData.editProductDetailId}
+              onChange={(e) => setEditData({ ...editData, editProductDetailId: e.target.value })}
               style={textFieldStyle}
             />
             <Box
@@ -373,10 +416,12 @@ export default function ShopProductCard() {
                 boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <Typography>Updated At: {editUpdatedAt}</Typography>
+              <Typography>
+                Updated At: {moment(editData.editUpdatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}
+              </Typography>
             </Box>
             <Button
-              onClick={(e) => submitDataProduct(e)}
+              onClick={(e) => e}
               type="submit"
               sx={{
                 height: 45,

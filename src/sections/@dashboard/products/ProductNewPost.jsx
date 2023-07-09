@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import Iconify from '../../../components/iconify';
 import { Box, Button, FormControl, Modal, TextField, Typography } from '@mui/material';
-import { LocalizationProvider, DatePicker } from '@mui/lab';
-import DateAdapter from '@mui/lab/AdapterDateFns';
 
 const boxStyle = {
   position: 'absolute',
