@@ -22,9 +22,7 @@ import { useState, useEffect, useRef } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import { BarLoader } from 'react-spinners';
 import moment from 'moment';
-import { LocalizationProvider, DateCalendar } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
-
+import { DatePicker, LocalizationProvider, } from '@mui/x-date-pickers';
 // ----------------------------------------------------------------------
 
 const boxStyle = {
@@ -87,6 +85,14 @@ export default function ShopProductCard() {
       ...editData,
       editRemainingDays: date,
     });
+  };
+
+  const getRemainingDays = () => {
+    const today = new Date();
+    const campaignEndDate = new Date(date);
+    const difference = campaignEndDate - today;
+    const remainingDays = Math.floor(difference / (1000 * 60 * 60 * 24));
+    return remainingDays;
   };
 
   function handleOpen(image) {
@@ -377,7 +383,24 @@ export default function ShopProductCard() {
             />
             //ini remaining_days
             <LocalizationProvider dateAdapter={dayjs}>
-              <DateCalendar value={date} onChange={(newDate) => setDate(newDate)} />
+              <DatePicker
+                value={date}
+                onChange={handleDateChange}
+                maxDate={new Date()}
+                renderInput={(params) => {
+                  return (
+                    <input
+                      {...params}
+                      type="date"
+                      value={date}
+                      onChange={handleDateChange}
+                      placeholder="Select End Date"
+                    />
+                  );
+                }}
+              />
+              <br />
+              <Typography variant="h3">Remaining Days: {getRemainingDays()}</Typography>
             </LocalizationProvider>
             <TextField
               required
