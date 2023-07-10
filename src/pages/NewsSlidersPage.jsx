@@ -23,7 +23,7 @@ export default function SliderPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: News Slider | HomeFund </title>
+        <title> Dashboard: Slider | HomeFund </title>
       </Helmet>
 
       <Container>

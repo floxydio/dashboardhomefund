@@ -38,7 +38,21 @@ export default function ImageUpload({ links }) {
             />
           </>
         )}
+<<<<<<< HEAD
       </Box>
+=======
+      </Dropzone>
+      {selectedFile && (
+        <>
+          <Typography variant="h3">Selected Image Preview</Typography>
+          <img
+            src={`https://dev.homefund-id.tech/dashboard-api/static/product/${selectedFile}`}
+            alt="Selected"
+            style={{ width: '200 px' }}
+          />
+        </>
+      )}
+>>>>>>> 8c09c87f89f55668f77c2d46da1b93e942e2a8e2
     </>
   );
 }

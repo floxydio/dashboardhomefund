@@ -16,7 +16,7 @@ export default function BusinessSection() {
     const [view, setView] = useState(false);
 
     const docs = [
-        { uri: "http://103.250.11.249:3000/dashboard-api/static/prospektus/prospektus_f065c174-311f-44db-822f-8d10fce0c615_PTIOTECH.pdf" }
+        { uri: "https://dev.homefund-id.tech/dashboard-api/static/prospektus/prospektus_f065c174-311f-44db-822f-8d10fce0c615_PTIOTECH.pdf" }
     ];
 
     
