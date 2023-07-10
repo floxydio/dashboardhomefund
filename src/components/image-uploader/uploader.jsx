@@ -23,7 +23,7 @@ export default function ImageUpload() {
         <>
           <Typography variant="h3">Selected Image Preview</Typography>
           <img
-            src={`http://103.250.11.249:3000/dashboard-api/static/product/${selectedFile}`}
+            src={`https://dev.homefund-id.tech/dashboard-api/static/product/${selectedFile}`}
             alt="Selected"
             style={{ width: '200 px' }}
           />
