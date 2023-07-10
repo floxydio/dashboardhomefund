@@ -2,8 +2,8 @@ import { useState } from 'react';
 import Iconify from '../../../components/iconify';
 import { Button, Modal, Box, Typography, FormControlLabel, FormControl, TextField } from '@mui/material';
 import axiosNew from '../../../components/AxiosConfig';
-import ImageUpload from '../../../components/image-uploader/uploader';
-import { formatDistanceStrict } from 'date-fns';
+// import ImageUpload from '../../../components/image-uploader/uploader';
+// import { formatDistanceStrict } from 'date-fns';
 
 const boxStyle = {
   position: 'absolute',
@@ -25,7 +25,7 @@ const textFieldStyle = {
 export default function NewPost() {
   const [name, setName] = useState('');
   const [detail, setDetail] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState();
   const [status, setStatus] = useState(1);
 
   const [open, setOpen] = useState(false);
@@ -36,10 +36,6 @@ export default function NewPost() {
 
   async function submitDataNewPost(e) {
     e.preventDefault();
-    console.log(name);
-    console.log(detail);
-    console.log(image);
-    console.log(status);
     let formData = new FormData();
     formData.append('name', name);
     formData.append('detail', detail);
@@ -49,6 +45,12 @@ export default function NewPost() {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+    }).then((res) => {
+      if(res.status === 201) {
+        window.location.reload()
+      } else {
+        alert(res.data.message)
+      }
     });
   }
   return (
@@ -87,7 +89,7 @@ export default function NewPost() {
               required
               accept="image/*"
               type="file"
-              onChange={(e) => setImage(e.target.result)}
+              onChange={(e) => setImage(e.target.files[0])}
               style={textFieldStyle}
             />
             <TextField
