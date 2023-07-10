@@ -22,7 +22,7 @@ import { useState, useEffect, useRef } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import { BarLoader } from 'react-spinners';
 import moment from 'moment';
-import { DatePicker, LocalizationProvider, } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 // ----------------------------------------------------------------------
 
 const boxStyle = {
@@ -382,7 +382,7 @@ export default function ShopProductCard() {
               style={textFieldStyle}
             />
             //ini remaining_days
-            <LocalizationProvider dateAdapter={dayjs}>
+            {/* <LocalizationProvider dateAdapter={dayjs}>
               <DatePicker
                 value={date}
                 onChange={handleDateChange}
@@ -401,7 +401,7 @@ export default function ShopProductCard() {
               />
               <br />
               <Typography variant="h3">Remaining Days: {getRemainingDays()}</Typography>
-            </LocalizationProvider>
+            </LocalizationProvider> */}
             <TextField
               required
               id="outlined"
@@ -444,7 +444,7 @@ export default function ShopProductCard() {
               </Typography>
             </Box>
             <Button
-              onClick={(e) => e}
+              onClick={(e) => submitEditProduct(e)}
               type="submit"
               sx={{
                 height: 45,
