@@ -74,26 +74,9 @@ export default function ShopProductCard() {
     editUpdatedAt: new Date(),
   });
 
-  const [date, setDate] = useState(editData.editRemainingDays);
-
   const editId = editData.editId;
 
   const [openEditData, setOpenEditData] = useState(false);
-
-  const handleDateChange = (date) => {
-    setEditData({
-      ...editData,
-      editRemainingDays: date,
-    });
-  };
-
-  const getRemainingDays = () => {
-    const today = new Date();
-    const campaignEndDate = new Date(date);
-    const difference = campaignEndDate - today;
-    const remainingDays = Math.floor(difference / (1000 * 60 * 60 * 24));
-    return remainingDays;
-  };
 
   function handleOpen(image) {
     setOpen(true);
@@ -157,8 +140,24 @@ export default function ShopProductCard() {
   async function submitEditProduct(e) {
     e.preventDefault();
 
+    let formData = new FormData();
+    formData.append('category', editData.editCategory);
+    formData.append('title', editData.editTitle), formData.append('location', editData.editLocation);
+    formData.append('status_investment', editData.editStatusInvestment);
+    formData.append('total_invesment', editData.editTotalInvesment);
+    formData.append('complete_invesment', editData.editCompleteInvesment);
+    formData.append('minimum_invesment', editData.editMinimumInvesment);
+    formData.append('total_lot', editData.editTotalLot);
+    formData.append('total_investor', editData.editTotalInvestor);
+    formData.append('remaining_days', editData.editRemainingDays);
+    formData.append('business_id', editData.editBusinessId);
+    formData.append('product_image', editData.editProductImage);
+    formData.append('status_campaign', editData.editStatusCampaign);
+    formData.append('product_detail_id', editData.editProductDetailId);
+    formData.append('updatedAt', editData.editUpdatedAt);
+
     await axiosNew
-      .put(`/product/${editId}`, editData, {
+      .put(`/product/${editId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -381,27 +380,15 @@ export default function ShopProductCard() {
               onChange={(e) => setEditData({ ...editData, editTotalInvestor: e.target.value })}
               style={textFieldStyle}
             />
-            //ini remaining_days
-            {/* <LocalizationProvider dateAdapter={dayjs}>
-              <DatePicker
-                value={date}
-                onChange={handleDateChange}
-                maxDate={new Date()}
-                renderInput={(params) => {
-                  return (
-                    <input
-                      {...params}
-                      type="date"
-                      value={date}
-                      onChange={handleDateChange}
-                      placeholder="Select End Date"
-                    />
-                  );
-                }}
-              />
-              <br />
-              <Typography variant="h3">Remaining Days: {getRemainingDays()}</Typography>
-            </LocalizationProvider> */}
+            <TextField
+              required
+              type="date"
+              label="Remaining Days"
+              InputLabelProps={{ shrink: true }}
+              value={editData.editRemainingDays}
+              onChange={(e) => setEditData({ ...editData, editRemainingDays: e.target.value })}
+              style={textFieldStyle}
+            />
             <TextField
               required
               id="outlined"
@@ -411,7 +398,13 @@ export default function ShopProductCard() {
               onChange={(e) => setEditData({ ...editData, editBusinessId: e.target.value })}
               style={textFieldStyle}
             />
-            //Product Image Belum
+            <TextField
+              required
+              accept="image/*"
+              type="file"
+              onChange={(e) => setEditData({ ...editData, editProductImage: e.target.files[0] })}
+              style={textFieldStyle}
+            />
             <TextField
               required
               id="outlined"
@@ -444,7 +437,7 @@ export default function ShopProductCard() {
               </Typography>
             </Box>
             <Button
-              onClick={(e) => submitEditProduct(e)}
+              onClick={submitEditProduct}
               type="submit"
               sx={{
                 height: 45,

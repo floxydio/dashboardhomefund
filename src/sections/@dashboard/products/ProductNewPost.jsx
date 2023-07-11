@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import Iconify from '../../../components/iconify';
 import { Box, Button, FormControl, Modal, TextField, Typography } from '@mui/material';
+import moment from 'moment';
 
 const boxStyle = {
   position: 'absolute',
@@ -21,82 +22,63 @@ const textFieldStyle = {
   marginBottom: 10,
 };
 export default function ProductNewPost() {
-  const [category, setCategory] = useState('');
-  const [title, setTitle] = useState('');
-  const [location, setLocation] = useState('');
-  const [statusInvesment, setStatusInvesment] = useState(0);
-  const [totalInvesment, setTotalInvesment] = useState(0);
-  const [completeInvesment, setCompleteInvesment] = useState(0);
-  const [minimumInvesment, setMinimumInvesment] = useState(0);
-  const [totalLot, setTotalLot] = useState(0);
-  const [totalInvestor, setTotalInvestor] = useState(0);
-  const [remainingDays, setRemainingDays] = useState(new Date());
-  const [businessId, setBusinessId] = useState(0);
-  const [productImage, setProductImage] = useState('');
-  const [statusCampaign, setStatusCampaign] = useState(0);
-  const [longtitude, setLongtitude] = useState('');
-  const [langtitude, setLangtitude] = useState('');
-  const [tenor, setTenor] = useState(0);
-  const [percentageImbal, setPercentageImbal] = useState(0.0);
-  const [detail, setDetail] = useState('');
-  const [productDetailId, setProductDetailId] = useState(0);
-  const [createdAt, setCreatedAt] = useState(new Date());
-  const [updatedAt, setUpdatedAt] = useState(new Date());
-  const [viewProduct, setViewProduct] = useState(0);
+  const [newData, setNewData] = useState({
+    category: '',
+    title: '',
+    location: '',
+    statusInvestment: 0,
+    totalInvesment: 0,
+    completeInvesment: 0,
+    minimumInvesment: 0,
+    totalLot: 0,
+    totalInvestor: 0,
+    remainingDays: null,
+    businessId: 0,
+    productImage: '',
+    statusCampaign: 0,
+    productDetailId: 0,
+    createdAt: new Date(),
+  });
+
+  const [product, setProduct] = useState([]);
 
   const [open, setOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleDrop = (acceptedFile) => {
-    setSelectedFile(acceptedFile[0]);
-  };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const colorText = {
-    color: 'black',
-  };
-
   async function submitDataProduct(e) {
     e.preventDefault();
 
-    await axiosNew.post(
-      '/product',
-      {
-        category: category,
-        title: title,
-        location: location,
-        status_invesment: statusInvesment,
-        total_invesment: totalInvesment,
-        complete_invesment: completeInvesment,
-        minimum_invesment: minimumInvesment,
-        total_lot: totalLot,
-        total_investor: totalInvestor,
-        remaining_days: remainingDays,
-        business_id: businessId,
-        product_image: productImage,
-        status_campaign: statusCampaign,
-        // longtitude: longtitude,
-        // langtitude: langtitude,
-        // tenor: tenor,
-        // percentage_imbal: percentageImbal,
-        // detail: detail,
-        product_detail_id: productDetailId,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-        // view_product:
-      },
-      {
+    let formData = new FormData();
+    formData.append('category', newData.cate);
+    formData.append('title', newData.title), formData.append('location', newData.location);
+    formData.append('status_investment', newData.statusInvestment);
+    formData.append('total_invesment', newData.totalInvesment);
+    formData.append('complete_invesment', newData.completeInvesment);
+    formData.append('minimum_invesment', newData.minimumInvesment);
+    formData.append('total_lot', newData.totalLot);
+    formData.append('total_investor', newData.totalInvestor);
+    formData.append('remaining_days', newData.remainingDays);
+    formData.append('business_id', newData.businessId);
+    formData.append('product_image', newData.productImage);
+    formData.append('status_campaign', newData.statusCampaign);
+    formData.append('product_detail_id', newData.productDetailId);
+    formData.append('createdAt', newData.createdAt);
+
+    await axiosNew
+      .post('/product', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      }
-    );
-  }
-
-  function selectedDate() {
-    setRemainingDays();
+      })
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          window.location.reload();
+        } else {
+          alert(res.data.message);
+        }
+      });
   }
 
   return (
@@ -130,7 +112,7 @@ export default function ProductNewPost() {
               id="outlined"
               label="Category"
               type="text"
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, category: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -138,7 +120,7 @@ export default function ProductNewPost() {
               id="outlined"
               label="Title"
               type="text"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, title: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -146,7 +128,7 @@ export default function ProductNewPost() {
               id="outlined"
               label="Location"
               type="text"
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, location: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -154,7 +136,7 @@ export default function ProductNewPost() {
               id="outlined"
               label="Status Invesment"
               type="number"
-              onChange={(e) => setStatusInvesment(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, statusInvestment: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -162,7 +144,7 @@ export default function ProductNewPost() {
               id="outlined"
               label="Total Invesment"
               type="number"
-              onChange={(e) => setTotalInvesment(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, totalInvesment: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -170,7 +152,7 @@ export default function ProductNewPost() {
               id="outlined"
               label="Complete Invesment"
               type="number"
-              onChange={(e) => setCompleteInvesment(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, completeInvesment: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -178,7 +160,7 @@ export default function ProductNewPost() {
               id="outlined"
               label="Minimum Invesment"
               type="number"
-              onChange={(e) => setMinimumInvesment(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, minimumInvesment: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -186,7 +168,7 @@ export default function ProductNewPost() {
               id="outlined"
               label="Total Lot"
               type="number"
-              onChange={(e) => setTotalLot(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, totalLot: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -194,25 +176,38 @@ export default function ProductNewPost() {
               id="outlined"
               label="Total Investor"
               type="number"
-              onChange={(e) => setTotalInvestor(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, totalInvestor: e.target.value })}
               style={textFieldStyle}
             />
-            //Remaining Days Belum
+            <TextField
+              required
+              type="date"
+              label="Remaining Days"
+              InputLabelProps={{ shrink: true }}
+              onChange={(e) => setNewData({ ...newData, remainingDays: e.target.value })}
+              style={textFieldStyle}
+            />
             <TextField
               required
               id="outlined"
               label="Business ID"
               type="number"
-              onChange={(e) => setBusinessId(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, businessId: e.target.value })}
               style={textFieldStyle}
             />
-            //Product Image Belum
+            <TextField
+              required
+              accept="image/*"
+              type="file"
+              onChange={(e) => setNewData({ ...newData, productImage: e.target.files[0] })}
+              style={textFieldStyle}
+            />
             <TextField
               required
               id="outlined"
               label="Status Campaign"
               type="number"
-              onChange={(e) => setStatusCampaign(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, statusCampaign: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -220,7 +215,7 @@ export default function ProductNewPost() {
               id="outlined"
               label="Product Detail ID"
               type="number"
-              onChange={(e) => setProductDetailId(e.target.value)}
+              onChange={(e) => setNewData({ ...newData, productDetailId: e.target.value })}
               style={textFieldStyle}
             />
             <Box
@@ -232,7 +227,7 @@ export default function ProductNewPost() {
                 boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <Typography>Created At: {createdAt.toLocaleString()}</Typography>
+              <Typography>Created At: {moment(newData.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</Typography>
             </Box>
             <Button
               onClick={(e) => submitDataProduct(e)}
