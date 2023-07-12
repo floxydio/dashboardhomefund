@@ -16,10 +16,13 @@ export default function BusinessSection() {
     const [view, setView] = useState(false);
 
     const docs = [
-        { uri: "https://dev.homefund-id.tech/dashboard-api/static/prospektus/prospektus_f065c174-311f-44db-822f-8d10fce0c615_PTIOTECH.pdf" }
+        {
+            uri:
+                "https://dev.homefund-id.tech/dashboard-api/static/prospektus/prospektus_f065c174-311f-44db-822f-8d10fce0c615_PTIOTECH.pdf"
+        }
     ];
 
-    
+
     const handleView = () => {
         setView(!view);
     };
@@ -52,20 +55,22 @@ export default function BusinessSection() {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell align="left">{row.name}</TableCell>
-                            <TableCell align="left"><button type="jpeg" onClick={handleView}>View</button>
+                            <TableCell align="left"><button type="application/pdf" onClick={handleView}>
+                                View
+                            </button>
                                 {view && (
                                     <DocViewer
-                                    pluginRenderers={DocViewerRenderers}
-                                    documents={docs}
-                                    style={{width: 300, height: 300}}
-                                    config={{
-                                        header: {
-                                          disableHeader: false,
-                                          disableFileName: false,
-                                          retainURLParams: false
-                                        }
-                                      }}
-                                  />
+                                        pluginRenderers={DocViewerRenderers}
+                                        documents={docs}
+                                        style={{ width: 300, height: 300 }}
+                                        config={{
+                                            header: {
+                                                disableHeader: false,
+                                                disableFileName: true,
+                                                retainURLParams: false
+                                            }
+                                        }}
+                                    />
                                 )}</TableCell>
                             <TableCell align="left">{row.deskripsi}</TableCell>
                         </TableRow>
@@ -74,5 +79,5 @@ export default function BusinessSection() {
             </Table>
         </TableContainer>
     </>
-    
+
 }
