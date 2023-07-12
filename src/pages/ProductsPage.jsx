@@ -27,8 +27,6 @@ export default function ProductsPage() {
     setOpenFilter(false);
   };
 
-  useEffect(() => {}, []);
-
   return (
     <>
       <Helmet>

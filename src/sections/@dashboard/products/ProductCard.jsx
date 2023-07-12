@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 // @mui
 import {
   Box,
@@ -17,12 +16,10 @@ import {
 } from '@mui/material';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import EditIcon from '@mui/icons-material/Edit';
-import { styled } from '@mui/material/styles';
 import { useState, useEffect, useRef } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import { BarLoader } from 'react-spinners';
 import moment from 'moment';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 // ----------------------------------------------------------------------
 
 const boxStyle = {
@@ -55,6 +52,8 @@ export default function ShopProductCard() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const [imageProduct, setImageProduct] = useState('');
+
   const [editData, setEditData] = useState({
     editId: '',
     editCategory: '',
@@ -80,6 +79,7 @@ export default function ShopProductCard() {
 
   function handleOpen(image) {
     setOpen(true);
+    setImageProduct(image);
   }
 
   function handleEditProduct(
@@ -131,7 +131,6 @@ export default function ShopProductCard() {
     async function getProduct() {
       await axiosNew.get('/product').then((result) => {
         setDataProduct(result.data.data);
-        console.log(result.data.data);
       });
     }
     getProduct();
@@ -274,7 +273,10 @@ export default function ShopProductCard() {
               data-testid="loader"
             />
           ) : (
-            <img src={`https://dev.homefund-id.tech/dashboard-api/static/product`} alt="Image Should be Here" />
+            <img
+              src={`https://dev.homefund-id.tech/dashboard-api/static/product/${imageProduct}`}
+              alt="Static API Image"
+            />
           )}
         </Box>
       </Modal>

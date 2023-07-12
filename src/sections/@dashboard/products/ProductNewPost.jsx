@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import Iconify from '../../../components/iconify';
 import { Box, Button, FormControl, Modal, TextField, Typography } from '@mui/material';
@@ -50,6 +50,8 @@ export default function ProductNewPost() {
   async function submitDataProduct(e) {
     e.preventDefault();
 
+    console.log(newData.createdAt);
+
     let formData = new FormData();
     formData.append('category', newData.cate);
     formData.append('title', newData.title), formData.append('location', newData.location);
@@ -74,9 +76,13 @@ export default function ProductNewPost() {
       })
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
-          window.location.reload();
-        } else {
-          alert(res.data.message);
+          setOpen(false);
+          async function getProduct() {
+            await axiosNew.get('/product').then((res) => {
+              setProduct(res.data.data);
+            });
+          }
+          getProduct();
         }
       });
   }
@@ -230,7 +236,7 @@ export default function ProductNewPost() {
               <Typography>Created At: {moment(newData.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</Typography>
             </Box>
             <Button
-              onClick={(e) => submitDataProduct(e)}
+              onClick={submitDataProduct}
               type="submit"
               sx={{
                 height: 45,

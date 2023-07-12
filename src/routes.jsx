@@ -11,15 +11,16 @@ import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import SliderPage from './pages/NewsSlidersPage';
 import BusinessPage from './pages/BusinessPage';
+import VirtualAccountPage from './pages/VirtualAccountPage';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const token = localStorage.getItem('token');
-  
+
   // Check Token terlebih dahulu untuk menentukan Routes
 
-  if(token !== null) {
+  if (token !== null) {
     const routes = useRoutes([
       {
         path: '/dashboard',
@@ -31,6 +32,7 @@ export default function Router() {
           { path: 'products', element: <ProductsPage /> },
           { path: 'slider', element: <SliderPage /> },
           { path: 'business', element: <BusinessPage /> },
+          { path: 'virtual-account', element: <VirtualAccountPage /> },
         ],
       },
       {
@@ -51,7 +53,7 @@ export default function Router() {
         element: <Navigate to="/404" replace />,
       },
     ]);
-  
+
     return routes;
   } else {
     const routes = useRoutes([
@@ -72,9 +74,7 @@ export default function Router() {
         element: <Navigate to="/404" replace />,
       },
     ]);
-  
+
     return routes;
   }
-
-
 }

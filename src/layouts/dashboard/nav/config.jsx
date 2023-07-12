@@ -1,6 +1,7 @@
 // component
 import SvgColor from '../../../components/svg-color';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +37,11 @@ const navConfig = [
     title: 'Not found',
     path: '/404',
     icon: icon('ic_disabled'),
+  },
+  {
+    title: 'Virtual Account',
+    path: '/dashboard/virtual-account',
+    icon: <AccountBalanceWalletIcon color="black" />,
   },
 ];
 
