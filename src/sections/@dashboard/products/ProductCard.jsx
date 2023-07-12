@@ -128,6 +128,7 @@ export default function ShopProductCard() {
   const handleCloseEditData = () => setOpenEditData(false);
 
   useEffect(() => {
+
     async function getProduct() {
       await axiosNew.get('/product').then((result) => {
         setDataProduct(result.data.data);

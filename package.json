@@ -36,6 +36,7 @@
     ]
   },
   "dependencies": {
+    "@cyntler/react-doc-viewer": "^1.13.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@faker-js/faker": "^7.6.0",
@@ -59,7 +60,6 @@
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-doc-viewer": "^0.1.5",
-    "react-doc-viewer-updated": "^1.10.8",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-helmet-async": "^1.3.0",
