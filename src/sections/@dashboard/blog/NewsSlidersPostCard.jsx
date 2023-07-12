@@ -1,13 +1,8 @@
-import PropTypes from 'prop-types';
 // @mui
-import { alpha, styled } from '@mui/material/styles';
+import {  styled } from '@mui/material/styles';
 import { BarLoader } from 'react-spinners';
 import {
   Box,
-  Link,
-  Card,
-  Grid,
-  Avatar,
   Typography,
   CardContent,
   TableContainer,
@@ -20,14 +15,14 @@ import {
   Button,
   Modal,
   FormControl,
-  TextField,
+  Chip,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
-
-//
 import { useEffect, useState } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import axios from 'axios';
+import { MutatingDots } from 'react-loader-spinner';
 
 // ----------------------------------------------------------------------
 
@@ -52,18 +47,52 @@ const override = {
 
 // ----------------------------------------------------------------------
 
-export default function BlogPostCard() {
+export default function SliderTable() {
   const [slider, setSlider] = useState([]);
   const [imageSlider, setImageSlider] = useState('');
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
- 
+  const [openEdit, setOpenEdit] = useState(false);
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
+  const handleClose = () => setOpen(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
+
+  const [editStatus, setEditStatus] = useState('');
+  const [editName, setEditName] = useState('');
+  const [editDetail, setEditDetail] = useState('');
+  const [editId, setEditId] = useState();
 
   function handleOpen(image) {
     setOpen(true);
     setImageSlider(image);
   }
-  const handleClose = () => setOpen(false);
+
+  async function editSlider() {
+    setLoadingEdit(true);
+    await axiosNew.put(`/slider/${editId}`, {
+      status: editStatus,
+      name: editName,
+    }, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then((result) => {
+      if (result.status === 200) {
+        async function getSlider() {
+          await axiosNew.get('/slider').then((result) => {
+            setSlider(result.data.data);
+            setLoading(false);
+            handleCloseEdit();
+          });
+        }
+        getSlider()
+        setLoadingEdit(false);
+      } else {
+        alert('error');
+      }
+    })
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -76,13 +105,6 @@ export default function BlogPostCard() {
     getSlider();
   }, []);
 
-  
-
-  // const POST_INFO = [
-  //   { number: comment, icon: 'eva:message-circle-fill' },
-  //   { number: view, icon: 'eva:eye-fill' },
-  //   { number: share, icon: 'eva:share-fill' },
-  // ];
 
   return (
     <>
@@ -95,6 +117,7 @@ export default function BlogPostCard() {
               <TableCell>Detail</TableCell>
               <TableCell>Image</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -116,13 +139,34 @@ export default function BlogPostCard() {
                       <InsertDriveFileIcon />
                     </Button>
                   </TableCell>
-                  <TableCell align="left">{result.status}</TableCell>
+                  <TableCell align="left">
+                    {result.status === 1 ? <Chip sx={{
+                      color: 'white'
+                    }} label="Active" color="success" />
+                      : null}
+                    {result.status === 2 ? <Chip label="OFF" sx={{
+                      color: 'white'
+                    }} color="error" /> : null}
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="contained" color="primary" onClick={() => {
+                      handleOpenEdit()
+                      setEditStatus(result.status)
+                      setEditName(result.name)
+                      setEditDetail(result.detail)
+                      setEditId(result.id)
+                    }}>
+                      Edit
+                    </Button>
+
+                  </TableCell>
                 </TableRow>
               );
             })}
           </TableBody>
         </Table>
       </TableContainer>
+      {/* Modal For Image */}
       <Modal open={open} onClose={handleClose}>
         <Box sx={boxStyle} noValidate autoComplete="off">
           {loading ? (
@@ -142,6 +186,50 @@ export default function BlogPostCard() {
           )}
         </Box>
       </Modal>
+
+      {/* Modal Edit Slider */}
+      {loadingEdit === false ? <Modal
+        open={openEdit}
+        onClose={handleCloseEdit}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={boxStyle}>
+          <FormControl fullWidth sx={{ marginBottom: '20px' }}>
+            <Typography id="modal-modal-title" sx={{
+              marginBottom: '20px'
+            }} >
+              Switch ON / OFF Slider
+            </Typography>
+            <FormControlLabel control={<Switch checked={editStatus === 1 ? true : false} onClick={(e) => {
+              setEditStatus(e.target.checked ? 1 : 2)
+            }} />} label={editStatus === 1 ? "ON" : "OFF"} />
+          </FormControl>
+
+          <Button variant="contained" color="primary" onClick={() => editSlider()} fullWidth>
+            Save
+          </Button>
+
+
+        </Box>
+      </Modal> : <MutatingDots
+        height="100"
+        width="100"
+        color="#1D3996"
+        secondaryColor='#1D3996'
+        radius='12.5'
+        ariaLabel="mutating-dots-loading"
+        wrapperStyle={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+
+        }}
+        wrapperClass=""
+        visible={true}
+      />}
+
     </>
   );
 }

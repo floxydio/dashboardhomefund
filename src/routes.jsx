@@ -1,4 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
+
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
@@ -14,36 +15,66 @@ import BusinessPage from './pages/BusinessPage';
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const routes = useRoutes([
-    {
-      path: '/dashboard',
-      element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'slider', element: <SliderPage /> },
-        { path: 'business', element: <BusinessPage /> },
-      ],
-    },
-    {
-      path: 'login',
-      element: <LoginPage />,
-    },
-    {
-      element: <SimpleLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" /> },
-      ],
-    },
-    {
-      path: '*',
-      element: <Navigate to="/404" replace />,
-    },
-  ]);
+  const token = localStorage.getItem('token');
+  
+  // Check Token terlebih dahulu untuk menentukan Routes
 
-  return routes;
+  if(token !== null) {
+    const routes = useRoutes([
+      {
+        path: '/dashboard',
+        element: <DashboardLayout />,
+        children: [
+          { element: <Navigate to="/dashboard/app" />, index: true },
+          { path: 'app', element: <DashboardAppPage /> },
+          { path: 'user', element: <UserPage /> },
+          { path: 'products', element: <ProductsPage /> },
+          { path: 'slider', element: <SliderPage /> },
+          { path: 'business', element: <BusinessPage /> },
+        ],
+      },
+      {
+        path: 'login',
+        element: <LoginPage />,
+        index: true,
+      },
+      {
+        element: <SimpleLayout />,
+        children: [
+          { element: <Navigate to="/dashboard/app" />, index: true },
+          { path: '404', element: <Page404 /> },
+          { path: '*', element: <Navigate to="/404" /> },
+        ],
+      },
+      {
+        path: '*',
+        element: <Navigate to="/404" replace />,
+      },
+    ]);
+  
+    return routes;
+  } else {
+    const routes = useRoutes([
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+      {
+        element: <SimpleLayout />,
+        children: [
+          { element: <Navigate to="/dashboard/app" />, index: true },
+          { path: '404', element: <Page404 /> },
+          { path: '*', element: <Navigate to="/login" /> },
+        ],
+      },
+      {
+        path: '*',
+        element: <Navigate to="/404" replace />,
+      },
+    ]);
+  
+    return routes;
+  }
+
+
 }

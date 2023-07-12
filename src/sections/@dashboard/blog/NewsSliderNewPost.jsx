@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Iconify from '../../../components/iconify';
 import { Button, Modal, Box, Typography, FormControlLabel, FormControl, TextField } from '@mui/material';
 import axiosNew from '../../../components/AxiosConfig';
+// import ImageUpload from '../../../components/image-uploader/uploader';
+// import { formatDistanceStrict } from 'date-fns';
 
 const boxStyle = {
   position: 'absolute',
@@ -23,8 +25,9 @@ const textFieldStyle = {
 export default function NewPost() {
   const [name, setName] = useState('');
   const [detail, setDetail] = useState('');
-  const [image, setImage] = useState('');
-  const [status, setStatus] = useState('');
+  const [image, setImage] = useState();
+  const [status, setStatus] = useState(1);
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -33,20 +36,22 @@ export default function NewPost() {
 
   async function submitDataNewPost(e) {
     e.preventDefault();
-    await axiosNew.post(
-      '/slider',
-      {
-        name: name,
-        detail: detail,
-        image: image,
-        status: status,
+    let formData = new FormData();
+    formData.append('name', name);
+    formData.append('detail', detail);
+    formData.append('image_slider', image);
+    formData.append('status', status);
+    await axiosNew.post('/slider', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+    }).then((res) => {
+      if(res.status === 201) {
+        window.location.reload()
+      } else {
+        alert(res.data.message)
       }
-    );
+    });
   }
   return (
     <>
@@ -80,6 +85,36 @@ export default function NewPost() {
               onChange={(e) => setDetail(e.target.value)}
               style={textFieldStyle}
             />
+            <TextField
+              required
+              accept="image/*"
+              type="file"
+              onChange={(e) => setImage(e.target.files[0])}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Status"
+              type="number"
+              onChange={(e) => setStatus(e.target.value)}
+              style={textFieldStyle}
+            />
+            <Button
+              onClick={submitDataNewPost}
+              type="submit"
+              sx={{
+                height: 45,
+                backgroundColor: 'blue',
+                color: 'white',
+                fontWeight: 'bold',
+                borderColor: 'transparent',
+                borderRadius: 20,
+                marginTop: 2,
+              }}
+            >
+              Submit
+            </Button>
           </FormControl>
         </Box>
       </Modal>

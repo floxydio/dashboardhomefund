@@ -25,7 +25,7 @@ const navConfig = [
   {
     title: 'slider',
     path: '/dashboard/slider',
-    icon: <NewspaperIcon />
+    icon: <NewspaperIcon />,
   },
   {
     title: 'bussiness',

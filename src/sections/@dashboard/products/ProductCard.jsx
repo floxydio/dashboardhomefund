@@ -2,10 +2,7 @@ import PropTypes from 'prop-types';
 // @mui
 import {
   Box,
-  Card,
-  Link,
   Typography,
-  Stack,
   TableContainer,
   Paper,
   Table,
@@ -15,6 +12,8 @@ import {
   TableBody,
   Button,
   Modal,
+  FormControl,
+  TextField,
 } from '@mui/material';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import EditIcon from '@mui/icons-material/Edit';
@@ -22,37 +21,111 @@ import { styled } from '@mui/material/styles';
 import { useState, useEffect, useRef } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import { BarLoader } from 'react-spinners';
-
+import moment from 'moment';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 // ----------------------------------------------------------------------
+
+const boxStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  overflowY: 'scroll',
+  height: 500,
+  p: 4,
+};
+
+const textFieldStyle = {
+  marginBottom: 10,
+};
+
+const override = {
+  transform: 'translate(-50%, -50%)',
+  top: '50%',
+  left: '50%',
+  position: 'absolute',
+};
 
 export default function ShopProductCard() {
   const [dataProduct, setDataProduct] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const [editData, setEditData] = useState({
+    editId: '',
+    editCategory: '',
+    editTitle: '',
+    editLocation: '',
+    editStatusInvestment: 0,
+    editTotalInvesment: 0,
+    editCompleteInvesment: 0,
+    editMinimumInvesment: 0,
+    editTotalLot: 0,
+    editTotalInvestor: 0,
+    editRemainingDays: null,
+    editBusinessId: 0,
+    editProductImage: '',
+    editStatusCampaign: 0,
+    editProductDetailId: 0,
+    editUpdatedAt: new Date(),
+  });
+
+  const editId = editData.editId;
+
+  const [openEditData, setOpenEditData] = useState(false);
+
   function handleOpen(image) {
     setOpen(true);
   }
+
+  function handleEditProduct(
+    id,
+    category,
+    title,
+    location,
+    status_investment,
+    total_invesment,
+    complete_invesment,
+    minimum_invesment,
+    total_lot,
+    total_investor,
+    remaining_days,
+    business_id,
+    product_image,
+    status_campaign,
+    product_detail_id,
+    updatedAt
+  ) {
+    const updateData = {
+      editId: id,
+      editCategory: category,
+      editTitle: title,
+      editLocation: location,
+      editStatusInvestment: status_investment,
+      editTotalInvesment: total_invesment,
+      editCompleteInvesment: complete_invesment,
+      editMinimumInvesment: minimum_invesment,
+      editTotalLot: total_lot,
+      editTotalInvestor: total_investor,
+      editRemainingDays: remaining_days,
+      editBusinessId: business_id,
+      editProductImage: product_image,
+      editStatusCampaign: status_campaign,
+      editProductDetailId: product_detail_id,
+      editUpdatedAt: updatedAt,
+    };
+
+    setEditData(updateData);
+    setOpenEditData(true);
+  }
+
   const handleClose = () => setOpen(false);
 
-  const boxStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 500,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-
-  const override = {
-    transform: 'translate(-50%, -50%)',
-    top: '50%',
-    left: '50%',
-    position: 'absolute',
-  };
+  const handleCloseEditData = () => setOpenEditData(false);
 
   useEffect(() => {
 
@@ -64,6 +137,44 @@ export default function ShopProductCard() {
     }
     getProduct();
   }, []);
+
+  async function submitEditProduct(e) {
+    e.preventDefault();
+
+    let formData = new FormData();
+    formData.append('category', editData.editCategory);
+    formData.append('title', editData.editTitle), formData.append('location', editData.editLocation);
+    formData.append('status_investment', editData.editStatusInvestment);
+    formData.append('total_invesment', editData.editTotalInvesment);
+    formData.append('complete_invesment', editData.editCompleteInvesment);
+    formData.append('minimum_invesment', editData.editMinimumInvesment);
+    formData.append('total_lot', editData.editTotalLot);
+    formData.append('total_investor', editData.editTotalInvestor);
+    formData.append('remaining_days', editData.editRemainingDays);
+    formData.append('business_id', editData.editBusinessId);
+    formData.append('product_image', editData.editProductImage);
+    formData.append('status_campaign', editData.editStatusCampaign);
+    formData.append('product_detail_id', editData.editProductDetailId);
+    formData.append('updatedAt', editData.editUpdatedAt);
+
+    await axiosNew
+      .put(`/product/${editId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((result) => {
+        if (result.status === 200 || result.status === 201) {
+          setOpenEditData(false);
+          async function getProduct() {
+            await axiosNew.get('/product').then((result) => {
+              setDataProduct(result.data.data);
+            });
+          }
+          getProduct();
+        }
+      });
+  }
 
   return (
     <>
@@ -107,19 +218,42 @@ export default function ShopProductCard() {
                   <TableCell align="left">Rp{result.minimum_invesment.toLocaleString()}</TableCell>
                   <TableCell align="left">{result.total_lot.toLocaleString()}</TableCell>
                   <TableCell align="left">{result.total_investor}</TableCell>
-                  <TableCell align="left">{result.remaining_days}</TableCell>
+                  <TableCell align="left">
+                    {moment(result.remaining_days).utc().format('MMMM Do YYYY, h:mm:ss a')}
+                  </TableCell>
                   <TableCell align="left">{result.business_id}</TableCell>
                   <TableCell align="left">
-                  <Button onClick={() => handleOpen(result.product_image)}>
+                    <Button onClick={() => handleOpen(result.product_image)}>
                       <InsertDriveFileIcon />
                     </Button>
                   </TableCell>
                   <TableCell align="left">{result.status_campaign}</TableCell>
                   <TableCell align="left">{result.product_detail_id}</TableCell>
-                  <TableCell align="left">{result.createdAt}</TableCell>
-                  <TableCell align="left">{result.updatedAt}</TableCell>
+                  <TableCell align="left">{moment(result.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
+                  <TableCell align="left">{moment(result.updatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
                   <TableCell align="left">
-                  <Button onClick="aa">
+                    <Button
+                      onClick={() =>
+                        handleEditProduct(
+                          result.id,
+                          result.category,
+                          result.title,
+                          result.location,
+                          result.status_investment,
+                          result.total_invesment,
+                          result.complete_invesment,
+                          result.minimum_invesment,
+                          result.total_lot,
+                          result.total_investor,
+                          result.remaining_days,
+                          result.business_id,
+                          result.product_image,
+                          result.status_campaign,
+                          result.product_detail_id,
+                          result.updatedAt
+                        )
+                      }
+                    >
                       <EditIcon />
                     </Button>
                   </TableCell>
@@ -141,11 +275,184 @@ export default function ShopProductCard() {
               data-testid="loader"
             />
           ) : (
-            <img
-              src={`https://dev.homefund-id.tech/dashboard-api/static/product`}
-              alt="Image Should be Here"
-            />
+            <img src={`https://dev.homefund-id.tech/dashboard-api/static/product`} alt="Image Should be Here" />
           )}
+        </Box>
+      </Modal>
+      <Modal
+        open={openEditData}
+        onClose={handleCloseEditData}
+        sx={{
+          height: 500,
+          overflowY: 'scroll',
+          marginTop: 10,
+        }}
+      >
+        <Box sx={boxStyle} noValidate autoComplete="off">
+          <Typography
+            style={{
+              textAlign: 'center',
+              marginBottom: '10',
+            }}
+            variant="h6"
+            component="h2"
+          >
+            Edit Data Product
+          </Typography>
+          <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField
+              required
+              id="outlined"
+              label="Category"
+              type="text"
+              value={editData.editCategory}
+              onChange={(e) => setEditData({ ...editData, editCategory: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Title"
+              type="text"
+              value={editData.editTitle}
+              onChange={(e) => setEditData({ ...editData, editTitle: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Location"
+              type="text"
+              value={editData.editLocation}
+              onChange={(e) => setEditData({ ...editData, editLocation: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Status Invesment"
+              type="number"
+              value={editData.editStatusInvestment}
+              onChange={(e) => setEditData({ ...editData, editStatusInvestment: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Total Invesment"
+              type="number"
+              value={editData.editTotalInvesment}
+              onChange={(e) => setEditData({ ...editData, editTotalInvestment: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Complete Invesment"
+              type="number"
+              value={editData.editCompleteInvesment}
+              onChange={(e) => setEditData({ ...editData, editCompleteInvestment: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Minimum Invesment"
+              type="number"
+              value={editData.editMinimumInvesment}
+              onChange={(e) => setEditData({ ...editData, editMinimumInvestment: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Total Lot"
+              type="number"
+              value={editData.editTotalLot}
+              onChange={(e) => setEditData({ ...editData, editTotalLot: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Total Investor"
+              type="number"
+              value={editData.editTotalInvestor}
+              onChange={(e) => setEditData({ ...editData, editTotalInvestor: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              type="date"
+              label="Remaining Days"
+              InputLabelProps={{ shrink: true }}
+              value={editData.editRemainingDays}
+              onChange={(e) => setEditData({ ...editData, editRemainingDays: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Business ID"
+              type="number"
+              value={editData.editBusinessId}
+              onChange={(e) => setEditData({ ...editData, editBusinessId: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              accept="image/*"
+              type="file"
+              onChange={(e) => setEditData({ ...editData, editProductImage: e.target.files[0] })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Status Campaign"
+              type="number"
+              value={editData.editStatusCampaign}
+              onChange={(e) => setEditData({ ...editData, editStatusCampaign: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Product Detail ID"
+              type="number"
+              value={editData.editProductDetailId}
+              onChange={(e) => setEditData({ ...editData, editProductDetailId: e.target.value })}
+              style={textFieldStyle}
+            />
+            <Box
+              sx={{
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+                padding: '16px',
+                backgroundColor: '#fff',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <Typography>
+                Updated At: {moment(editData.editUpdatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}
+              </Typography>
+            </Box>
+            <Button
+              onClick={submitEditProduct}
+              type="submit"
+              sx={{
+                height: 45,
+                backgroundColor: 'blue',
+                color: 'white',
+                fontWeight: 'bold',
+                borderColor: 'transparent',
+                borderRadius: 20,
+                marginTop: 2,
+              }}
+            >
+              Submit
+            </Button>
+          </FormControl>
         </Box>
       </Modal>
     </>

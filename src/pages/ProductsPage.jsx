@@ -3,7 +3,13 @@ import { useEffect, useState } from 'react';
 // @mui
 import { Container, Stack, Typography } from '@mui/material';
 // components
-import { ProductSort, ProductCartWidget, ProductFilterSidebar, ProductCard } from '../sections/@dashboard/products';
+import {
+  ProductSort,
+  ProductCartWidget,
+  ProductFilterSidebar,
+  ProductCard,
+  ProductNewPost,
+} from '../sections/@dashboard/products';
 // mock
 import PRODUCT from '../_mock/products';
 
@@ -26,13 +32,16 @@ export default function ProductsPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Products | Minimal UI </title>
+        <title> Dashboard: Products | HomeFund </title>
       </Helmet>
 
       <Container>
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Products
-        </Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+          <Typography variant="h4" gutterBottom>
+            Products
+          </Typography>
+          <ProductNewPost />
+        </Stack>
 
         <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
@@ -45,7 +54,7 @@ export default function ProductsPage() {
           </Stack>
         </Stack>
         <ProductCard />
-        <ProductCartWidget />
+        {/* <ProductCartWidget /> */}
       </Container>
     </>
   );

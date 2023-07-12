@@ -1,8 +1,10 @@
 // ----------------------------------------------------------------------
 
+const nameUser = localStorage.getItem("name_user")
+
 const account = {
-  displayName: 'Jaydon Frankie',
-  email: 'demo@minimals.cc',
+  displayName: nameUser === null || nameUser === undefined ?'Developer Admin' : nameUser,
+  email: 'homefund.com',
   photoURL: '/assets/images/avatars/avatar_default.jpg',
 };
 
