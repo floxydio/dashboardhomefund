@@ -36,6 +36,7 @@
     ]
   },
   "dependencies": {
+    "@cyntler/react-doc-viewer": "^1.13.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@faker-js/faker": "^7.6.0",
