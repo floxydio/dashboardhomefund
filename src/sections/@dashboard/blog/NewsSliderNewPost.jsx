@@ -34,7 +34,7 @@ export default function NewPost() {
 
   const handleClose = () => setOpen(false);
 
-  async function submitDataNewPost(e) {
+  async function submitDataNewPost(e) { 
     e.preventDefault();
     let formData = new FormData();
     formData.append('name', name);
