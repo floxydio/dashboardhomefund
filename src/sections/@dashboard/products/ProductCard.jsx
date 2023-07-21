@@ -253,8 +253,8 @@ export default function ShopProductCard() {
                   <TableCell align="left">{result.langtitude}</TableCell>
                   <TableCell align="left">{result.longtitude}</TableCell>
                   <TableCell align="left">{result.tenor}</TableCell>
-                  <TableCell align="left">{result.percentange_imbal}</TableCell>
-                  <TableCell align="left">{result.period_imbal}</TableCell>
+                  <TableCell align="left">{result.percentange_imbal}%</TableCell>
+                  <TableCell align="left">{result.period_imbal}%</TableCell>
                   <TableCell align="left">{result.detail}</TableCell>
                   <TableCell align="left">{result.product_detail_id}</TableCell>
                   <TableCell align="left">{moment(result.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
@@ -539,6 +539,9 @@ export default function ShopProductCard() {
                 borderColor: 'transparent',
                 borderRadius: 20,
                 marginTop: 2,
+                '&:hover': {
+                  backgroundColor: 'darkblue',
+                },
               }}
             >
               Submit
