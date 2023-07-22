@@ -1,10 +1,7 @@
 import { Button, Modal, Box, Typography, FormControl, TextField } from '@mui/material';
 import Iconify from '../../../components/iconify';
 import { useState } from 'react';
-import axiosNew from '../../../components/AxiosConfig';
-// import ReactDOM from 'react-dom';
-// import { PDFViewer } from '@react-pdf/renderer';
-// import MyDocument from '../../@dashboard/bussiness/BusinessRenderer';
+import jsPDF from 'jspdf';
 
 export default function BusinessPost() {
   const [newData, setNewData] = useState({
@@ -31,34 +28,76 @@ export default function BusinessPost() {
     marginBottom: 10,
   };
 
+  
   const [open, setOpen] = useState(false);
-
+  const [images, setImages] = useState();
   const [name, setName] = useState('');
-  const [file, setFile] = useState();
   const [description, setDescription] = useState('');
+
+  
+  const handleImageToPdf = async () => {
+    if (!images) {
+      console.error("No image selected.");
+      return;
+    }
+
+    const doc = new jsPDF();
+    const img = new Image();
+    const img2 = new Image();
+    const img3 = new Image();
+    
+    const imgLoadedPromise = new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+
+    const reader = new FileReader();
+    reader.readAsDataURL(images);
+
+    reader.onload = async () => {
+      img.src = reader.result;
+
+      try {
+        await imgLoadedPromise;
+        doc.addImage(img, "JPEG", 10, 10);
+        doc.save("a4.pdf");
+      } catch (error) {
+        console.error("Error loading the image:", error);
+      }
+    };
+
+    reader.onerror = (error) => {
+      console.error("Error reading the file:", error);
+    };
+  };
+
+
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   async function submitDataPost(e) {
     e.preventDefault();
-    let formData = new FormData();
-    formData.append('name', name);
-    formData.append('file_prospektus', file);
-    formData.append('description', description);
-    await axiosNew
-      .post('/prospektus', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((res) => {
-        if (res.status === 201) {
-          window.location.reload();
-        } else {
-          alert(res.data.message);
-        }
-      });
+    // let formData = new FormData();
+    // formData.append('name', name);
+    // formData.append('file_prospektus', file);
+    // formData.append('description', description);
+    // await axiosNew
+    //   .post('/prospektus', formData, {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //   })
+    //   .then((res) => {
+    //     if (res.status === 201) {
+    //       window.location.reload();
+    //     } else {
+    //       alert(res.data.message);
+    //     }
+    //   });
+
+    // addAllImageToPdf()
+
   }
 
   return (
@@ -105,18 +144,9 @@ export default function BusinessPost() {
               onChange={(e) => setDescription(e.target.value)}
               style={textFieldStyle}
             />
-            <TextField
-              required
-              accept="file/*"
-              type="file"
-              onChange={(e) => setFile(e.target.files[0])}
-              style={textFieldStyle}
-            />
-            {/* <PDFViewer>
-              <MyDocument />
-            </PDFViewer> */}
+            <TextField type='file' onChange={(e) => setImages(e.target.files[0])} />
             <Button
-              onClick={submitDataPost}
+              onClick={() => handleImageToPdf()}
               type="submit"
               sx={{
                 height: 45,

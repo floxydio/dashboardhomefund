@@ -310,7 +310,7 @@ export default function ShopProductCard() {
             />
           ) : (
             <img
-              src={`https://dev.homefund-id.tech/dashboard-api/static/product/${imageProduct}`}
+              src={`https://homefund-beta.xyz//dashboard-api/static/product/${imageProduct}`}
               alt="Static API Image"
             />
           )}

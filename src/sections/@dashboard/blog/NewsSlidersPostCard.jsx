@@ -180,7 +180,7 @@ export default function SliderTable() {
             />
           ) : (
             <img
-              src={`https://dev.homefund-id.tech/dashboard-api/static/slider/${imageSlider}`}
+              src={`https://homefund-beta.xyz//dashboard-api/static/slider/${imageSlider}`}
               alt="Static API Image"
             />
           )}

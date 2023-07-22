@@ -113,7 +113,7 @@ export default function VirtualAccountCard() {
             />
           ) : (
             <img
-              src={`https://dev.homefund-id.tech/dashboard-api/static/virtualaccount/${iconVirtual}`}
+              src={`https://homefund-beta.xyz//dashboard-api/static/virtualaccount/${iconVirtual}`}
               alt="Static API Image"
             />
           )}

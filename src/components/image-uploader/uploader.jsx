@@ -32,7 +32,7 @@
 //           <>
 //             <Typography variant="h3">Selected Image Preview</Typography>
 //             <img
-//               src={`https://dev.homefund-id.tech/dashboard-api/static/${links}/${selectedFile}`}
+//               src={`https://homefund-beta.xyz//dashboard-api/static/${links}/${selectedFile}`}
 //               alt="Selected"
 //               style={{ width: '200 px' }}
 //             />
