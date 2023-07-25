@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -25,5 +26,7 @@ const styles = StyleSheet.create({
       </Page>
     </Document>
   );
+
+  ReactDOM.render(<MyDocument />, document.getElementById('root'));
 
   export default MyDocument;

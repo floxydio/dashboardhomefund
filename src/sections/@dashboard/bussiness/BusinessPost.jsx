@@ -8,12 +8,6 @@ import MyDocument from '../../@dashboard/bussiness/BusinessRenderer';
 
 export default function BusinessPost() {
 
-    const [newData, setNewData] = useState({
-        name:'',
-        file:'',
-        description:'',
-    });
-
     const boxStyle = {
       position: 'absolute',
       top: '50%',
@@ -43,11 +37,12 @@ export default function BusinessPost() {
 
     async function submitDataPost(e) {
       e.preventDefault();
-      let formData = new FormData();
-      formData.append('name', name);
-      formData.append('file', file);
-      formData.append('description', description);
-      await axiosNew.post('/prospektus', formData, {
+      let data = new FormData();
+      data.append('name', name);
+      data.append('file', file);
+      data.append('description', description);
+      
+      await axiosNew.post('/prospektus', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
