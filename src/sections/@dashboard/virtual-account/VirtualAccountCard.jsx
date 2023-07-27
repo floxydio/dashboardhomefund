@@ -12,6 +12,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 import { BarLoader } from 'react-spinners';
 
@@ -112,10 +113,19 @@ export default function VirtualAccountCard() {
               data-testid="loader"
             />
           ) : (
-            <img
-              src={`https://homefund-beta.xyz//dashboard-api/static/virtualaccount/${iconVirtual}`}
-              alt="Static API Image"
-            />
+            <>
+              <Typography
+                sx={{
+                  textAlign: 'center',
+                }}
+              >
+                Virtual Account Icon{' '}
+              </Typography>
+              <img
+                src={`https://homefund-beta.xyz/dashboard-api/static/virtualaccount/${iconVirtual}`}
+                alt="Static API Image"
+              />
+            </>
           )}
         </Box>
       </Modal>

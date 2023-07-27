@@ -1,7 +1,17 @@
 import { useState } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import Iconify from '../../../components/iconify';
-import { Box, Button, FormControl, Modal, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  Modal,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import moment from 'moment';
 
 const boxStyle = {
@@ -20,6 +30,7 @@ const boxStyle = {
 
 const textFieldStyle = {
   marginBottom: 10,
+  marginTop: 10,
 };
 export default function ProductNewPost() {
   const [newData, setNewData] = useState({
@@ -115,7 +126,7 @@ export default function ProductNewPost() {
           <Typography
             style={{
               textAlign: 'center',
-              marginBottom: '10',
+              marginBottom: '30',
             }}
             variant="h6"
             component="h2"
@@ -211,15 +222,17 @@ export default function ProductNewPost() {
               onChange={(e) => setNewData({ ...newData, businessId: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
-              required
-              accept="image/*"
-              label="Product Image"
-              InputLabelProps={{ shrink: true }}
-              type="file"
-              onChange={(e) => setNewData({ ...newData, productImage: e.target.files[0] })}
-              style={textFieldStyle}
-            />
+            <Stack>
+              <TextField
+                required
+                accept="image/*"
+                label="Product Image"
+                InputLabelProps={{ shrink: true }}
+                type="file"
+                onChange={(e) => setNewData({ ...newData, productImage: e.target.files[0] })}
+                style={textFieldStyle}
+              />
+            </Stack>
             <TextField
               required
               id="outlined"

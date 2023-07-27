@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import Iconify from '../../../components/iconify/Iconify';
 
@@ -31,12 +31,15 @@ export default function VirtualAccountNewPost() {
 
   const [open, setOpen] = useState(false);
 
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  function handleOpen() {
+    setOpen(true);
+  }
 
   return (
     <>
-      <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onChange={handleOpen}>
+      <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpen}>
         New Post
       </Button>
       <Modal
@@ -59,6 +62,31 @@ export default function VirtualAccountNewPost() {
           >
             Masukan Data Virtual Account
           </Typography>
+
+          <TextField
+            required
+            id="outlined"
+            label="Name"
+            type="text"
+            onChange={(e) => setNewData({ ...newData, name: e.target.value })}
+            style={textFieldStyle}
+          />
+          <TextField
+            required
+            id="outlined"
+            label="Icon"
+            type="text"
+            onChange={(e) => setNewData({ ...newData, icon: e.target.value })}
+            style={textFieldStyle}
+          />
+          <TextField
+            required
+            id="outlined"
+            label="Description"
+            type="text"
+            onChange={(e) => setNewData({ ...newData, description: e.target.value })}
+            style={textFieldStyle}
+          />
         </Box>
       </Modal>
     </>
