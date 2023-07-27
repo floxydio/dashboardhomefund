@@ -51,6 +51,8 @@ export default function ShopProductCard() {
   const [dataProduct, setDataProduct] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [idProduct, setIdProduct] = useState()
+
 
   const [imageProduct, setImageProduct] = useState('');
 
@@ -80,12 +82,19 @@ export default function ShopProductCard() {
   });
 
   const editId = editData.editId;
-
+  const [imageArray, setImageArray] = useState([])
   const [openEditData, setOpenEditData] = useState(false);
 
-  function handleOpen(image) {
-    setOpen(true);
-    setImageProduct(image);
+  function handleOpen(id) {
+     setImageArray([])
+     function getProductImage() {
+       axiosNew.get(`/product/${id}`).then((result) => {
+        console.log(result.data.image)
+       setImageArray(result.data.image)
+       setOpen(true)
+      })
+    }
+     getProductImage()
   }
 
   function handleEditProduct(
@@ -230,7 +239,7 @@ export default function ShopProductCard() {
                 <TableRow sx={{ '&:last-child td, &:lastchild th': { border: 0 } }} key={result.id}>
                   <TableCell component="th" scope="row">
                     {i + 1}
-                  </TableCell>
+                  </TableCell> 
                   <TableCell align="left">{result.category}</TableCell>
                   <TableCell align="left">{result.title}</TableCell>
                   <TableCell align="left">{result.location}</TableCell>
@@ -245,7 +254,7 @@ export default function ShopProductCard() {
                   </TableCell>
                   <TableCell align="left">{result.business_id}</TableCell>
                   <TableCell align="left">
-                    <Button onClick={() => handleOpen(result.product_image)}>
+                    <Button onClick={() =>  handleOpen(result.id)}>
                       <InsertDriveFileIcon />
                     </Button>
                   </TableCell>
@@ -299,21 +308,9 @@ export default function ShopProductCard() {
       </TableContainer>
       <Modal open={open} onClose={handleClose}>
         <Box sx={boxStyle} noValidate autoComplete="off">
-          {loading ? (
-            <BarLoader
-              color="#274F99"
-              loading={loading}
-              size={30}
-              cssOverride={override}
-              aria-label="Loading Spinner"
-              data-testid="loader"
-            />
-          ) : (
-            <img
-              src={`https://homefund-beta.xyz//dashboard-api/static/product/${imageProduct}`}
-              alt="Static API Image"
-            />
-          )}
+          {imageArray.map((e,i) => <div key={i}>
+            <img src={`https://homefund-beta.xyz/dashboard-api/static/product/${e}`} width="200" alt="Test"></img>
+          </div>)}
         </Box>
       </Modal>
       <Modal
