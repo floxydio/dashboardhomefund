@@ -20,6 +20,7 @@ import { useState, useEffect, useRef } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import { BarLoader } from 'react-spinners';
 import moment from 'moment';
+import cryptoJs from 'crypto-js';
 // ----------------------------------------------------------------------
 
 const boxStyle = {
@@ -155,9 +156,16 @@ export default function ShopProductCard() {
 
   useEffect(() => {
     async function getProduct() {
-      await axiosNew.get('/product').then((result) => {
-        setDataProduct(result.data.data);
-      });
+      const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+      await axiosNew
+        .get('/product', {
+          headers: {
+            'x-access-token': decrypt.toString(cryptoJs.enc.Utf8),
+          },
+        })
+        .then((result) => {
+          setDataProduct(result.data.data);
+        });
     }
     getProduct();
   }, []);

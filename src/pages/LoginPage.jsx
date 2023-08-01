@@ -12,6 +12,7 @@ import { LoginForm } from '../sections/auth/login';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axiosNew from '../components/AxiosConfig';
+import cryptoJS from 'crypto-js';
 
 // ----------------------------------------------------------------------
 
@@ -73,6 +74,8 @@ export default function LoginPage() {
       )
       .then((res) => {
         if (res.status === 200) {
+          let encrypt = cryptoJS.AES.encrypt(res.data.accessToken, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+          localStorage.setItem('token', encrypt);
           navigate('/dashboard/app');
         }
       });
@@ -82,7 +85,6 @@ export default function LoginPage() {
     <>
       <Helmet>
         <title> Login | HomeFund </title>
-        
       </Helmet>
 
       <StyledRoot>
