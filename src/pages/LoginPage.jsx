@@ -82,7 +82,6 @@ export default function LoginPage() {
     <>
       <Helmet>
         <title> Login | HomeFund </title>
-        
       </Helmet>
 
       <StyledRoot>
