@@ -2,6 +2,7 @@
 import SvgColor from '../../../components/svg-color';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 
 // ----------------------------------------------------------------------
 
@@ -32,6 +33,11 @@ const navConfig = [
     title: 'Virtual Account',
     path: '/dashboard/virtual-account',
     icon: <AccountBalanceWalletIcon color="black" />,
+  },
+  {
+    title: 'Transaction',
+    path: '/dashboard/transaction',
+    icon: <ReceiptIcon color="black" />,
   },
 ];
 
