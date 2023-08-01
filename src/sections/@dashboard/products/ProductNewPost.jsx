@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import Iconify from '../../../components/iconify';
+import cryptoJS from 'crypto-js';
 import {
   Box,
   Button,
@@ -89,10 +90,12 @@ export default function ProductNewPost() {
     formData.append('product_detail_id', newData.productDetailId);
     formData.append('createdAt', newData.createdAt);
 
+    const decrypt = cryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
       .post('/product', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'x-access-token': decrypt.toString(cryptoJS.enc.Utf8),
         },
       })
       .then((res) => {

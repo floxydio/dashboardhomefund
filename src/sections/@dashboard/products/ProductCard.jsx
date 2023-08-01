@@ -89,10 +89,17 @@ export default function ShopProductCard() {
   function handleOpen(id) {
     setImageArray([]);
     function getProductImage() {
-      axiosNew.get(`/product/${id}`).then((result) => {
-        setImageArray(result.data.image);
-        setOpen(true);
-      });
+      const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+      axiosNew
+        .get(`/product/${id}`, {
+          headers: {
+            'x-access-token': decrypt.toString(cryptoJs.enc.Utf8),
+          },
+        })
+        .then((result) => {
+          setImageArray(result.data.image);
+          setOpen(true);
+        });
     }
     getProductImage();
   }
@@ -189,10 +196,12 @@ export default function ShopProductCard() {
     formData.append('product_detail_id', editData.editProductDetailId);
     formData.append('updatedAt', editData.editUpdatedAt);
 
+    const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
       .put(`/product/${editId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'x-access-token': decrypt.toString(cryptoJs.enc.Utf8),
         },
       })
       .then((result) => {

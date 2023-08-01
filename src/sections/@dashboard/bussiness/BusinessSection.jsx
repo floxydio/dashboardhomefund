@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import axiosNew from '../../../components/AxiosConfig';
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
+import cryptoJs from 'crypto-js';
 
 export default function BusinessSection() {
   const [dataProspectus, setDataProspectus] = useState([]);
@@ -40,10 +41,16 @@ export default function BusinessSection() {
 
   useEffect(() => {
     async function getDataProspectus() {
-      await axiosNew.get('/prospektus').then((result) => {
-        setDataProspectus(result.data.data);
-        console.log(result.data.data);
-      });
+      const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+      await axiosNew
+        .get('/prospektus', {
+          headers: {
+            'x-access-token': decrypt.toString(cryptoJs.enc.Utf8),
+          },
+        })
+        .then((result) => {
+          setDataProspectus(result.data.data);
+        });
     }
     getDataProspectus();
   }, []);
