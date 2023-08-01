@@ -36,6 +36,12 @@ export default function ProductNewPost() {
     businessId: 0,
     productImage: '',
     statusCampaign: 0,
+    langtitude: '',
+    longtitude: '',
+    tenor: 0,
+    percentange_imbal: 0,
+    period_imbal: 0,
+    detail: '',
     productDetailId: 0,
     createdAt: new Date(),
   });
@@ -50,21 +56,25 @@ export default function ProductNewPost() {
   async function submitDataProduct(e) {
     e.preventDefault();
 
-    console.log(newData.createdAt);
-
     let formData = new FormData();
-    formData.append('category', newData.cate);
+    formData.append('category', newData.category);
     formData.append('title', newData.title), formData.append('location', newData.location);
     formData.append('status_investment', newData.statusInvestment);
-    formData.append('total_invesment', newData.totalInvesment);
+    formData.append('total_investment', newData.totalInvesment);
     formData.append('complete_invesment', newData.completeInvesment);
-    formData.append('minimum_invesment', newData.minimumInvesment);
+    formData.append('minimum_investment', newData.minimumInvesment);
     formData.append('total_lot', newData.totalLot);
     formData.append('total_investor', newData.totalInvestor);
     formData.append('remaining_days', newData.remainingDays);
     formData.append('business_id', newData.businessId);
-    formData.append('product_image', newData.productImage);
+    formData.append('image_product', newData.productImage);
     formData.append('status_campaign', newData.statusCampaign);
+    formData.append('langtitude', newData.langtitude);
+    formData.append('longtitude', newData.longtitude);
+    formData.append('tenor', newData.tenor);
+    formData.append('percentange_imbal', newData.percentange_imbal);
+    formData.append('period_imbal', newData.period_imbal);
+    formData.append('detail', newData.detail);
     formData.append('product_detail_id', newData.productDetailId);
     formData.append('createdAt', newData.createdAt);
 
@@ -204,6 +214,8 @@ export default function ProductNewPost() {
             <TextField
               required
               accept="image/*"
+              label="Product Image"
+              InputLabelProps={{ shrink: true }}
               type="file"
               onChange={(e) => setNewData({ ...newData, productImage: e.target.files[0] })}
               style={textFieldStyle}
@@ -214,6 +226,54 @@ export default function ProductNewPost() {
               label="Status Campaign"
               type="number"
               onChange={(e) => setNewData({ ...newData, statusCampaign: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Langtitude"
+              type="text"
+              onChange={(e) => setNewData({ ...newData, langtitude: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Longtitude"
+              type="text"
+              onChange={(e) => setNewData({ ...newData, longtitude: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Tenor"
+              type="number"
+              onChange={(e) => setNewData({ ...newData, tenor: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Percentange Imbal"
+              type="number"
+              onChange={(e) => setNewData({ ...newData, percentange_imbal: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Period Imbal"
+              type="number"
+              onChange={(e) => setNewData({ ...newData, period_imbal: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Detail"
+              type="text"
+              onChange={(e) => setNewData({ ...newData, detail: e.target.value })}
               style={textFieldStyle}
             />
             <TextField
@@ -246,6 +306,9 @@ export default function ProductNewPost() {
                 borderColor: 'transparent',
                 borderRadius: 20,
                 marginTop: 2,
+                '&:hover': {
+                  backgroundColor: 'darkblue',
+                },
               }}
             >
               Submit

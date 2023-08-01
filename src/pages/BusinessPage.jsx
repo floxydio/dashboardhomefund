@@ -1,7 +1,4 @@
-import{ 
-    BusinessSection, 
-    BusinessPost,
-} from '../sections/@dashboard/bussiness';
+import { BusinessSection, BusinessPost } from '../sections/@dashboard/bussiness';
 import { Helmet } from 'react-helmet-async';
 import { Stack, Typography } from '@mui/material';
 
@@ -14,7 +11,7 @@ export default function BusinessPage() {
       <Stack
         direction="row"
         alignItems="center"
-        justifyContent="space-beetwen"
+        justifyContent="space-between"
         mb={5}
         sx={{
           paddingLeft: '40px',

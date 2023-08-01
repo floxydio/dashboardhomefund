@@ -69,6 +69,12 @@ export default function ShopProductCard() {
     editBusinessId: 0,
     editProductImage: '',
     editStatusCampaign: 0,
+    editLangtitude: '',
+    editLongtitude: '',
+    editTenor: 0,
+    editPercentangeImbal: 0,
+    editPeriodImbal: 0,
+    editDetail: '',
     editProductDetailId: 0,
     editUpdatedAt: new Date(),
   });
@@ -97,6 +103,12 @@ export default function ShopProductCard() {
     business_id,
     product_image,
     status_campaign,
+    langtitude,
+    longtitude,
+    tenor,
+    percentange_imbal,
+    period_imbal,
+    detail,
     product_detail_id,
     updatedAt
   ) {
@@ -115,6 +127,12 @@ export default function ShopProductCard() {
       editBusinessId: business_id,
       editProductImage: product_image,
       editStatusCampaign: status_campaign,
+      editLangtitude: langtitude,
+      editLongtitude: longtitude,
+      editTenor: tenor,
+      editPercentangeImbal: percentange_imbal,
+      editPeriodImbal: period_imbal,
+      editDetail: detail,
       editProductDetailId: product_detail_id,
       editUpdatedAt: updatedAt,
     };
@@ -128,7 +146,6 @@ export default function ShopProductCard() {
   const handleCloseEditData = () => setOpenEditData(false);
 
   useEffect(() => {
-
     async function getProduct() {
       await axiosNew.get('/product').then((result) => {
         setDataProduct(result.data.data);
@@ -195,6 +212,12 @@ export default function ShopProductCard() {
               <TableCell>Business ID</TableCell>
               <TableCell>Product Image</TableCell>
               <TableCell>Status Campaign</TableCell>
+              <TableCell>Langtitude</TableCell>
+              <TableCell>Longtitude</TableCell>
+              <TableCell>Tenor</TableCell>
+              <TableCell>Percentage Imbal</TableCell>
+              <TableCell>Period Imbal</TableCell>
+              <TableCell>Detail</TableCell>
               <TableCell>Product Detail ID</TableCell>
               <TableCell>Created At</TableCell>
               <TableCell>Updated At</TableCell>
@@ -227,6 +250,12 @@ export default function ShopProductCard() {
                     </Button>
                   </TableCell>
                   <TableCell align="left">{result.status_campaign}</TableCell>
+                  <TableCell align="left">{result.langtitude}</TableCell>
+                  <TableCell align="left">{result.longtitude}</TableCell>
+                  <TableCell align="left">{result.tenor}</TableCell>
+                  <TableCell align="left">{result.percentange_imbal}%</TableCell>
+                  <TableCell align="left">{result.period_imbal}%</TableCell>
+                  <TableCell align="left">{result.detail}</TableCell>
                   <TableCell align="left">{result.product_detail_id}</TableCell>
                   <TableCell align="left">{moment(result.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
                   <TableCell align="left">{moment(result.updatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
@@ -248,6 +277,12 @@ export default function ShopProductCard() {
                           result.business_id,
                           result.product_image,
                           result.status_campaign,
+                          result.langtitude,
+                          result.longtitude,
+                          result.tenor,
+                          result.percentange_imbal,
+                          result.period_imbal,
+                          result.detail,
                           result.product_detail_id,
                           result.updatedAt
                         )
@@ -275,7 +310,7 @@ export default function ShopProductCard() {
             />
           ) : (
             <img
-              src={`https://dev.homefund-id.tech/dashboard-api/static/product/${imageProduct}`}
+              src={`https://homefund-beta.xyz//dashboard-api/static/product/${imageProduct}`}
               alt="Static API Image"
             />
           )}
@@ -420,6 +455,60 @@ export default function ShopProductCard() {
             <TextField
               required
               id="outlined"
+              label="Langtitude"
+              type="text"
+              value={editData.editLangtitude}
+              onChange={(e) => setEditData({ ...editData, editLangtitude: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Longtitude"
+              type="text"
+              value={editData.editLongtitude}
+              onChange={(e) => setEditData({ ...editData, editLongtitude: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Tenor"
+              type="number"
+              value={editData.editTenor}
+              onChange={(e) => setEditData({ ...editData, editTenor: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Percentange Imbal"
+              type="number"
+              value={editData.editPercentangeImbal}
+              onChange={(e) => setEditData({ ...editData, editPercentangeImbal: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Period Imbal"
+              type="number"
+              value={editData.editPeriodImbal}
+              onChange={(e) => setEditData({ ...editData, editPeriodImbal: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Detail"
+              type="text"
+              value={editData.editDetail}
+              onChange={(e) => setEditData({ ...editData, editDetail: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
               label="Product Detail ID"
               type="number"
               value={editData.editProductDetailId}
@@ -450,6 +539,9 @@ export default function ShopProductCard() {
                 borderColor: 'transparent',
                 borderRadius: 20,
                 marginTop: 2,
+                '&:hover': {
+                  backgroundColor: 'darkblue',
+                },
               }}
             >
               Submit

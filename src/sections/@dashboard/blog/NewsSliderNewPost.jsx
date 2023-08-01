@@ -111,6 +111,9 @@ export default function NewPost() {
                 borderColor: 'transparent',
                 borderRadius: 20,
                 marginTop: 2,
+                '&:hover': {
+                  backgroundColor: 'darkblue',
+                },
               }}
             >
               Submit
