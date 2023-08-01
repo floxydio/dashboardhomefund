@@ -12,6 +12,7 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import SliderPage from './pages/NewsSlidersPage';
 import BusinessPage from './pages/BusinessPage';
 import VirtualAccountPage from './pages/VirtualAccountPage';
+import TransactionPage from './pages/TransactionPage';
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +34,7 @@ export default function Router() {
           { path: 'slider', element: <SliderPage /> },
           { path: 'business', element: <BusinessPage /> },
           { path: 'virtual-account', element: <VirtualAccountPage /> },
+          { path: 'transaction', element: <TransactionPage /> },
         ],
       },
       {
