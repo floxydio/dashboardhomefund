@@ -51,6 +51,7 @@ export default function ShopProductCard() {
   const [dataProduct, setDataProduct] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [idProduct, setIdProduct] = useState();
 
   const [imageProduct, setImageProduct] = useState('');
 
@@ -81,11 +82,18 @@ export default function ShopProductCard() {
 
   const editId = editData.editId;
 
+  const [imageArray, setImageArray] = useState([]);
   const [openEditData, setOpenEditData] = useState(false);
 
-  function handleOpen(image) {
-    setOpen(true);
-    setImageProduct(image);
+  function handleOpen(id) {
+    setImageArray([]);
+    function getProductImage() {
+      axiosNew.get(`/product/${id}`).then((result) => {
+        setImageArray(result.data.image);
+        setOpen(true);
+      });
+    }
+    getProductImage();
   }
 
   function handleEditProduct(
@@ -245,7 +253,7 @@ export default function ShopProductCard() {
                   </TableCell>
                   <TableCell align="left">{result.business_id}</TableCell>
                   <TableCell align="left">
-                    <Button onClick={() => handleOpen(result.product_image)}>
+                    <Button onClick={() => handleOpen(result.id)}>
                       <InsertDriveFileIcon />
                     </Button>
                   </TableCell>
@@ -299,21 +307,30 @@ export default function ShopProductCard() {
       </TableContainer>
       <Modal open={open} onClose={handleClose}>
         <Box sx={boxStyle} noValidate autoComplete="off">
-          {loading ? (
-            <BarLoader
-              color="#274F99"
-              loading={loading}
-              size={30}
-              cssOverride={override}
-              aria-label="Loading Spinner"
-              data-testid="loader"
-            />
-          ) : (
-            <img
-              src={`https://homefund-beta.xyz//dashboard-api/static/product/${imageProduct}`}
-              alt="Static API Image"
-            />
-          )}
+          <Typography
+            variant="h5"
+            sx={{
+              textAlign: 'center',
+              marginBottom: 3,
+            }}
+          >
+            Product Image
+          </Typography>
+          {imageArray.map((e, i) => (
+            <div key={i}>
+              <img
+                src={`https://homefund-beta.xyz/dashboard-api/static/product/${e}`}
+                style={{
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  marginBottom: 20,
+                  width: 290,
+                  objectFit: 'cover',
+                }}
+                alt="Test"
+              />
+            </div>
+          ))}
         </Box>
       </Modal>
       <Modal
