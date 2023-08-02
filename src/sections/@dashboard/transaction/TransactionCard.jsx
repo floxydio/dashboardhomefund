@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import cryptoJs from 'crypto-js';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import moment from 'moment';
 
 export default function TransactionCard() {
   const [transactionData, setTransactionData] = useState([]);
@@ -53,7 +54,16 @@ export default function TransactionCard() {
                     {i + 1}
                   </TableCell>
                   <TableCell align="left">{result.trx_id}</TableCell>
-                  <TableCell align="left">{result.total_lot}</TableCell>
+                  <TableCell align="left">{result.total_lot.toLocaleString()}</TableCell>
+                  <TableCell align="left">{result.total_amount.toLocaleString()}</TableCell>
+                  <TableCell align="left">{moment(result.date_buy).utc().format('MMMM do YYYY, h:mm:ss a')}</TableCell>
+                  <TableCell align="left">{moment(result.time_buy).utc().format()}</TableCell>
+                  <TableCell align="left">{result.deposit_withdraw}</TableCell>
+                  <TableCell align="left">{result.type_pay}</TableCell>
+                  <TableCell align="left">{result.status_paid}</TableCell>
+                  <TableCell align="left">{result.name_virtualaccount}</TableCell>
+                  <TableCell align="left">{result.icon_virtualaccount}</TableCell>
+                  <TableCell align="left">{result.home_title}</TableCell>
                 </TableRow>
               );
             })}

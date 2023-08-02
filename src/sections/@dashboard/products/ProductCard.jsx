@@ -97,6 +97,8 @@ export default function ShopProductCard() {
         .get(`/product/${id}`, {
           headers: {
             Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+            // Authorization: token,
+            Accept: 'application/json',
           },
         })
         .then((result) => {
@@ -166,8 +168,12 @@ export default function ShopProductCard() {
 
   useEffect(() => {
     async function getProduct() {
+      const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
       await axiosNew
         .get('/product', {
+          headers: {
+            Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+          },
         })
         .then((result) => {
           setDataProduct(result.data.data);

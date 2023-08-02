@@ -36,10 +36,8 @@ export default function LoginForm() {
       )
       .then((res) => {
         if (res.status === 200) {
-          let encrypt = cryptoJs.AES.encrypt(JSON.stringify(res.data.token), `${import.meta.env.VITE_KEY_ENCRYPT}`);
+          let encrypt = cryptoJs.AES.encrypt(res.data.token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
           localStorage.setItem('token', encrypt);
-          // localStorage.setItem('token', res.data.token);
-          // localStorage.setItem('name_user', res.data.data.name);
           navigate('/dashboard', { replace: true });
         } else {
           alert('Email atau Password Salah');

@@ -57,7 +57,7 @@ export default function VirtualAccountCard() {
 
   const handleClose = () => setOpen(false);
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     async function getVirtualAccout() {
@@ -65,7 +65,7 @@ export default function VirtualAccountCard() {
       await axiosNew
         .get('/virtualaccount', {
           headers: {
-            'x-access-token': decrypt.toString(cryptoJs.enc.Utf8),
+            Authorization: decrypt.toString(cryptoJs.enc.Utf8),
           },
         })
         .then((res) => {
