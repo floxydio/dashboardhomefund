@@ -74,8 +74,7 @@ export default function LoginPage() {
       )
       .then((res) => {
         if (res.status === 200) {
-          let encrypt = cryptoJS.AES.encrypt(res.data.token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-          localStorage.setItem('token', encrypt);
+        
           navigate('/dashboard/app');
         }
       });

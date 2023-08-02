@@ -35,6 +35,8 @@ export default function NewPost() {
 
   const handleClose = () => setOpen(false);
 
+  const token = localStorage.getItem("token");
+
   async function submitDataNewPost(e) {
     e.preventDefault();
     let formData = new FormData();

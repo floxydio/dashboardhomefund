@@ -65,6 +65,8 @@ export default function ProductNewPost() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const token = localStorage.getItem("token");
+
   async function submitDataProduct(e) {
     e.preventDefault();
 

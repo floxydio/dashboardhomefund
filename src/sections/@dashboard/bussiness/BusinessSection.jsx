@@ -33,6 +33,8 @@ export default function BusinessSection() {
     p: 4,
   };
 
+  const token = localStorage.getItem("token");
+
   const docs = [
     {
       uri: 'https://homefund-beta.xyz/dashboard-api/static/prospektus/prospektus_f065c174-311f-44db-822f-8d10fce0c615_PTIOTECH.pdf',

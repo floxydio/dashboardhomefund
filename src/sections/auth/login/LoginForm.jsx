@@ -6,6 +6,7 @@ import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
 import axiosNew from '../../../components/AxiosConfig';
+import cryptoJs from 'crypto-js';
 
 // ----------------------------------------------------------------------
 
@@ -14,33 +15,37 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   //  Data Handle
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
 
   async function signInAccount() {
-    axiosNew.post("/signin", {
-      email: email,
-      password: password
-    },{
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-         
-      }
-    }).then((res) => {
-        if(res.status === 200) {
-          localStorage.setItem("token", res.data.token)
-          localStorage.setItem("name_user", res.data.data.name)
+    axiosNew
+      .post(
+        '/signin',
+        {
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          let encrypt = cryptoJs.AES.encrypt(JSON.stringify(res.data.token), `${import.meta.env.VITE_KEY_ENCRYPT}`);
+          localStorage.setItem('token', encrypt);
+          // localStorage.setItem('token', res.data.token);
+          // localStorage.setItem('name_user', res.data.data.name);
           navigate('/dashboard', { replace: true });
         } else {
-          alert("Email atau Password Salah")
+          alert('Email atau Password Salah');
         }
-    })
+      });
   }
-
-
-
 
   return (
     <>
@@ -64,7 +69,7 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Link href='https://google.com' target='_blank' variant="subtitle2" underline="hover">
+        <Link href="https://google.com" target="_blank" variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
       </Stack>

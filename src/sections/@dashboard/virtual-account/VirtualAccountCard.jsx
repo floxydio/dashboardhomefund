@@ -57,6 +57,8 @@ export default function VirtualAccountCard() {
 
   const handleClose = () => setOpen(false);
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     async function getVirtualAccout() {
       const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);

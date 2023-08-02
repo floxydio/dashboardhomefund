@@ -69,6 +69,8 @@ export default function SliderTable() {
     setImageSlider(image);
   }
 
+  const token = localStorage.getItem("token");
+
   async function editSlider() {
     setLoadingEdit(true);
     const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
