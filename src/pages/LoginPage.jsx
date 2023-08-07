@@ -61,7 +61,7 @@ export default function LoginPage() {
   function fetchSignInData() {
     axiosNew
       .post(
-        '/sign-in',
+        '/signin',
         {
           username: username,
           password: password,

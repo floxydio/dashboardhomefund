@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
+import { Link, Stack, IconButton, InputAdornment, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
@@ -20,7 +20,8 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   async function signInAccount() {
-    axiosNew.post("/signin", {
+    axiosNew.post("/signin", 
+    {
       email: email,
       password: password
     },{
@@ -34,13 +35,10 @@ export default function LoginForm() {
           localStorage.setItem("name_user", res.data.data.name)
           navigate('/dashboard', { replace: true });
         } else {
-          alert("Email atau Password Salah")
+          alert("Email atau Password Salah");
         }
     })
   }
-
-
-
 
   return (
     <>
