@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import { BarLoader } from 'react-spinners';
+import cryptoJs from 'crypto-js';
 
 const boxStyle = {
   position: 'absolute',
@@ -56,11 +57,20 @@ export default function VirtualAccountCard() {
 
   const handleClose = () => setOpen(false);
 
+  const token = localStorage.getItem('token');
+
   useEffect(() => {
     async function getVirtualAccout() {
-      await axiosNew.get('/virtualaccount').then((res) => {
-        setVirtualAccount(res.data.data);
-      });
+      const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+      await axiosNew
+        .get('/virtualaccount', {
+          headers: {
+            Authorization: decrypt.toString(cryptoJs.enc.Utf8),
+          },
+        })
+        .then((res) => {
+          setVirtualAccount(res.data.data);
+        });
     }
     getVirtualAccout();
   }, []);

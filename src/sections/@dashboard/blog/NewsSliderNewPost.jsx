@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Iconify from '../../../components/iconify';
 import { Button, Modal, Box, Typography, FormControlLabel, FormControl, TextField } from '@mui/material';
 import axiosNew from '../../../components/AxiosConfig';
+import cryptoJs from 'crypto-js';
 // import ImageUpload from '../../../components/image-uploader/uploader';
 // import { formatDistanceStrict } from 'date-fns';
 
@@ -34,24 +35,31 @@ export default function NewPost() {
 
   const handleClose = () => setOpen(false);
 
-  async function submitDataNewPost(e) { 
+  const token = localStorage.getItem("token");
+
+  async function submitDataNewPost(e) {
     e.preventDefault();
     let formData = new FormData();
     formData.append('name', name);
     formData.append('detail', detail);
     formData.append('image_slider', image);
     formData.append('status', status);
-    await axiosNew.post('/slider', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then((res) => {
-      if(res.status === 201) {
-        window.location.reload()
-      } else {
-        alert(res.data.message)
-      }
-    });
+
+    const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+    await axiosNew
+      .post('/slider', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'x-access-token': decrypt.toString(cryptoJs.enc.Utf8),
+        },
+      })
+      .then((res) => {
+        if (res.status === 201) {
+          window.location.reload();
+        } else {
+          alert(res.data.message);
+        }
+      });
   }
   return (
     <>

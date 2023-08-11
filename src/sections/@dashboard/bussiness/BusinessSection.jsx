@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import axiosNew from '../../../components/AxiosConfig';
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
+import cryptoJs from 'crypto-js';
 
 export default function BusinessSection() {
   const [dataProspectus, setDataProspectus] = useState([]);
@@ -32,6 +33,8 @@ export default function BusinessSection() {
     p: 4,
   };
 
+  const token = localStorage.getItem('token');
+
   const docs = [
     {
       uri: 'https://homefund-beta.xyz/dashboard-api/static/prospektus/prospektus_f065c174-311f-44db-822f-8d10fce0c615_PTIOTECH.pdf',
@@ -40,10 +43,16 @@ export default function BusinessSection() {
 
   useEffect(() => {
     async function getDataProspectus() {
-      await axiosNew.get('/prospektus').then((result) => {
-        setDataProspectus(result.data.data);
-        console.log(result.data.data);
-      });
+      const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+      await axiosNew
+        .get('/prospektus', {
+          headers: {
+            Authorization: decrypt.toString(cryptoJs.enc.Utf8),
+          },
+        })
+        .then((result) => {
+          setDataProspectus(result.data.data);
+        });
     }
     getDataProspectus();
   }, []);

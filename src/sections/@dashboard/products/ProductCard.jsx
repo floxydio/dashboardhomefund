@@ -20,7 +20,7 @@ import { useState, useEffect, useRef } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import { BarLoader } from 'react-spinners';
 import moment from 'moment';
-import cryptoJs from 'crypto-js';
+import CryptoJS from 'crypto-js';
 // ----------------------------------------------------------------------
 
 const boxStyle = {
@@ -86,13 +86,25 @@ export default function ShopProductCard() {
   const [imageArray, setImageArray] = useState([]);
   const [openEditData, setOpenEditData] = useState(false);
 
+  const token = localStorage.getItem('token');
+  console.log(token);
+
   function handleOpen(id) {
     setImageArray([]);
     function getProductImage() {
-      axiosNew.get(`/product/${id}`).then((result) => {
-        setImageArray(result.data.image);
-        setOpen(true);
-      });
+      const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+      axiosNew
+        .get(`/product/${id}`, {
+          headers: {
+            Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+            // Authorization: token,
+            Accept: 'application/json',
+          },
+        })
+        .then((result) => {
+          setImageArray(result.data.image);
+          setOpen(true);
+        });
     }
     getProductImage();
   }
@@ -156,11 +168,11 @@ export default function ShopProductCard() {
 
   useEffect(() => {
     async function getProduct() {
-      const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+      const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
       await axiosNew
         .get('/product', {
           headers: {
-            'x-access-token': decrypt.toString(cryptoJs.enc.Utf8),
+            Authorization: decrypt.toString(CryptoJS.enc.Utf8),
           },
         })
         .then((result) => {
@@ -189,10 +201,12 @@ export default function ShopProductCard() {
     formData.append('product_detail_id', editData.editProductDetailId);
     formData.append('updatedAt', editData.editUpdatedAt);
 
+    const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
       .put(`/product/${editId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
         },
       })
       .then((result) => {

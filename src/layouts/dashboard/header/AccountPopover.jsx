@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -36,17 +36,15 @@ export default function AccountPopover() {
     setOpen(null);
   };
 
-  const nameUser = localStorage.getItem("name_user")
-  
+  const nameUser = localStorage.getItem('name_user');
 
   useEffect(() => {
-
     setAccount({
-      displayName: nameUser === null || nameUser === undefined ?'Developer Admin' : nameUser,
+      displayName: nameUser === null || nameUser === undefined ? 'Developer Admin' : nameUser,
       email: 'homefund.com',
       photoURL: '/assets/images/avatars/avatar_default.jpg',
-    })
-  },[])
+    });
+  }, []);
 
   return (
     <>
@@ -100,11 +98,13 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={() => {
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-
-        }} sx={{ m: 1 }}>
+        <MenuItem
+          onClick={() => {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+          }}
+          sx={{ m: 1 }}
+        >
           Logout
         </MenuItem>
       </Popover>
