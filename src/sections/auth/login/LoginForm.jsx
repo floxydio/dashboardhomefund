@@ -14,6 +14,9 @@ export default function LoginForm() {
   // Navigasi
   const navigate = useNavigate();
 
+  // Credential Error
+  const [credentialError, setCredentialError] = useState('');
+
   //  Data Handle
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,11 +39,12 @@ export default function LoginForm() {
       )
       .then((res) => {
         if (res.status === 200) {
+          setCredentialError('')
           let encrypt = cryptoJs.AES.encrypt(res.data.token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
           localStorage.setItem('token', encrypt);
           navigate('/dashboard', { replace: true });
         } else {
-          alert("Email atau Password Salah")
+          setCredentialError('Credential Error (Password atau Username Salah)')
         }
       });
   }

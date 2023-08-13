@@ -61,6 +61,7 @@ export default function NewPost() {
         }
       });
   }
+
   return (
     <>
       <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpen}>
@@ -97,7 +98,7 @@ export default function NewPost() {
               required
               accept="image/*"
               type="file"
-              onChange={(e) => setImage(e.target.files[0])}
+              onChange={(e) => setImage(e.target.value)}
               style={textFieldStyle}
             />
             <TextField

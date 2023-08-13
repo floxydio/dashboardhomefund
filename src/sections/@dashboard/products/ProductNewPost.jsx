@@ -2,11 +2,14 @@ import { useState } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import Iconify from '../../../components/iconify';
 import cryptoJS from 'crypto-js';
+import { nanoid } from 'nanoid'
+import ProductUploadImageCss from '../products/ProductImageStyle.css';
 import {
   Box,
   Button,
   FormControl,
   IconButton,
+  Input,
   InputAdornment,
   Modal,
   Stack,
@@ -15,6 +18,9 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 
+const styleProductUpload = {
+  ProductUploadImageCss,
+};
 const boxStyle = {
   position: 'absolute',
   top: '50%',
@@ -58,14 +64,12 @@ export default function ProductNewPost() {
     createdAt: new Date(),
   });
 
-  const [product, setProduct] = useState([]);
-
   const [open, setOpen] = useState(false);
-
+  const [product, setProduct] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   async function submitDataProduct(e) {
     e.preventDefault();
@@ -112,6 +116,59 @@ export default function ProductNewPost() {
         }
       });
   }
+
+  const [selectedFile, setSelectedFile] = useState([]);
+  const [files, setFiles] = useState([]);
+
+  const inputChange = (e) => {
+    const images = [];
+    for (let i = 0; i < e.target.files.length; i++) {
+      images.push(e.target.files[i]);
+      const reader = new FileReader();
+      const file = e.target.files[i];
+      reader.onloadend = () => {
+        setSelectedFile((preValue) => {
+          return [
+            ...preValue,
+            {
+              id: nanoid(),
+              filename: e.target.files[i].name,
+              filetype: e.target.files[i].type,
+              fileimage: reader.result,
+            },
+          ];
+        });
+      };
+      if (e.target.files[i]) {
+        reader.readAsDataURL(file);
+      }
+    }
+  };
+
+  const deleteSelectFile = (id) => {
+    if (window.confirm('Ingin menghapus gambar ini?')) {
+      const result = selectedFile.filter((data) => data.id !== id);
+      setSelectedFile(result);
+    } else {
+      // alert ('No');
+    }
+  };
+
+  const fileUploadSubmit = async (e) => {
+    e.preventDefault();
+
+    e.target.reset();
+    if (selectedFile.length > 0) {
+      for (let index = 0; index < selectedFile.length; index++) {
+        setFiles((preValue) => {
+          return [...preValue, selectedFile[index]];
+        });
+      }
+      setSelectedFile([]);
+    } else {
+      alert('Silahkan pilih gambar');
+    }
+  };
 
   return (
     <>
@@ -228,15 +285,68 @@ export default function ProductNewPost() {
               style={textFieldStyle}
             />
             <Stack>
-              <TextField
-                required
-                accept="image/*"
-                label="Product Image"
-                InputLabelProps={{ shrink: true }}
-                type="file"
-                onChange={(e) => setNewData({ ...newData, productImage: e.target.files[0] })}
-                style={textFieldStyle}
-              />
+              <div className="fileupload-view">
+                <div className="row justify-content-center m-0">
+                  <div className="col-md-6">
+                    <div className="card mt-5">
+                      <div className="kb-data-box">
+                        <div className="kb-modal-data-title">
+                          <div className="kb-data-title">
+                            <h6>Upload Gambar</h6>
+                          </div>
+                        </div>
+                        <form onSubmit={fileUploadSubmit}>
+                          <div className="kb-file-upload">
+                            <div className="file-upload-box">
+                              <input
+                                type="file"
+                                id="fileupload"
+                                className="file-upload-input"
+                                onChange={inputChange}
+                                multiple
+                              />
+                              <span>
+                                Tarik dan letakan atau <span className="file-link">Pilih gambar</span>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="kb-attach-box mb-3">
+                            {selectedFile.map((data) => {
+                              const { id, filename, fileimage } = data;
+                              return (
+                                <div className="file-atc-box" key={id}>
+                                  {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ? (
+                                    <div className="file-image">
+                                      {' '}
+                                      <img src={fileimage} alt="" />
+                                    </div>
+                                  ) : (
+                                    <div className="file-image">
+                                      <i className="far fa-file-alt"></i>
+                                    </div>
+                                  )}
+                                  <div className="file-detail">
+                                    <h6 className="title-image">{filename}</h6>
+                                    <div className="file-actions">
+                                      <button
+                                        type="button"
+                                        className="file-action-btn"
+                                        onClick={() => deleteSelectFile(id)}
+                                      >
+                                        Delete
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </Stack>
             <TextField
               required
