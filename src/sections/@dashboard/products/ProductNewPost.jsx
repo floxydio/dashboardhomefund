@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import Iconify from '../../../components/iconify';
 import cryptoJS from 'crypto-js';
-import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid';
 import ProductUploadImageCss from '../products/ProductImageStyle.css';
 import {
   Box,
