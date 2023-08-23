@@ -70,9 +70,11 @@ export default function SliderTable() {
   }
 
   const token = localStorage.getItem('token');
-
+  
   async function editSlider() {
     setLoadingEdit(true);
+    console.log(editStatus)
+    console.log(editName)
     const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
       .put(
@@ -84,11 +86,13 @@ export default function SliderTable() {
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'x-access-token': decrypt.toString(cryptoJs.enc.Utf8),
+            'Authorization': decrypt.toString(cryptoJs.enc.Utf8),
           },
         }
       )
       .then((result) => {
+        console.log(result)
+
         if (result.status === 200 || result.status === 201) {
           async function getSlider() {
             await axiosNew.get('/slider').then((result) => {
@@ -120,6 +124,7 @@ export default function SliderTable() {
           },
         })
         .then((result) => {
+          console.log(result)
           if(result.status === 200) {
           setSlider(result.data.data);
           setLoading(false);

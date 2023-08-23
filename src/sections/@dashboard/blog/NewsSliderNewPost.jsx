@@ -50,7 +50,7 @@ export default function NewPost() {
       .post('/slider', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'x-access-token': decrypt.toString(cryptoJs.enc.Utf8),
+          'Authorization': decrypt.toString(cryptoJs.enc.Utf8),
         },
       })
       .then((res) => {
