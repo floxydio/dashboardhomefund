@@ -85,7 +85,9 @@ export default function ProductNewPost() {
     formData.append('total_investor', newData.totalInvestor);
     formData.append('remaining_days', newData.remainingDays);
     formData.append('business_id', newData.businessId);
-    formData.append('image_product', newData.productImage);
+    for (let i = 0; i < files.length; i++) {
+      formData.append('image_product', files[i][0]);
+    }
     formData.append('status_campaign', newData.statusCampaign);
     formData.append('langtitude', newData.langtitude);
     formData.append('longtitude', newData.longtitude);
@@ -101,14 +103,18 @@ export default function ProductNewPost() {
       .post('/product', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'x-access-token': decrypt.toString(cryptoJS.enc.Utf8),
+          'Authorization': decrypt.toString(cryptoJS.enc.Utf8),
         },
       })
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
           setOpen(false);
           async function getProduct() {
-            await axiosNew.get('/product').then((res) => {
+            await axiosNew.get('/product',{
+              headers: {
+                Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+              },
+            }).then((res) => {
               setProduct(res.data.data);
             });
           }
@@ -119,6 +125,7 @@ export default function ProductNewPost() {
 
   const [selectedFile, setSelectedFile] = useState([]);
   const [files, setFiles] = useState([]);
+  
 
   const inputChange = (e) => {
     const images = [];
@@ -143,6 +150,7 @@ export default function ProductNewPost() {
         reader.readAsDataURL(file);
       }
     }
+    files.push(images);
   };
 
   const deleteSelectFile = (id) => {
@@ -295,7 +303,7 @@ export default function ProductNewPost() {
                             <h6>Upload Gambar</h6>
                           </div>
                         </div>
-                        <form onSubmit={fileUploadSubmit}>
+                        <form>
                           <div className="kb-file-upload">
                             <div className="file-upload-box">
                               <input
