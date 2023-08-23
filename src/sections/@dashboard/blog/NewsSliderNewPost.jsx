@@ -56,8 +56,13 @@ export default function NewPost() {
       .then((res) => {
         if (res.status === 201) {
           window.location.reload();
+        } 
+      }).catch((err) => {
+        if(err.response.status === 401) {
+          localStorage.removeItem("token")
+          window.location.href = "/login"
         } else {
-          alert(res.data.message);
+          alert(err.response.data.message)
         }
       });
   }

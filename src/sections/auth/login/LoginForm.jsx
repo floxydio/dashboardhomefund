@@ -43,9 +43,9 @@ export default function LoginForm() {
           let encrypt = cryptoJs.AES.encrypt(res.data.token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
           localStorage.setItem('token', encrypt);
           navigate('/dashboard', { replace: true });
-        } else {
-          setCredentialError('Credential Error (Password atau Username Salah)')
         }
+      }).catch((err) => {
+        alert(err.response.data.message)
       });
   }
 

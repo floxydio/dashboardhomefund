@@ -89,7 +89,7 @@ export default function SliderTable() {
         }
       )
       .then((result) => {
-        if (result.status === 200) {
+        if (result.status === 200 || result.status === 201) {
           async function getSlider() {
             await axiosNew.get('/slider').then((result) => {
               setSlider(result.data.data);
@@ -99,10 +99,14 @@ export default function SliderTable() {
           }
           getSlider();
           setLoadingEdit(false);
-        } else {
-          alert('error');
         }
-      });
+      }).catch((err) => {
+        if(err.response.status === 401) {
+          localStorage.removeItem("token")
+          window.location.href = "/login"
+        } else {
+          alert(err.response.data.message)
+        } });
   }
 
   useEffect(() => {
@@ -116,8 +120,17 @@ export default function SliderTable() {
           },
         })
         .then((result) => {
+          if(result.status === 200) {
           setSlider(result.data.data);
           setLoading(false);
+          }
+        }).catch((err) => {
+          if(err.response.status === 401) {
+            localStorage.removeItem("token")
+            window.location.href = "/login"
+          } else {
+            alert(err.response.data.message)
+          }
         });
     }
     getSlider();

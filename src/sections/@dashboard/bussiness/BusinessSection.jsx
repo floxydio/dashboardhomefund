@@ -51,7 +51,16 @@ export default function BusinessSection() {
           },
         })
         .then((result) => {
-          setDataProspectus(result.data.data);
+          if(result.status === 200) {
+            setDataProspectus(result.data.data);
+          }
+        }).catch((err) => {
+          if(err.response.status === 401) {
+            localStorage.removeItem("token")
+            window.location.href = "/login"
+          } else {
+            alert(err.response.data.message)
+          }
         });
     }
     getDataProspectus();

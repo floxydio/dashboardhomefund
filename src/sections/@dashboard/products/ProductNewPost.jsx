@@ -103,7 +103,8 @@ export default function ProductNewPost() {
       .post('/product', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': decrypt.toString(cryptoJS.enc.Utf8),
+          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+
         },
       })
       .then((res) => {
@@ -115,7 +116,16 @@ export default function ProductNewPost() {
                 Authorization: decrypt.toString(CryptoJS.enc.Utf8),
               },
             }).then((res) => {
-              setProduct(res.data.data);
+              if(res.status === 200) {
+                setProduct(res.data.data);
+              } 
+            }).catch((err) => {
+              if(err.response.status === 401) {
+                localStorage.removeItem("token")
+                window.location.href = "/login"
+              } else {
+                alert(err.response.data.message)
+              }    
             });
           }
           getProduct();

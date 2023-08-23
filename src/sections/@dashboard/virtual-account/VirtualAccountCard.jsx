@@ -69,7 +69,16 @@ export default function VirtualAccountCard() {
           },
         })
         .then((res) => {
-          setVirtualAccount(res.data.data);
+          if(res.status === 200) {
+            setVirtualAccount(res.data.data);
+          } 
+        }).catch((err) => {
+          if(err.response.status === 401) {
+            localStorage.removeItem("token")
+            window.location.href = "/login"
+          } else {
+            alert(err.response.data.message)
+          }
         });
     }
     getVirtualAccout();

@@ -87,8 +87,6 @@ export default function ShopProductCard() {
   const [openEditData, setOpenEditData] = useState(false);
 
   const token = localStorage.getItem('token');
-  console.log(token);
-
   function handleOpen(id) {
     setImageArray([]);
     function getProductImage() {
@@ -102,8 +100,18 @@ export default function ShopProductCard() {
           },
         })
         .then((result) => {
-          setImageArray(result.data.image);
-          setOpen(true);
+          if(result.status === 200) {
+            setImageArray(result.data.image);
+            setOpen(true);
+
+          }
+        }).catch((err) => {
+          if(err.response.status === 401) {
+            localStorage.removeItem("token")
+            window.location.href = "/login"
+          } else {
+            alert(err.response.data.message)
+          }
         });
     }
     getProductImage();
@@ -176,7 +184,18 @@ export default function ShopProductCard() {
           },
         })
         .then((result) => {
-          setDataProduct(result.data.data);
+          if(result.status === 200) {
+            setDataProduct(result.data.data);
+          }
+        }).catch((err) => {
+          // err response status code
+          if(err.response.status === 401) {
+            localStorage.removeItem("token")
+            window.location.href = "/login"
+          } else {
+            alert(err.response.data.message)
+          }
+         
         });
     }
     getProduct();
@@ -214,7 +233,17 @@ export default function ShopProductCard() {
           setOpenEditData(false);
           async function getProduct() {
             await axiosNew.get('/product').then((result) => {
-              setDataProduct(result.data.data);
+              if(result.status === 200) {
+                setDataProduct(result.data.data);
+              }
+
+            }).catch((err) => {
+              if(err.response.status === 401) {
+                localStorage.removeItem("token")
+                window.location.href = "/login"
+              } else {
+                alert(err.response.data.message)
+              }    
             });
           }
           getProduct();

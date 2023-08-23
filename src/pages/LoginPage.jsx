@@ -73,10 +73,12 @@ export default function LoginPage() {
         }
       )
       .then((res) => {
-        if (res.status === 200) {
-        
+        if (res.status === 200 || res.status === 201) {
           navigate('/dashboard/app');
         }
+      }).catch((err) => {
+        alert(err.response.data.message)
+
       });
   }
 

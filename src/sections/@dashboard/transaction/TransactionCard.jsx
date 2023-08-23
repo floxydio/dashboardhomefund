@@ -20,7 +20,16 @@ export default function TransactionCard() {
           },
         })
         .then((res) => {
-          setTransactionData(res.data.data);
+          if(res.status === 200) {
+            setTransactionData(res.data.data);
+          }
+        }).catch((err) => {
+          if(err.response.status === 401) {
+            localStorage.removeItem("token")
+            window.location.href = "/login"
+          } else {
+            alert(err.response.data.message)
+          }
         });
     }
     getTransactionData();
