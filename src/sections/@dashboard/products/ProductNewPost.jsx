@@ -5,18 +5,26 @@ import cryptoJS from 'crypto-js';
 import { nanoid } from 'nanoid';
 import ProductUploadImageCss from '../products/ProductImageStyle.css';
 import {
+  Avatar,
   Box,
   Button,
+  Divider,
   FormControl,
   IconButton,
   Input,
   InputAdornment,
+  InputLabel,
+  ListItemButton,
+  MenuItem,
   Modal,
+  Select,
   Stack,
   TextField,
   Typography,
+  selectClasses,
 } from '@mui/material';
 import moment from 'moment';
+import { KeyboardArrowDown } from '@mui/icons-material';
 
 const styleProductUpload = {
   ProductUploadImageCss,
@@ -63,6 +71,11 @@ export default function ProductNewPost() {
     productDetailId: 0,
     createdAt: new Date(),
   });
+
+  const [age, setAge] = useState('');
+  const handleChangeAge = (event) => {
+    setAge(event.target.value);
+  };
 
   const [open, setOpen] = useState(false);
   const [product, setProduct] = useState([]);
@@ -135,7 +148,6 @@ export default function ProductNewPost() {
 
   const [selectedFile, setSelectedFile] = useState([]);
   const [files, setFiles] = useState([]);
-  
 
   const inputChange = (e) => {
     const images = [];
@@ -238,14 +250,30 @@ export default function ProductNewPost() {
               onChange={(e) => setNewData({ ...newData, location: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
+            {/* <TextField
               required
               id="outlined"
               label="Status Invesment"
               type="number"
               onChange={(e) => setNewData({ ...newData, statusInvestment: e.target.value })}
               style={textFieldStyle}
-            />
+            /> */}
+            <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={age}
+              onChange={handleChangeAge}
+              autoWidth
+              label="Age"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Twenty</MenuItem>
+              <MenuItem value={21}>Twenty one</MenuItem>
+              <MenuItem value={22}>Twenty one and a half</MenuItem>
+            </Select>
             <TextField
               required
               id="outlined"
