@@ -87,6 +87,25 @@ export default function ShopProductCard() {
   const [openEditData, setOpenEditData] = useState(false);
 
   const token = localStorage.getItem('token');
+  function deleteProduct(id) {
+    const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+
+    axiosNew.delete(`/product/${id}`, {
+      headers: {
+        Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+      }
+    }).then(() => {
+      window.location.reload()
+    }).catch((err) => {
+      if(err.response.status === 401) {
+        localStorage.removeItem("token")
+        window.location.href = "/login"
+      } else {
+        alert(err.response.data.message)
+      }
+    })
+  }
+
   function handleOpen(id) {
     setImageArray([]);
     function getProductImage() {
@@ -95,7 +114,7 @@ export default function ShopProductCard() {
         .get(`/product/${id}`, {
           headers: {
             Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-            // Authorization: token,
+           
             Accept: 'application/json',
           },
         })
@@ -281,6 +300,7 @@ export default function ShopProductCard() {
               <TableCell>Created At</TableCell>
               <TableCell>Updated At</TableCell>
               <TableCell>Edit</TableCell>
+              <TableCell>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -349,6 +369,9 @@ export default function ShopProductCard() {
                     >
                       <EditIcon />
                     </Button>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Button onClick={() => deleteProduct(result.id)}>Delete</Button>
                   </TableCell>
                 </TableRow>
               );
@@ -423,7 +446,7 @@ export default function ShopProductCard() {
               onChange={(e) => setEditData({ ...editData, editTitle: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
+            {/* <TextField
               required
               id="outlined"
               label="Location"
@@ -431,7 +454,28 @@ export default function ShopProductCard() {
               value={editData.editLocation}
               onChange={(e) => setEditData({ ...editData, editLocation: e.target.value })}
               style={textFieldStyle}
-            />
+            /> */}
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Location</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={editData.editLocation}
+                onChange={handleChangeLocation}
+                autoWidth
+                label="Location"
+                defaultValue=""
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {optionLocation.map((location) => (
+                  <MenuItem key={location} value={location}>
+                    {location}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               required
               id="outlined"

@@ -3,7 +3,11 @@ import axiosNew from '../../../components/AxiosConfig';
 import Iconify from '../../../components/iconify';
 import cryptoJS from 'crypto-js';
 import { nanoid } from 'nanoid';
-import ProductUploadImageCss from '../products/ProductImageStyle.css';
+import '../products/ProductImageStyle.css';
+import StatusCampaignModels from '../../../models/Status_Campaign_Models';
+import StatusInvestmentModels from '../../../models/Status_Investment_Models';
+import { LocationModels } from '../../../models/Location_Models';
+
 import {
   Avatar,
   Box,
@@ -26,9 +30,6 @@ import {
 import moment from 'moment';
 import { KeyboardArrowDown } from '@mui/icons-material';
 
-const styleProductUpload = {
-  ProductUploadImageCss,
-};
 const boxStyle = {
   position: 'absolute',
   top: '50%',
@@ -215,57 +216,31 @@ export default function ProductNewPost() {
     }
   };
 
-  const fileUploadSubmit = async (e) => {
-    e.preventDefault();
+  function completeInvesmentInputCurrencyToIDR(e) {
+    const value = e;
+    console.log('Step 1 ->' + value);
+    const valueString = value
+      .toString()
+      .replace(/[^,\d]/g, '')
+      .toString();
+    console.log('Step 2 ->' + valueString);
+    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    console.log('Step 3 ->' + currency);
+    setNewData({ ...newData, completeInvesment: currency });
+  }
 
-    e.target.reset();
-    if (selectedFile.length > 0) {
-      for (let index = 0; index < selectedFile.length; index++) {
-        setFiles((preValue) => {
-          return [...preValue, selectedFile[index]];
-        });
-      }
-      setSelectedFile([]);
-    } else {
-      alert('Silahkan pilih gambar');
-    }
-  };
-
-  const optionLocation = ['Jakarta', 'Bogor', 'Depok', 'Tangerang', 'Bekasi'];
-
-  const optionStatusInvestment = [
-    {
-      value: 1,
-      status: 'Tersedia',
-    },
-    {
-      value: 2,
-      status: 'Incoming',
-    },
-    {
-      value: 3,
-      status: 'Terpenuhi',
-    },
-  ];
-
-  const optionStatusCampaign = [
-    {
-      value: 1,
-      status: 'Pre-Order',
-    },
-    {
-      value: 2,
-      status: 'Pengumpulan Dana',
-    },
-    {
-      value: 3,
-      status: 'Pengumpulan Selesai',
-    },
-    {
-      value: 4,
-      status: 'Pembagian',
-    },
-  ];
+  function minimumInvesmentInputCurrencyToIDR(e) {
+    const value = e;
+    console.log('Step 1 ->' + value);
+    const valueString = value
+      .toString()
+      .replace(/[^,\d]/g, '')
+      .toString();
+    console.log('Step 2 ->' + valueString);
+    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    console.log('Step 3 ->' + currency);
+    setNewData({ ...newData, minimumInvesment: currency });
+  }
 
   return (
     <>
@@ -323,7 +298,7 @@ export default function ProductNewPost() {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {optionLocation.map((location) => (
+                {LocationModels.map((location) => (
                   <MenuItem key={location} value={location}>
                     {location}
                   </MenuItem>
@@ -344,7 +319,7 @@ export default function ProductNewPost() {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {optionStatusInvestment.map((status) => (
+                {StatusInvestmentModels.map((status) => (
                   <MenuItem key={status.value} value={status.value}>
                     {status.status}
                   </MenuItem>
@@ -363,16 +338,16 @@ export default function ProductNewPost() {
               required
               id="outlined"
               label="Complete Invesment"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, completeInvesment: e.target.value })}
+              value={newData.completeInvesment}
+              onChange={(e) => completeInvesmentInputCurrencyToIDR(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
               required
               id="outlined"
               label="Minimum Invesment"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, minimumInvesment: e.target.value })}
+              value={newData.minimumInvesment}
+              onChange={(e) => minimumInvesmentInputCurrencyToIDR(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
@@ -511,7 +486,7 @@ export default function ProductNewPost() {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {optionStatusCampaign.map((campaign) => (
+                {StatusCampaignModels.map((campaign) => (
                   <MenuItem key={campaign.value} value={campaign.value}>
                     {campaign.status}
                   </MenuItem>
