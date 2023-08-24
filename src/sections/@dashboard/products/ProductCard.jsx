@@ -447,7 +447,7 @@ export default function ShopProductCard() {
               onChange={(e) => setEditData({ ...editData, editTitle: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
+            {/* <TextField
               required
               id="outlined"
               label="Location"
@@ -455,7 +455,28 @@ export default function ShopProductCard() {
               value={editData.editLocation}
               onChange={(e) => setEditData({ ...editData, editLocation: e.target.value })}
               style={textFieldStyle}
-            />
+            /> */}
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Location</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={editData.editLocation}
+                onChange={handleChangeLocation}
+                autoWidth
+                label="Location"
+                defaultValue=""
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {optionLocation.map((location) => (
+                  <MenuItem key={location} value={location}>
+                    {location}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               required
               id="outlined"

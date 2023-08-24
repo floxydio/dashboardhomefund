@@ -4,6 +4,13 @@ import Iconify from '../../../components/iconify';
 import cryptoJS from 'crypto-js';
 import { nanoid } from 'nanoid';
 import '../products/ProductImageStyle.css';
+<<<<<<< HEAD
+=======
+import StatusCampaignModels from '../../../models/Status_Campaign_Models';
+import StatusInvestmentModels from '../../../models/Status_Investment_Models';
+import { LocationModels } from '../../../models/Location_Models';
+
+>>>>>>> 71d3034 (add Currency Converter at Investment)
 import {
   Avatar,
   Box,
@@ -27,7 +34,10 @@ import moment from 'moment';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive'
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 71d3034 (add Currency Converter at Investment)
 const boxStyle = {
   position: 'absolute',
   top: '50%',
@@ -198,6 +208,7 @@ export default function ProductNewPost() {
     }
   };
 
+<<<<<<< HEAD
   const optionLocation = ['Jakarta', 'Bogor', 'Depok', 'Tangerang', 'Bekasi'];
 
   const optionStatusInvestment = [
@@ -233,6 +244,33 @@ export default function ProductNewPost() {
       status: 'Pembagian',
     },
   ];
+=======
+  function completeInvesmentInputCurrencyToIDR(e) {
+    const value = e;
+    console.log('Step 1 ->' + value);
+    const valueString = value
+      .toString()
+      .replace(/[^,\d]/g, '')
+      .toString();
+    console.log('Step 2 ->' + valueString);
+    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    console.log('Step 3 ->' + currency);
+    setNewData({ ...newData, completeInvesment: currency });
+  }
+
+  function minimumInvesmentInputCurrencyToIDR(e) {
+    const value = e;
+    console.log('Step 1 ->' + value);
+    const valueString = value
+      .toString()
+      .replace(/[^,\d]/g, '')
+      .toString();
+    console.log('Step 2 ->' + valueString);
+    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    console.log('Step 3 ->' + currency);
+    setNewData({ ...newData, minimumInvesment: currency });
+  }
+>>>>>>> 71d3034 (add Currency Converter at Investment)
 
   function completeInvesmentInputCurrencyToIDR(e) {
     const value = e;
@@ -310,7 +348,7 @@ export default function ProductNewPost() {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {optionLocation.map((location) => (
+                {LocationModels.map((location) => (
                   <MenuItem key={location} value={location}>
                     {location}
                   </MenuItem>
@@ -331,7 +369,7 @@ export default function ProductNewPost() {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {optionStatusInvestment.map((status) => (
+                {StatusInvestmentModels.map((status) => (
                   <MenuItem key={status.value} value={status.value}>
                     {status.status}
                   </MenuItem>
@@ -498,7 +536,7 @@ export default function ProductNewPost() {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {optionStatusCampaign.map((campaign) => (
+                {StatusCampaignModels.map((campaign) => (
                   <MenuItem key={campaign.value} value={campaign.value}>
                     {campaign.status}
                   </MenuItem>
