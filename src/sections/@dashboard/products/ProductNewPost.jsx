@@ -4,13 +4,10 @@ import Iconify from '../../../components/iconify';
 import cryptoJS from 'crypto-js';
 import { nanoid } from 'nanoid';
 import '../products/ProductImageStyle.css';
-<<<<<<< HEAD
-=======
-import StatusCampaignModels from '../../../models/Status_Campaign_Models';
-import StatusInvestmentModels from '../../../models/Status_Investment_Models';
+import { StatusCampaignModels } from '../../../models/Status_Campaign_Models';
+import { StatusInvestmentModels } from '../../../models/Status_Investment_Models';
 import { LocationModels } from '../../../models/Location_Models';
 
->>>>>>> 71d3034 (add Currency Converter at Investment)
 import {
   Avatar,
   Box,
@@ -28,16 +25,11 @@ import {
   Stack,
   TextField,
   Typography,
-  selectClasses,
 } from '@mui/material';
 import moment from 'moment';
 import { KeyboardArrowDown } from '@mui/icons-material';
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from 'react-responsive';
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 71d3034 (add Currency Converter at Investment)
 const boxStyle = {
   position: 'absolute',
   top: '50%',
@@ -62,7 +54,6 @@ export default function ProductNewPost() {
     title: '',
     location: '',
     statusInvestment: 0,
-    totalInvesment: 0,
     completeInvesment: 0,
     minimumInvesment: 0,
     totalLot: 0,
@@ -81,10 +72,10 @@ export default function ProductNewPost() {
     createdAt: new Date(),
   });
 
-  const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
-  const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
-  const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
+  const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' });
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
+  const isPortrait = useMediaQuery({ query: '(orientation: portrait)' });
+  const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' });
 
   const handleChangeBusinessId = (e) => {
     setNewData({ ...newData, businessId: e.target.value });
@@ -111,7 +102,7 @@ export default function ProductNewPost() {
 
   const token = localStorage.getItem('token');
   async function getDataProspectus() {
-    setDataBusiness([])
+    setDataBusiness([]);
     const decrypt = cryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
       .get('/prospektus', {
@@ -136,8 +127,8 @@ export default function ProductNewPost() {
     formData.append('location', newData.location);
     formData.append('status_investment', newData.statusInvestment);
     formData.append('total_investment', newData.totalInvesment);
-    formData.append('complete_invesment', newData.completeInvesment.toString().replaceAll(".", ""));
-    formData.append('minimum_investment', newData.minimumInvesment.toString().replaceAll(".", ""));
+    formData.append('complete_invesment', newData.completeInvesment.toString().replaceAll('.', ''));
+    formData.append('minimum_investment', newData.minimumInvesment.toString().replaceAll('.', ''));
     formData.append('total_lot', newData.totalLot);
     formData.append('total_investor', newData.totalInvestor);
     formData.append('remaining_days', newData.remainingDays);
@@ -208,43 +199,6 @@ export default function ProductNewPost() {
     }
   };
 
-<<<<<<< HEAD
-  const optionLocation = ['Jakarta', 'Bogor', 'Depok', 'Tangerang', 'Bekasi'];
-
-  const optionStatusInvestment = [
-    {
-      value: 1,
-      status: 'Tersedia',
-    },
-    {
-      value: 2,
-      status: 'Incoming',
-    },
-    {
-      value: 3,
-      status: 'Terpenuhi',
-    },
-  ];
-
-  const optionStatusCampaign = [
-    {
-      value: 1,
-      status: 'Pre-Order',
-    },
-    {
-      value: 2,
-      status: 'Pengumpulan Dana',
-    },
-    {
-      value: 3,
-      status: 'Pengumpulan Selesai',
-    },
-    {
-      value: 4,
-      status: 'Pembagian',
-    },
-  ];
-=======
   function completeInvesmentInputCurrencyToIDR(e) {
     const value = e;
     console.log('Step 1 ->' + value);
@@ -268,27 +222,6 @@ export default function ProductNewPost() {
     console.log('Step 2 ->' + valueString);
     const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     console.log('Step 3 ->' + currency);
-    setNewData({ ...newData, minimumInvesment: currency });
-  }
->>>>>>> 71d3034 (add Currency Converter at Investment)
-
-  function completeInvesmentInputCurrencyToIDR(e) {
-    const value = e;
-    console.log("Step 1 ->" + value)
-    const valueString = value.toString().replace(/[^,\d]/g, '').toString();
-    console.log("Step 2 ->" + valueString)
-    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    console.log("Step 3 ->" + currency)
-    setNewData({ ...newData, completeInvesment: currency });
-  }
-
-  function minimumInvesmentInputCurrencyToIDR(e) {
-    const value = e;
-    console.log("Step 1 ->" + value)
-    const valueString = value.toString().replace(/[^,\d]/g, '').toString();
-    console.log("Step 2 ->" + valueString)
-    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    console.log("Step 3 ->" + currency)
     setNewData({ ...newData, minimumInvesment: currency });
   }
 
@@ -376,14 +309,6 @@ export default function ProductNewPost() {
                 ))}
               </Select>
             </FormControl>
-            {/* <TextField
-              required
-              id="outlined"
-              label="Total Invesment"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, totalInvesment: e.target.value })}
-              style={textFieldStyle}
-            /> */}
             <TextField
               required
               id="outlined"
