@@ -13,6 +13,9 @@ import {
   Modal,
   FormControl,
   TextField,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import EditIcon from '@mui/icons-material/Edit';
@@ -21,6 +24,9 @@ import axiosNew from '../../../components/AxiosConfig';
 import { BarLoader } from 'react-spinners';
 import moment from 'moment';
 import CryptoJS from 'crypto-js';
+import { LocationModels } from '../../../models/Location_Models';
+import { StatusInvestmentModels } from '../../../models/Status_Investment_Models';
+import { StatusCampaignModels } from '../../../models/Status_Campaign_Models';
 // ----------------------------------------------------------------------
 
 const boxStyle = {
@@ -90,20 +96,23 @@ export default function ShopProductCard() {
   function deleteProduct(id) {
     const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
 
-    axiosNew.delete(`/product/${id}`, {
-      headers: {
-        Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-      }
-    }).then(() => {
-      window.location.reload()
-    }).catch((err) => {
-      if(err.response.status === 401) {
-        localStorage.removeItem("token")
-        window.location.href = "/login"
-      } else {
-        alert(err.response.data.message)
-      }
-    })
+    axiosNew
+      .delete(`/product/${id}`, {
+        headers: {
+          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+        },
+      })
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          alert(err.response.data.message);
+        }
+      });
   }
 
   function handleOpen(id) {
@@ -114,22 +123,22 @@ export default function ShopProductCard() {
         .get(`/product/${id}`, {
           headers: {
             Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-           
+
             Accept: 'application/json',
           },
         })
         .then((result) => {
-          if(result.status === 200) {
+          if (result.status === 200) {
             setImageArray(result.data.image);
             setOpen(true);
-
           }
-        }).catch((err) => {
-          if(err.response.status === 401) {
-            localStorage.removeItem("token")
-            window.location.href = "/login"
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
           } else {
-            alert(err.response.data.message)
+            alert(err.response.data.message);
           }
         });
     }
@@ -193,6 +202,8 @@ export default function ShopProductCard() {
 
   const handleCloseEditData = () => setOpenEditData(false);
 
+  const [dataBusiness, setDataBusiness] = useState([]);
+
   useEffect(() => {
     async function getProduct() {
       const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
@@ -203,22 +214,51 @@ export default function ShopProductCard() {
           },
         })
         .then((result) => {
-          if(result.status === 200) {
+          if (result.status === 200) {
             setDataProduct(result.data.data);
           }
-        }).catch((err) => {
+        })
+        .catch((err) => {
           // err response status code
-          if(err.response.status === 401) {
-            localStorage.removeItem("token")
-            window.location.href = "/login"
+          if (err.response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
           } else {
-            alert(err.response.data.message)
+            alert(err.response.data.message);
           }
-         
         });
     }
+    async function getDataProspectus() {
+      const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+      await axiosNew
+        .get('/prospektus', {
+          headers: {
+            Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+          },
+        })
+        .then((result) => {
+          setDataBusiness(result.data.data);
+        });
+    }
+    getDataProspectus();
     getProduct();
   }, []);
+
+  const handleChangeEditLocation = (e) => {
+    setEditData({ ...editData, editLocation: e.target.value });
+  };
+
+  const handleChangeEditStatusInvestment = (e) => {
+    setEditData({ ...editData, editStatusInvestment: e.target.value });
+  };
+
+  const handleChangeEditStatusCampaign = (e) => {
+    setEditData({ ...editData, editStatusCampaign: e.target.value });
+  };
+
+  const handleChangeEditBusinessId = (e) => {
+    setEditData({ ...editData, editBusinessId: e.target.value });
+  };
 
   async function submitEditProduct(e) {
     e.preventDefault();
@@ -251,19 +291,21 @@ export default function ShopProductCard() {
         if (result.status === 200 || result.status === 201) {
           setOpenEditData(false);
           async function getProduct() {
-            await axiosNew.get('/product').then((result) => {
-              if(result.status === 200) {
-                setDataProduct(result.data.data);
-              }
-
-            }).catch((err) => {
-              if(err.response.status === 401) {
-                localStorage.removeItem("token")
-                window.location.href = "/login"
-              } else {
-                alert(err.response.data.message)
-              }    
-            });
+            await axiosNew
+              .get('/product')
+              .then((result) => {
+                if (result.status === 200) {
+                  setDataProduct(result.data.data);
+                }
+              })
+              .catch((err) => {
+                if (err.response.status === 401) {
+                  localStorage.removeItem('token');
+                  window.location.href = '/login';
+                } else {
+                  alert(err.response.data.message);
+                }
+              });
           }
           getProduct();
         }
@@ -461,7 +503,7 @@ export default function ShopProductCard() {
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
                 value={editData.editLocation}
-                onChange={handleChangeLocation}
+                onChange={handleChangeEditLocation}
                 autoWidth
                 label="Location"
                 defaultValue=""
@@ -469,22 +511,34 @@ export default function ShopProductCard() {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {optionLocation.map((location) => (
+                {LocationModels.map((location) => (
                   <MenuItem key={location} value={location}>
                     {location}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            <TextField
-              required
-              id="outlined"
-              label="Status Invesment"
-              type="number"
-              value={editData.editStatusInvestment}
-              onChange={(e) => setEditData({ ...editData, editStatusInvestment: e.target.value })}
-              style={textFieldStyle}
-            />
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Status Investment</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={editData.editStatusInvestment}
+                onChange={handleChangeEditStatusInvestment}
+                autoWidth
+                label="Status Invesment"
+                defaultValue=""
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {StatusInvestmentModels.map((status) => (
+                  <MenuItem key={status.value} value={status.value}>
+                    {status.status}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               required
               id="outlined"
@@ -539,7 +593,7 @@ export default function ShopProductCard() {
               onChange={(e) => setEditData({ ...editData, editRemainingDays: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
+            {/* <TextField
               required
               id="outlined"
               label="Business ID"
@@ -547,7 +601,25 @@ export default function ShopProductCard() {
               value={editData.editBusinessId}
               onChange={(e) => setEditData({ ...editData, editBusinessId: e.target.value })}
               style={textFieldStyle}
-            />
+            /> */}
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Business ID</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={editData.editBusinessId}
+                onChange={handleChangeEditBusinessId}
+                autoWidth
+                label="Business ID"
+                defaultValue=""
+              >
+                {dataBusiness.map((data) => (
+                  <MenuItem key={data.id} value={data.id}>
+                    {data.id}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               required
               accept="image/*"
@@ -555,7 +627,7 @@ export default function ShopProductCard() {
               onChange={(e) => setEditData({ ...editData, editProductImage: e.target.files[0] })}
               style={textFieldStyle}
             />
-            <TextField
+            {/* <TextField
               required
               id="outlined"
               label="Status Campaign"
@@ -563,7 +635,28 @@ export default function ShopProductCard() {
               value={editData.editStatusCampaign}
               onChange={(e) => setEditData({ ...editData, editStatusCampaign: e.target.value })}
               style={textFieldStyle}
-            />
+            /> */}
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Status Campaign</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={editData.editStatusCampaign}
+                onChange={handleChangeEditStatusCampaign}
+                autoWidth
+                label="Status Campaign"
+                defaultValue=""
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {StatusCampaignModels.map((campaign) => (
+                  <MenuItem key={campaign.value} value={campaign.value}>
+                    {campaign.status}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               required
               id="outlined"

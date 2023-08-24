@@ -4,8 +4,8 @@ import Iconify from '../../../components/iconify';
 import cryptoJS from 'crypto-js';
 import { nanoid } from 'nanoid';
 import '../products/ProductImageStyle.css';
-import StatusCampaignModels from '../../../models/Status_Campaign_Models';
-import StatusInvestmentModels from '../../../models/Status_Investment_Models';
+import { StatusCampaignModels } from '../../../models/Status_Campaign_Models';
+import { StatusInvestmentModels } from '../../../models/Status_Investment_Models';
 import { LocationModels } from '../../../models/Location_Models';
 
 import {
@@ -54,7 +54,6 @@ export default function ProductNewPost() {
     title: '',
     location: '',
     statusInvestment: 0,
-    totalInvesment: 0,
     completeInvesment: 0,
     minimumInvesment: 0,
     totalLot: 0,
@@ -118,10 +117,9 @@ export default function ProductNewPost() {
     e.preventDefault();
 
     let formData = new FormData();
-    formData.append('category', newData.category);
+    formData.append('category', 'Rumah');
     formData.append('title', newData.title), formData.append('location', newData.location);
     formData.append('status_investment', newData.statusInvestment);
-    formData.append('total_investment', newData.totalInvesment);
     formData.append('complete_invesment', newData.completeInvesment);
     formData.append('minimum_investment', newData.minimumInvesment);
     formData.append('total_lot', newData.totalLot);
@@ -326,14 +324,6 @@ export default function ProductNewPost() {
                 ))}
               </Select>
             </FormControl>
-            {/* <TextField
-              required
-              id="outlined"
-              label="Total Invesment"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, totalInvesment: e.target.value })}
-              style={textFieldStyle}
-            /> */}
             <TextField
               required
               id="outlined"
