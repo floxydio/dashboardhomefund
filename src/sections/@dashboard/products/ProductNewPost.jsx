@@ -29,6 +29,7 @@ import { KeyboardArrowDown } from '@mui/icons-material';
 const styleProductUpload = {
   ProductUploadImageCss,
 };
+
 const boxStyle = {
   position: 'absolute',
   top: '50%',
@@ -215,22 +216,6 @@ export default function ProductNewPost() {
     }
   };
 
-  const fileUploadSubmit = async (e) => {
-    e.preventDefault();
-
-    e.target.reset();
-    if (selectedFile.length > 0) {
-      for (let index = 0; index < selectedFile.length; index++) {
-        setFiles((preValue) => {
-          return [...preValue, selectedFile[index]];
-        });
-      }
-      setSelectedFile([]);
-    } else {
-      alert('Silahkan pilih gambar');
-    }
-  };
-
   const optionLocation = ['Jakarta', 'Bogor', 'Depok', 'Tangerang', 'Bekasi'];
 
   const optionStatusInvestment = [
@@ -266,6 +251,26 @@ export default function ProductNewPost() {
       status: 'Pembagian',
     },
   ];
+
+  function completeInvesmentInputCurrencyToIDR(e) {
+    const value = e;
+    console.log("Step 1 ->" + value)
+    const valueString = value.toString().replace(/[^,\d]/g, '').toString();
+    console.log("Step 2 ->" + valueString)
+    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    console.log("Step 3 ->" + currency)
+    setNewData({ ...newData, completeInvesment: currency });
+  }
+
+  function minimumInvesmentInputCurrencyToIDR(e) {
+    const value = e;
+    console.log("Step 1 ->" + value)
+    const valueString = value.toString().replace(/[^,\d]/g, '').toString();
+    console.log("Step 2 ->" + valueString)
+    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    console.log("Step 3 ->" + currency)
+    setNewData({ ...newData, minimumInvesment: currency});
+  }
 
   return (
     <>
@@ -363,16 +368,16 @@ export default function ProductNewPost() {
               required
               id="outlined"
               label="Complete Invesment"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, completeInvesment: e.target.value })}
+              value={newData.completeInvesment}
+              onChange={(e) => completeInvesmentInputCurrencyToIDR(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
               required
               id="outlined"
               label="Minimum Invesment"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, minimumInvesment: e.target.value })}
+              value={newData.minimumInvesment}
+              onChange={(e) => minimumInvesmentInputCurrencyToIDR(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
