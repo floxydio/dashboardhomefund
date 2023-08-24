@@ -107,7 +107,6 @@ export default function ProductNewPost() {
           },
         })
         .then((result) => {
-          console.log(result.data.data);
           setDataBusiness(result.data.data);
         });
     }
@@ -146,7 +145,7 @@ export default function ProductNewPost() {
       .post('/product', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+          Authorization: decrypt.toString(cryptoJS.enc.Utf8),
         },
       })
       .then((res) => {
@@ -156,7 +155,7 @@ export default function ProductNewPost() {
             await axiosNew
               .get('/product', {
                 headers: {
-                  Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+                  Authorization: decrypt.toString(cryptoJS.enc.Utf8),
                 },
               })
               .then((res) => {
@@ -234,9 +233,39 @@ export default function ProductNewPost() {
 
   const optionLocation = ['Jakarta', 'Bogor', 'Depok', 'Tangerang', 'Bekasi'];
 
-  const optionStatusInvestment = ['Tersedia', 'Incoming', 'Terpenuhi'];
+  const optionStatusInvestment = [
+    {
+      value: 1,
+      status: 'Tersedia',
+    },
+    {
+      value: 2,
+      status: 'Incoming',
+    },
+    {
+      value: 3,
+      status: 'Terpenuhi',
+    },
+  ];
 
-  const optionStatusCampaign = ['Pre-Order', 'Pengumpulan Dana', 'Pengumpulan Selesai', 'Pembagian'];
+  const optionStatusCampaign = [
+    {
+      value: 1,
+      status: 'Pre-Order',
+    },
+    {
+      value: 2,
+      status: 'Pengumpulan Dana',
+    },
+    {
+      value: 3,
+      status: 'Pengumpulan Selesai',
+    },
+    {
+      value: 4,
+      status: 'Pembagian',
+    },
+  ];
 
   return (
     <>
@@ -316,8 +345,8 @@ export default function ProductNewPost() {
                   <em>None</em>
                 </MenuItem>
                 {optionStatusInvestment.map((status) => (
-                  <MenuItem key={status} value={status}>
-                    {status}
+                  <MenuItem key={status.value} value={status.value}>
+                    {status.status}
                   </MenuItem>
                 ))}
               </Select>
@@ -483,8 +512,8 @@ export default function ProductNewPost() {
                   <em>None</em>
                 </MenuItem>
                 {optionStatusCampaign.map((campaign) => (
-                  <MenuItem key={campaign} value={campaign  }>
-                    {campaign}
+                  <MenuItem key={campaign.value} value={campaign.value}>
+                    {campaign.status}
                   </MenuItem>
                 ))}
               </Select>
