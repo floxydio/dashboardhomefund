@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
 import Iconify from '../../../components/iconify';
 import cryptoJS from 'crypto-js';
@@ -72,9 +72,20 @@ export default function ProductNewPost() {
     createdAt: new Date(),
   });
 
-  const [age, setAge] = useState('');
-  const handleChangeAge = (event) => {
-    setAge(event.target.value);
+  const handleChangeBusinessId = (e) => {
+    setNewData({ ...newData, businessId: e.target.value });
+  };
+
+  const handleChangeStatusInvesment = (e) => {
+    setNewData({ ...newData, statusInvestment: e.target.value });
+  };
+
+  const handleChangeLocation = (e) => {
+    setNewData({ ...newData, location: e.target.value });
+  };
+
+  const handleChangeStatusCampaign = (e) => {
+    setNewData({ ...newData, statusCampaign: e.target.value });
   };
 
   const [open, setOpen] = useState(false);
@@ -82,7 +93,26 @@ export default function ProductNewPost() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [dataBusiness, setDataBusiness] = useState([]);
+
   const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    async function getDataProspectus() {
+      const decrypt = cryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+      await axiosNew
+        .get('/prospektus', {
+          headers: {
+            Authorization: decrypt.toString(cryptoJS.enc.Utf8),
+          },
+        })
+        .then((result) => {
+          console.log(result.data.data);
+          setDataBusiness(result.data.data);
+        });
+    }
+    getDataProspectus();
+  }, []);
 
   async function submitDataProduct(e) {
     e.preventDefault();
@@ -117,29 +147,31 @@ export default function ProductNewPost() {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-
         },
       })
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
           setOpen(false);
           async function getProduct() {
-            await axiosNew.get('/product',{
-              headers: {
-                Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-              },
-            }).then((res) => {
-              if(res.status === 200) {
-                setProduct(res.data.data);
-              } 
-            }).catch((err) => {
-              if(err.response.status === 401) {
-                localStorage.removeItem("token")
-                window.location.href = "/login"
-              } else {
-                alert(err.response.data.message)
-              }    
-            });
+            await axiosNew
+              .get('/product', {
+                headers: {
+                  Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+                },
+              })
+              .then((res) => {
+                if (res.status === 200) {
+                  setProduct(res.data.data);
+                }
+              })
+              .catch((err) => {
+                if (err.response.status === 401) {
+                  localStorage.removeItem('token');
+                  window.location.href = '/login';
+                } else {
+                  alert(err.response.data.message);
+                }
+              });
           }
           getProduct();
         }
@@ -200,6 +232,12 @@ export default function ProductNewPost() {
     }
   };
 
+  const optionLocation = ['Jakarta', 'Bogor', 'Depok', 'Tangerang', 'Bekasi'];
+
+  const optionStatusInvestment = ['Tersedia', 'Incoming', 'Terpenuhi'];
+
+  const optionStatusCampaign = ['Pre-Order', 'Pengumpulan Dana', 'Pengumpulan Selesai', 'Pembagian'];
+
   return (
     <>
       <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpen}>
@@ -227,11 +265,11 @@ export default function ProductNewPost() {
           </Typography>
           <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
             <TextField
-              required
+              disabled
               id="outlined"
               label="Category"
               type="text"
-              onChange={(e) => setNewData({ ...newData, category: e.target.value })}
+              defaultValue="Rumah"
               style={textFieldStyle}
             />
             <TextField
@@ -242,46 +280,56 @@ export default function ProductNewPost() {
               onChange={(e) => setNewData({ ...newData, title: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
-              required
-              id="outlined"
-              label="Location"
-              type="text"
-              onChange={(e) => setNewData({ ...newData, location: e.target.value })}
-              style={textFieldStyle}
-            />
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Location</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={newData.location}
+                onChange={handleChangeLocation}
+                autoWidth
+                label="Location"
+                defaultValue=""
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {optionLocation.map((location) => (
+                  <MenuItem key={location} value={location}>
+                    {location}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Status Investment</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={newData.statusInvestment}
+                onChange={handleChangeStatusInvesment}
+                autoWidth
+                label="Status Invesment"
+                defaultValue=""
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {optionStatusInvestment.map((status) => (
+                  <MenuItem key={status} value={status}>
+                    {status}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             {/* <TextField
-              required
-              id="outlined"
-              label="Status Invesment"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, statusInvestment: e.target.value })}
-              style={textFieldStyle}
-            /> */}
-            <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
-            <Select
-              labelId="demo-simple-select-autowidth-label"
-              id="demo-simple-select-autowidth"
-              value={age}
-              onChange={handleChangeAge}
-              autoWidth
-              label="Age"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Twenty</MenuItem>
-              <MenuItem value={21}>Twenty one</MenuItem>
-              <MenuItem value={22}>Twenty one and a half</MenuItem>
-            </Select>
-            <TextField
               required
               id="outlined"
               label="Total Invesment"
               type="number"
               onChange={(e) => setNewData({ ...newData, totalInvesment: e.target.value })}
               style={textFieldStyle}
-            />
+            /> */}
             <TextField
               required
               id="outlined"
@@ -322,14 +370,32 @@ export default function ProductNewPost() {
               onChange={(e) => setNewData({ ...newData, remainingDays: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
+            {/* <TextField
               required
               id="outlined"
               label="Business ID"
               type="number"
               onChange={(e) => setNewData({ ...newData, businessId: e.target.value })}
               style={textFieldStyle}
-            />
+            /> */}
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Business ID</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={newData.businessId}
+                onChange={handleChangeBusinessId}
+                autoWidth
+                label="Business ID"
+                defaultValue=""
+              >
+                {dataBusiness.map((data) => (
+                  <MenuItem key={data.id} value={data.id}>
+                    {data.id}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <Stack>
               <div className="fileupload-view">
                 <div className="row justify-content-center m-0">
@@ -394,14 +460,35 @@ export default function ProductNewPost() {
                 </div>
               </div>
             </Stack>
-            <TextField
+            {/* <TextField
               required
               id="outlined"
               label="Status Campaign"
               type="number"
               onChange={(e) => setNewData({ ...newData, statusCampaign: e.target.value })}
               style={textFieldStyle}
-            />
+            /> */}
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Status Campaign</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={newData.statusCampaign}
+                onChange={handleChangeStatusCampaign}
+                autoWidth
+                label="Status Campaign"
+                defaultValue=""
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {optionStatusCampaign.map((campaign) => (
+                  <MenuItem key={campaign} value={campaign  }>
+                    {campaign}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               required
               id="outlined"
