@@ -34,6 +34,7 @@ export default function LoginForm() {
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
+            "ngrok-skip-browser-warning": 'any'
           },
         }
       )

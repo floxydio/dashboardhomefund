@@ -29,16 +29,16 @@ const navConfig = [
     path: '/dashboard/business',
     icon: icon('ic_lock'),
   },
-  {
-    title: 'Virtual Account',
-    path: '/dashboard/virtual-account',
-    icon: <AccountBalanceWalletIcon color="black" />,
-  },
-  {
-    title: 'Transaction',
-    path: '/dashboard/transaction',
-    icon: <ReceiptIcon color="black" />,
-  },
+  // {
+  //   title: 'Virtual Account',
+  //   path: '/dashboard/virtual-account',
+  //   icon: <AccountBalanceWalletIcon color="black" />,
+  // },
+  // {
+  //   title: 'Transaction',
+  //   path: '/dashboard/transaction',
+  //   icon: <ReceiptIcon color="black" />,
+  // },
 ];
 
 export default navConfig;
