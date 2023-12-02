@@ -7,10 +7,12 @@ import ThemeProvider from './theme';
 // components
 import { StyledChart } from './components/chart';
 import ScrollToTop from './components/scroll-to-top';
+import { useEffect } from 'react';
 
 // ----------------------------------------------------------------------
 
 export default function App() {
+
   return (
     <HelmetProvider>
       <BrowserRouter>

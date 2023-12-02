@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -35,6 +35,12 @@ const Main = styled('div')(({ theme }) => ({
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
 
+  const isAlready = localStorage.getItem("apiPrefix")
+
+  if (isAlready === null || isAlready === "") {
+    const prefix = prompt("Masukkan Rest API")
+    localStorage.setItem("apiPrefix", prefix)
+  }
   return (
     <StyledRoot>
       <Header onOpenNav={() => setOpen(true)} />

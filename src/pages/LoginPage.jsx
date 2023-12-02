@@ -10,7 +10,7 @@ import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axiosNew from '../components/AxiosConfig';
 import cryptoJS from 'crypto-js';
 
@@ -81,7 +81,13 @@ export default function LoginPage() {
 
       });
   }
+  const isAlready = localStorage.getItem("apiPrefix")
+  console.log(isAlready)
 
+  if (isAlready === null || isAlready === "") {
+    const prefix = prompt("Masukkan Rest API")
+    localStorage.setItem("apiPrefix", prefix)
+  }
   return (
     <>
       <Helmet>

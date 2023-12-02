@@ -13,6 +13,7 @@ import SliderPage from './pages/NewsSlidersPage';
 import BusinessPage from './pages/BusinessPage';
 import VirtualAccountPage from './pages/VirtualAccountPage';
 import TransactionPage from './pages/TransactionPage';
+import ResetDevUrPage from './pages/ResetDevUrPage';
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +44,10 @@ export default function Router() {
         index: true,
       },
       {
+        path: '/reset',
+        element: <ResetDevUrPage />
+      },
+      {
         element: <SimpleLayout />,
         children: [
           { element: <Navigate to="/dashboard/app" />, index: true },
@@ -62,6 +67,10 @@ export default function Router() {
       {
         path: 'login',
         element: <LoginPage />,
+      },
+      {
+        path: '/reset',
+        element: <ResetDevUrPage />
       },
       {
         element: <SimpleLayout />,
