@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiPrefix = localStorage.getItem("")
+const apiPrefix = localStorage.getItem("apiPrefix")
 
 const axiosNew = axios.create({
   baseURL: `${apiPrefix}/dashboard-api`,
