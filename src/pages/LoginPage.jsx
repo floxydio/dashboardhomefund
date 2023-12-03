@@ -69,6 +69,7 @@ export default function LoginPage() {
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
+
           },
         }
       )
@@ -81,13 +82,13 @@ export default function LoginPage() {
 
       });
   }
-  const isAlready = localStorage.getItem("apiPrefix")
-  console.log(isAlready)
+  // const isAlready = localStorage.getItem("apiPrefix")
+  // console.log(isAlready)
 
-  if (isAlready === null || isAlready === "") {
-    const prefix = prompt("Masukkan Rest API")
-    localStorage.setItem("apiPrefix", prefix)
-  }
+  // if (isAlready === null || isAlready === "") {
+  //   const prefix = prompt("Masukkan Rest API")
+  //   localStorage.setItem("apiPrefix", prefix)
+  // }
   return (
     <>
       <Helmet>

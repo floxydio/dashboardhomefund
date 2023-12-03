@@ -37,10 +37,10 @@ export default function DashboardLayout() {
 
   const isAlready = localStorage.getItem("apiPrefix")
 
-  if (isAlready === null || isAlready === "") {
-    const prefix = prompt("Masukkan Rest API")
-    localStorage.setItem("apiPrefix", prefix)
-  }
+  // if (isAlready === null || isAlready === "") {
+  //   const prefix = prompt("Masukkan Rest API")
+  //   localStorage.setItem("apiPrefix", prefix)
+  // }
   return (
     <StyledRoot>
       <Header onOpenNav={() => setOpen(true)} />
