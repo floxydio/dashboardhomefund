@@ -21,7 +21,6 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState, useEffect, useRef } from 'react';
 import axiosNew from '../../../components/AxiosConfig';
-import { BarLoader } from 'react-spinners';
 import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import { LocationModels } from '../../../models/Location_Models';
