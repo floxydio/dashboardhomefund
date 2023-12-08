@@ -97,7 +97,7 @@ export default function ShopProductCard() {
     }).then(() => {
       window.location.reload()
     }).catch((err) => {
-      if(err.response.status === 401) {
+      if (err.response.status === 401) {
         localStorage.removeItem("token")
         window.location.href = "/login"
       } else {
@@ -114,18 +114,18 @@ export default function ShopProductCard() {
         .get(`/product/${id}`, {
           headers: {
             Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-           
+
             Accept: 'application/json',
           },
         })
         .then((result) => {
-          if(result.status === 200) {
+          if (result.status === 200) {
             setImageArray(result.data.image);
             setOpen(true);
 
           }
         }).catch((err) => {
-          if(err.response.status === 401) {
+          if (err.response.status === 401) {
             localStorage.removeItem("token")
             window.location.href = "/login"
           } else {
@@ -203,18 +203,18 @@ export default function ShopProductCard() {
           },
         })
         .then((result) => {
-          if(result.status === 200) {
+          if (result.status === 200) {
             setDataProduct(result.data.data);
           }
         }).catch((err) => {
           // err response status code
-          if(err.response.status === 401) {
+          if (err.response.status === 401) {
             localStorage.removeItem("token")
             window.location.href = "/login"
           } else {
             alert(err.response.data.message)
           }
-         
+
         });
     }
     getProduct();
@@ -252,17 +252,17 @@ export default function ShopProductCard() {
           setOpenEditData(false);
           async function getProduct() {
             await axiosNew.get('/product').then((result) => {
-              if(result.status === 200) {
+              if (result.status === 200) {
                 setDataProduct(result.data.data);
               }
 
             }).catch((err) => {
-              if(err.response.status === 401) {
+              if (err.response.status === 401) {
                 localStorage.removeItem("token")
                 window.location.href = "/login"
               } else {
                 alert(err.response.data.message)
-              }    
+              }
             });
           }
           getProduct();
@@ -386,6 +386,7 @@ export default function ShopProductCard() {
             sx={{
               textAlign: 'center',
               marginBottom: 3,
+              
             }}
           >
             Product Image
@@ -393,7 +394,7 @@ export default function ShopProductCard() {
           {imageArray.map((e, i) => (
             <div key={i}>
               <img
-                src={`https://homefund-beta.xyz/dashboard-api/static/product/${e}`}
+                src={`https://ed4a-114-124-239-45.ngrok-free.app/dashboard-api/static/product/${e}`}
                 style={{
                   marginLeft: 'auto',
                   marginRight: 'auto',

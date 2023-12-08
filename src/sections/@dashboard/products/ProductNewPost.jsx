@@ -25,6 +25,7 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import { KeyboardArrowDown } from '@mui/icons-material';
+import { useMediaQuery } from 'react-responsive'
 
 
 const boxStyle = {
@@ -70,6 +71,11 @@ export default function ProductNewPost() {
     createdAt: new Date(),
   });
 
+  const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+  const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
+  const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
+
   const handleChangeBusinessId = (e) => {
     setNewData({ ...newData, businessId: e.target.value });
   };
@@ -94,20 +100,20 @@ export default function ProductNewPost() {
   const [dataBusiness, setDataBusiness] = useState([]);
 
   const token = localStorage.getItem('token');
-
+  async function getDataProspectus() {
+    setDataBusiness([])
+    const decrypt = cryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+    await axiosNew
+      .get('/prospektus', {
+        headers: {
+          Authorization: decrypt.toString(cryptoJS.enc.Utf8),
+        },
+      })
+      .then((result) => {
+        setDataBusiness(result.data.data);
+      });
+  }
   useEffect(() => {
-    async function getDataProspectus() {
-      const decrypt = cryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-      await axiosNew
-        .get('/prospektus', {
-          headers: {
-            Authorization: decrypt.toString(cryptoJS.enc.Utf8),
-          },
-        })
-        .then((result) => {
-          setDataBusiness(result.data.data);
-        });
-    }
     getDataProspectus();
   }, []);
 
@@ -116,11 +122,12 @@ export default function ProductNewPost() {
 
     let formData = new FormData();
     formData.append('category', newData.category);
-    formData.append('title', newData.title), formData.append('location', newData.location);
+    formData.append('title', newData.title);
+    formData.append('location', newData.location);
     formData.append('status_investment', newData.statusInvestment);
     formData.append('total_investment', newData.totalInvesment);
-    formData.append('complete_invesment', newData.completeInvesment);
-    formData.append('minimum_investment', newData.minimumInvesment);
+    formData.append('complete_invesment', newData.completeInvesment.toString().replaceAll(".", ""));
+    formData.append('minimum_investment', newData.minimumInvesment.toString().replaceAll(".", ""));
     formData.append('total_lot', newData.totalLot);
     formData.append('total_investor', newData.totalInvestor);
     formData.append('remaining_days', newData.remainingDays);
@@ -149,28 +156,6 @@ export default function ProductNewPost() {
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
           setOpen(false);
-          async function getProduct() {
-            await axiosNew
-              .get('/product', {
-                headers: {
-                  Authorization: decrypt.toString(cryptoJS.enc.Utf8),
-                },
-              })
-              .then((res) => {
-                if (res.status === 200) {
-                  setProduct(res.data.data);
-                }
-              })
-              .catch((err) => {
-                if (err.response.status === 401) {
-                  localStorage.removeItem('token');
-                  window.location.href = '/login';
-                } else {
-                  alert(err.response.data.message);
-                }
-              });
-          }
-          getProduct();
         }
       });
   }
@@ -266,7 +251,7 @@ export default function ProductNewPost() {
     console.log("Step 2 ->" + valueString)
     const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     console.log("Step 3 ->" + currency)
-    setNewData({ ...newData, minimumInvesment: currency});
+    setNewData({ ...newData, minimumInvesment: currency });
   }
 
   return (
