@@ -22,7 +22,6 @@ import {
   MenuItem,
   Modal,
   Select,
-  Stack,
   TextField,
   Typography,
 } from '@mui/material';
@@ -49,6 +48,7 @@ const textFieldStyle = {
   marginTop: 10,
 };
 export default function ProductNewPost() {
+<<<<<<< HEAD
   const [newData, setNewData] = useState({
     category: '',
     title: '',
@@ -92,13 +92,14 @@ export default function ProductNewPost() {
   const handleChangeStatusCampaign = (e) => {
     setNewData({ ...newData, statusCampaign: e.target.value });
   };
+=======
+  
+>>>>>>> dddfd7d (.)
 
   const [open, setOpen] = useState(false);
-  const [product, setProduct] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [dataBusiness, setDataBusiness] = useState([]);
 
   const token = localStorage.getItem('token');
   async function getDataProspectus() {

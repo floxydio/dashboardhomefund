@@ -46,7 +46,7 @@ export default function ProductsPage() {
         <Typography variant="h4" gutterBottom>
           Products
         </Typography>
-        <ProductNewPost />
+        {/* <ProductNewPost /> */}
       </Stack>
       <ProductCard />
     </>
