@@ -374,8 +374,8 @@ export default function ShopProductCard() {
     formData.append('category', 'Rumah');
     formData.append('title', newData.title), formData.append('location', newData.location);
     formData.append('status_investment', newData.statusInvestment);
-    formData.append('complete_invesment', newData.completeInvesment);
-    formData.append('minimum_investment', newData.minimumInvesment);
+    formData.append('complete_invesment', newData.completeInvesment.toString().replaceAll('.', ''));
+    formData.append('minimum_investment', newData.minimumInvesment.toString().replaceAll('.', ''));
     formData.append('total_lot', newData.totalLot);
     formData.append('total_investor', newData.totalInvestor);
     formData.append('remaining_days', newData.remainingDays);
@@ -937,7 +937,6 @@ export default function ShopProductCard() {
             sx={{
               textAlign: 'center',
               marginBottom: 3,
-              
             }}
           >
             Product Image

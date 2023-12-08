@@ -48,7 +48,6 @@ const textFieldStyle = {
   marginTop: 10,
 };
 export default function ProductNewPost() {
-<<<<<<< HEAD
   const [newData, setNewData] = useState({
     category: '',
     title: '',
@@ -92,9 +91,6 @@ export default function ProductNewPost() {
   const handleChangeStatusCampaign = (e) => {
     setNewData({ ...newData, statusCampaign: e.target.value });
   };
-=======
-  
->>>>>>> dddfd7d (.)
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
