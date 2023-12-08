@@ -2,7 +2,7 @@ import { Button, Modal, Box, Typography, FormControl, TextField } from '@mui/mat
 import Iconify from '../../../components/iconify';
 import { useState } from 'react';
 import jsPDF from 'jspdf';
-
+import { useMediaQuery } from 'react-responsive'
 export default function BusinessPost() {
   const [newData, setNewData] = useState({
     name: '',
@@ -28,13 +28,13 @@ export default function BusinessPost() {
     marginBottom: 10,
   };
 
-  
+
   const [open, setOpen] = useState(false);
   const [images, setImages] = useState();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  
+
   const handleImageToPdf = async () => {
     if (!images) {
       console.error("No image selected.");
@@ -45,7 +45,7 @@ export default function BusinessPost() {
     const img = new Image();
     const img2 = new Image();
     const img3 = new Image();
-    
+
     const imgLoadedPromise = new Promise((resolve, reject) => {
       img.onload = resolve;
       img.onerror = reject;
@@ -70,7 +70,7 @@ export default function BusinessPost() {
       console.error("Error reading the file:", error);
     };
   };
-
+  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
 
 
   const handleOpen = () => setOpen(true);
@@ -114,9 +114,25 @@ export default function BusinessPost() {
           height: 500,
           overflowY: 'scroll',
           marginTop: 10,
+          width: isMobile ? '85%' : '100%',
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}
       >
-        <Box sx={boxStyle} noValidate autoComplete="off">
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: isMobile ? '100%' : 500,
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          boxShadow: 24,
+          overflowY: 'scroll',
+          height: 500,
+          p: 4,
+
+        }} noValidate autoComplete="off">
           <Typography
             style={{
               textAlign: 'center',

@@ -16,6 +16,8 @@ import {
 } from '@mui/material';
 import { BarLoader } from 'react-spinners';
 import cryptoJs from 'crypto-js';
+import { useMediaQuery } from 'react-responsive'
+
 
 const boxStyle = {
   position: 'absolute',
@@ -49,6 +51,7 @@ export default function VirtualAccountCard() {
   const [loading, setLoading] = useState(false);
 
   const [iconVirtual, setIconVirtual] = useState('');
+  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
 
   function handleOpen(image) {
     setOpen(true);
@@ -69,11 +72,11 @@ export default function VirtualAccountCard() {
           },
         })
         .then((res) => {
-          if(res.status === 200) {
+          if (res.status === 200) {
             setVirtualAccount(res.data.data);
-          } 
+          }
         }).catch((err) => {
-          if(err.response.status === 401) {
+          if (err.response.status === 401) {
             localStorage.removeItem("token")
             window.location.href = "/login"
           } else {

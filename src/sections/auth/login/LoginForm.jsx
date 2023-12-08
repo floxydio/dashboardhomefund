@@ -52,7 +52,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <Stack spacing={3}>
+      <Stack spacing={3} sx={{ marginTop: 5 }}>
         <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)} />
         <TextField
           name="password"
@@ -78,7 +78,7 @@ export default function LoginForm() {
       </Stack>
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={signInAccount}>
-        Login
+        Masuk
       </LoadingButton>
     </>
   );

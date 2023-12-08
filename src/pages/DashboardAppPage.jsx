@@ -1,27 +1,18 @@
 import { Helmet } from 'react-helmet-async';
-import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
-// components
-import Iconify from '../components/iconify';
 // sections
-import {
-  AppTasks,
-  AppNewsUpdate,
-  AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
-  AppTrafficBySite,
-  AppWidgetSummary,
-  AppCurrentSubject,
-  AppConversionRates,
-} from '../sections/@dashboard/app';
+import { useMediaQuery } from 'react-responsive'
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
-  const theme = useTheme();
+  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+
 
   return (
     <>
@@ -34,7 +25,84 @@ export default function DashboardAppPage() {
           Hi, Selamat Datang
         </Typography>
 
-    
+        {isMobile ? <div style={{
+          width: '100%'
+        }}>
+          <Card sx={{ minWidth: 275, marginTop: 5 }}>
+            <CardContent>
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>
+                Total Transaksi
+              </Typography>
+              <Typography variant="h5" component="div">
+                Rp1.500.000.000
+              </Typography>
+            </CardContent>
+
+          </Card>
+          <Card sx={{ minWidth: 275, marginTop: 5 }}>
+            <CardContent>
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>
+                Product yang di Terbitkan
+              </Typography>
+              <Typography variant="h5" component="div">
+                3
+              </Typography>
+            </CardContent>
+
+          </Card>
+          <Card sx={{ minWidth: 275, marginTop: 5 }}>
+            <CardContent>
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>
+                Total User
+              </Typography>
+              <Typography variant="h5" component="div">
+                40
+              </Typography>
+            </CardContent>
+
+          </Card>
+
+        </div> : <div style={{
+          display: 'flex'
+        }}>
+          <Card sx={{ minWidth: 275, marginTop: 5, marginRight: 2 }}>
+            <CardContent>
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>
+                Total Transaksi
+              </Typography>
+              <Typography variant="h5" component="div">
+                Rp1.500.000.000
+              </Typography>
+            </CardContent>
+
+          </Card>
+          <Card sx={{ minWidth: 275, marginTop: 5, marginRight: 2 }}>
+            <CardContent>
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>
+                Product yang di Terbitkan
+              </Typography>
+              <Typography variant="h5" component="div">
+                3
+              </Typography>
+            </CardContent>
+
+          </Card>
+          <Card sx={{ minWidth: 275, marginTop: 5, marginRight: 2 }}>
+            <CardContent>
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold', marginBottom: 2 }}>
+                Total User
+              </Typography>
+              <Typography variant="h5" component="div">
+                40
+              </Typography>
+            </CardContent>
+
+          </Card>
+
+        </div>}
+
+
+
       </Container>
     </>
   );

@@ -24,7 +24,7 @@ import axiosNew from '../../../components/AxiosConfig';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { MutatingDots } from 'react-loader-spinner';
 import cryptoJs from 'crypto-js';
-
+import { useMediaQuery } from 'react-responsive'
 // ----------------------------------------------------------------------
 
 const boxStyle = {
@@ -58,7 +58,7 @@ export default function SliderTable() {
   const handleCloseEdit = () => setOpenEdit(false);
   const handleClose = () => setOpen(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
-
+  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
   const [editStatus, setEditStatus] = useState('');
   const [editName, setEditName] = useState('');
   const [editDetail, setEditDetail] = useState('');
@@ -73,8 +73,7 @@ export default function SliderTable() {
   
   async function editSlider() {
     setLoadingEdit(true);
-    console.log(editStatus)
-    console.log(editName)
+
     const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
       .put(
@@ -91,8 +90,6 @@ export default function SliderTable() {
         }
       )
       .then((result) => {
-        console.log(result)
-
         if (result.status === 200 || result.status === 201) {
           async function getSlider() {
             await axiosNew.get('/slider').then((result) => {
@@ -124,7 +121,6 @@ export default function SliderTable() {
           },
         })
         .then((result) => {
-          console.log(result)
           if(result.status === 200) {
           setSlider(result.data.data);
           setLoading(false);

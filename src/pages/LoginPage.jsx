@@ -82,13 +82,7 @@ export default function LoginPage() {
 
       });
   }
-  // const isAlready = localStorage.getItem("apiPrefix")
-  // console.log(isAlready)
 
-  // if (isAlready === null || isAlready === "") {
-  //   const prefix = prompt("Masukkan Rest API")
-  //   localStorage.setItem("apiPrefix", prefix)
-  // }
   return (
     <>
       <Helmet>
@@ -115,15 +109,9 @@ export default function LoginPage() {
 
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" gutterBottom>
-              Sign in to Home Fund
+            <Typography variant="h1" gutterBottom>
+              Sign in to Dashboard
             </Typography>
-
-            <Typography variant="body2" sx={{ mb: 5 }}>
-              Don’t have an account? {''}
-              <Link variant="subtitle2">Get started</Link>
-            </Typography>
-
             <LoginForm />
           </StyledContent>
         </Container>

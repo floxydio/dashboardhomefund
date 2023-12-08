@@ -1,6 +1,7 @@
 import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import Iconify from '../../../components/iconify/Iconify';
+import { useMediaQuery } from 'react-responsive'
 
 const boxStyle = {
   position: 'absolute',
@@ -29,6 +30,8 @@ export default function VirtualAccountNewPost() {
     status: 0,
   });
 
+  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+
   const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen(false);
@@ -49,9 +52,24 @@ export default function VirtualAccountNewPost() {
           height: 500,
           overflowY: 'scroll',
           marginTop: 10,
+          width: isMobile ? '85%' : '100%',
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}
       >
-        <Box sx={boxStyle} noValidate autoComplete="off">
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: isMobile ? '100%' : 500,
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          boxShadow: 24,
+          overflowY: 'scroll',
+          height: 500,
+          p: 4,
+        }} noValidate autoComplete="off">
           <Typography
             style={{
               textAlign: 'center',

@@ -198,27 +198,21 @@ export default function ProductNewPost() {
 
   function completeInvesmentInputCurrencyToIDR(e) {
     const value = e;
-    console.log('Step 1 ->' + value);
     const valueString = value
       .toString()
       .replace(/[^,\d]/g, '')
       .toString();
-    console.log('Step 2 ->' + valueString);
     const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    console.log('Step 3 ->' + currency);
     setNewData({ ...newData, completeInvesment: currency });
   }
 
   function minimumInvesmentInputCurrencyToIDR(e) {
     const value = e;
-    console.log('Step 1 ->' + value);
     const valueString = value
       .toString()
       .replace(/[^,\d]/g, '')
       .toString();
-    console.log('Step 2 ->' + valueString);
     const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    console.log('Step 3 ->' + currency);
     setNewData({ ...newData, minimumInvesment: currency });
   }
 

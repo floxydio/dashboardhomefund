@@ -14,4 +14,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 );
 
 // If you want to enable client cache, register instead.
-serviceWorker.unregister();
+// serviceWorker.unregister();

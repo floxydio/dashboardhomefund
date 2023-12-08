@@ -29,25 +29,15 @@ import { LocationModels } from '../../../models/Location_Models';
 import { StatusInvestmentModels } from '../../../models/Status_Investment_Models';
 import { StatusCampaignModels } from '../../../models/Status_Campaign_Models';
 import { nanoid } from 'nanoid';
+import { useMediaQuery } from 'react-responsive'
 
 // ----------------------------------------------------------------------
 
-const boxStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 500,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  overflowY: 'scroll',
-  height: 500,
-  p: 4,
-};
 
 const textFieldStyle = {
-  marginBottom: 10,
+  marginBottom: 15,
+  marginTop: 15
+
 };
 
 const override = {
@@ -70,6 +60,12 @@ export default function ShopProductCard() {
   const [selectedFile, setSelectedFile] = useState([]);
   const [files, setFiles] = useState([]);
   const [product, setProduct] = useState([]);
+
+  // Media Query
+  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-width: 1224px)'
+  })
 
   const [newData, setNewData] = useState({
     category: 'Rumah',
@@ -343,27 +339,21 @@ export default function ShopProductCard() {
 
   function completeInvesmentInputCurrencyToIDR(e) {
     const value = e;
-    console.log('Step 1 ->' + value);
     const valueString = value
       .toString()
       .replace(/[^,\d]/g, '')
       .toString();
-    console.log('Step 2 ->' + valueString);
     const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    console.log('Step 3 ->' + currency);
     setNewData({ ...newData, completeInvesment: currency });
   }
 
   function minimumInvesmentInputCurrencyToIDR(e) {
     const value = e;
-    console.log('Step 1 ->' + value);
     const valueString = value
       .toString()
       .replace(/[^,\d]/g, '')
       .toString();
-    console.log('Step 2 ->' + valueString);
     const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    console.log('Step 3 ->' + currency);
     setNewData({ ...newData, minimumInvesment: currency });
   }
 
@@ -489,11 +479,16 @@ export default function ShopProductCard() {
 
   return (
     <>
+
       <Button
         variant="contained"
         startIcon={<Iconify icon="eva:plus-fill" />}
         onClick={openModalCreate}
-        sx={{ float: 'right' }}
+        style={{
+          marginRight: isMobile ? 20 : 0,
+          marginBottom: isMobile ? 10 : 0,
+          float: 'right'
+        }}
       >
         New Post
       </Button>
@@ -504,13 +499,28 @@ export default function ShopProductCard() {
           height: 500,
           overflowY: 'scroll',
           marginTop: 10,
+          width: isMobile ? '85%' : '100%',
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}
       >
-        <Box sx={boxStyle} noValidate autoComplete="off">
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: isMobile ? '100%' : 500,
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          boxShadow: 24,
+          overflowY: 'scroll',
+          height: 500,
+          p: 4,
+        }} noValidate autoComplete="off">
           <Typography
             style={{
               textAlign: 'center',
-              marginBottom: '30',
+              marginBottom: 30,
             }}
             variant="h6"
             component="h2"
@@ -518,14 +528,7 @@ export default function ShopProductCard() {
             Masukan Data Product
           </Typography>
           <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
-            <TextField
-              disabled
-              id="outlined"
-              label="Category"
-              type="text"
-              defaultValue="Rumah"
-              style={textFieldStyle}
-            />
+
             <TextField
               required
               id="outlined"
@@ -539,14 +542,13 @@ export default function ShopProductCard() {
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
-                value={newData.location}
                 onChange={handleChangeLocation}
                 autoWidth
                 label="Location"
-                defaultValue=""
+                defaultValue={500}
               >
-                <MenuItem value="">
-                  <em>None</em>
+                <MenuItem value={500} disabled>
+                  <em>Pilih Tempat Funding</em>
                 </MenuItem>
                 {LocationModels.map((location) => (
                   <MenuItem key={location} value={location}>
@@ -560,14 +562,13 @@ export default function ShopProductCard() {
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
-                value={newData.statusInvestment}
                 onChange={handleChangeStatusInvesment}
                 autoWidth
                 label="Status Invesment"
-                defaultValue=""
+                defaultValue={500}
               >
-                <MenuItem value="">
-                  <em>None</em>
+                <MenuItem value={500} disabled>
+                  <em>Plih Status Investasi</em>
                 </MenuItem>
                 {StatusInvestmentModels.map((status) => (
                   <MenuItem key={status.value} value={status.value}>
@@ -582,6 +583,9 @@ export default function ShopProductCard() {
               label="Complete Invesment"
               value={newData.completeInvesment}
               onChange={(e) => completeInvesmentInputCurrencyToIDR(e.target.value)}
+              InputProps={{
+                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Rp </span>
+              }}
               style={textFieldStyle}
             />
             <TextField
@@ -589,6 +593,9 @@ export default function ShopProductCard() {
               id="outlined"
               label="Minimum Invesment"
               value={newData.minimumInvesment}
+              InputProps={{
+                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Rp </span>
+              }}
               onChange={(e) => minimumInvesmentInputCurrencyToIDR(e.target.value)}
               style={textFieldStyle}
             />
@@ -597,6 +604,9 @@ export default function ShopProductCard() {
               id="outlined"
               label="Total Lot"
               type="number"
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>LOT</span>
+              }}
               onChange={(e) => setNewData({ ...newData, totalLot: e.target.value })}
               style={textFieldStyle}
             />
@@ -616,15 +626,8 @@ export default function ShopProductCard() {
               onChange={(e) => setNewData({ ...newData, remainingDays: e.target.value })}
               style={textFieldStyle}
             />
-            {/* <TextField
-              required
-              id="outlined"
-              label="Business ID"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, businessId: e.target.value })}
-              style={textFieldStyle}
-            /> */}
-            <FormControl style={textFieldStyle}>
+
+            {/* <FormControl style={textFieldStyle}>
               <InputLabel id="demo-simple-select-autowidth-label">Business ID</InputLabel>
               <Select
                 labelId="demo-simple-select-autowidth-label"
@@ -641,7 +644,7 @@ export default function ShopProductCard() {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+            </FormControl> */}
             <Stack>
               <div className="fileupload-view">
                 <div className="row justify-content-center m-0">
@@ -650,7 +653,7 @@ export default function ShopProductCard() {
                       <div className="kb-data-box">
                         <div className="kb-modal-data-title">
                           <div className="kb-data-title">
-                            <h6>Upload Gambar</h6>
+                            <h6 style={{ marginLeft: 20, marginBottom: 20 }}>Upload Gambar</h6>
                           </div>
                         </div>
                         <form>
@@ -706,27 +709,18 @@ export default function ShopProductCard() {
                 </div>
               </div>
             </Stack>
-            {/* <TextField
-              required
-              id="outlined"
-              label="Status Campaign"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, statusCampaign: e.target.value })}
-              style={textFieldStyle}
-            /> */}
             <FormControl style={textFieldStyle}>
               <InputLabel id="demo-simple-select-autowidth-label">Status Campaign</InputLabel>
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
-                value={newData.statusCampaign}
                 onChange={handleChangeStatusCampaign}
                 autoWidth
                 label="Status Campaign"
-                defaultValue=""
+                defaultValue={500}
               >
-                <MenuItem value="">
-                  <em>None</em>
+                <MenuItem value={500} disabled>
+                  <em>Pilih Status Campaign</em>
                 </MenuItem>
                 {StatusCampaignModels.map((campaign) => (
                   <MenuItem key={campaign.value} value={campaign.value}>
@@ -751,19 +745,43 @@ export default function ShopProductCard() {
               onChange={(e) => setNewData({ ...newData, longtitude: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
-              required
-              id="outlined"
-              label="Tenor"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, tenor: e.target.value })}
-              style={textFieldStyle}
-            />
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Tenor</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                onChange={(e) => setNewData({ ...newData, tenor: e.target.value })}
+                autoWidth
+                label="Tenor"
+                defaultValue={500}
+              // value={500}
+              >
+                <MenuItem value={500} disabled>
+                  <em>Pilih Status Tenor</em>
+                </MenuItem>
+                <MenuItem value={3}>
+                  3 Bulan
+                </MenuItem>
+                <MenuItem value={6}>
+                  6 Bulan
+                </MenuItem>
+                <MenuItem value={9}>
+                  9 Bulan
+                </MenuItem>
+                <MenuItem value={12}>
+                  12 Bulan
+                </MenuItem>
+
+              </Select>
+            </FormControl>
             <TextField
               required
               id="outlined"
               label="Percentange Imbal"
               type="number"
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>%</span>
+              }}
               onChange={(e) => setNewData({ ...newData, percentange_imbal: e.target.value })}
               style={textFieldStyle}
             />
@@ -783,47 +801,48 @@ export default function ShopProductCard() {
               onChange={(e) => setNewData({ ...newData, detail: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
-              required
-              id="outlined"
-              label="Product Detail ID"
-              type="number"
-              onChange={(e) => setNewData({ ...newData, productDetailId: e.target.value })}
-              style={textFieldStyle}
-            />
-            <Box
-              sx={{
-                border: '1px solid #ccc',
-                borderRadius: '8px',
-                padding: '16px',
-                backgroundColor: '#fff',
-                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              <Typography>Created At: {moment(newData.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</Typography>
-            </Box>
+
+            <Typography>Dibuat Pada: {moment(newData.createdAt).utc().format('Do MMMM YYYY')}</Typography>
             <Button
               onClick={submitDataProduct}
               type="submit"
               sx={{
                 height: 45,
-                backgroundColor: 'blue',
+                backgroundColor: '#4169E1',
                 color: 'white',
                 fontWeight: 'bold',
                 borderColor: 'transparent',
                 borderRadius: 20,
                 marginTop: 2,
                 '&:hover': {
-                  backgroundColor: 'darkblue',
+                  backgroundColor: '#4169E1',
                 },
               }}
             >
               Submit
             </Button>
+            <Button
+              onClick={() => setIsOpenCreate(false)}
+              type="submit"
+              sx={{
+                height: 45,
+                backgroundColor: 'red',
+                color: 'white',
+                fontWeight: 'bold',
+                borderColor: 'transparent',
+                borderRadius: 20,
+                marginTop: 2,
+                '&:hover': {
+                  backgroundColor: 'red',
+                },
+              }}
+            >
+              Close
+            </Button>
           </FormControl>
         </Box>
       </Modal>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ marginLeft: isMobile ? 20 : 0, marginRight: isMobile ? 20 : 0 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -931,7 +950,19 @@ export default function ShopProductCard() {
         </Table>
       </TableContainer>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={boxStyle} noValidate autoComplete="off">
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: isMobile ? '100%' : 500,
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          boxShadow: 24,
+          overflowY: 'scroll',
+          height: 500,
+          p: 4,
+        }} noValidate autoComplete="off">
           <Typography
             variant="h5"
             sx={{
@@ -965,9 +996,24 @@ export default function ShopProductCard() {
           height: 500,
           overflowY: 'scroll',
           marginTop: 10,
+          width: isMobile ? '85%' : '100%',
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}
       >
-        <Box sx={boxStyle} noValidate autoComplete="off">
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: isMobile ? '100%' : 500,
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          boxShadow: 24,
+          overflowY: 'scroll',
+          height: 500,
+          p: 4,
+        }} noValidate autoComplete="off">
           <Typography
             style={{
               textAlign: 'center',
@@ -1247,18 +1293,36 @@ export default function ShopProductCard() {
               type="submit"
               sx={{
                 height: 45,
-                backgroundColor: 'blue',
+                backgroundColor: '#4169E1',
                 color: 'white',
                 fontWeight: 'bold',
                 borderColor: 'transparent',
                 borderRadius: 20,
                 marginTop: 2,
                 '&:hover': {
-                  backgroundColor: 'darkblue',
+                  backgroundColor: '#4169E1',
                 },
               }}
             >
               Submit
+            </Button>
+            <Button
+              onClick={() => setIsOpenCreate(false)}
+              type="submit"
+              sx={{
+                height: 45,
+                backgroundColor: 'red',
+                color: 'white',
+                fontWeight: 'bold',
+                borderColor: 'transparent',
+                borderRadius: 20,
+                marginTop: 2,
+                '&:hover': {
+                  backgroundColor: 'red',
+                },
+              }}
+            >
+              Close
             </Button>
           </FormControl>
         </Box>
