@@ -105,7 +105,7 @@ export default function NewPost() {
             <TextField
               required
               id="outlined"
-              label="Name"
+              label="Nama"
               type="text"
               onChange={(e) => setName(e.target.value)}
               style={textFieldStyle}
