@@ -29,15 +29,13 @@ import { LocationModels } from '../../../models/Location_Models';
 import { StatusInvestmentModels } from '../../../models/Status_Investment_Models';
 import { StatusCampaignModels } from '../../../models/Status_Campaign_Models';
 import { nanoid } from 'nanoid';
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from 'react-responsive';
 
 // ----------------------------------------------------------------------
 
-
 const textFieldStyle = {
   marginBottom: 15,
-  marginTop: 15
-
+  marginTop: 15,
 };
 
 const override = {
@@ -62,10 +60,10 @@ export default function ShopProductCard() {
   const [product, setProduct] = useState([]);
 
   // Media Query
-  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+  const isMobile = useMediaQuery({ query: '(max-width: 700px)' });
   const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-width: 1224px)'
-  })
+    query: '(min-width: 1224px)',
+  });
 
   const [newData, setNewData] = useState({
     category: 'Rumah',
@@ -161,6 +159,8 @@ export default function ShopProductCard() {
   }
 
   async function getProduct() {
+    setDataProduct([]);
+
     const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
       .get('/product', {
@@ -357,6 +357,10 @@ export default function ShopProductCard() {
     setNewData({ ...newData, minimumInvesment: currency });
   }
 
+  function truncate(str, n) {
+    return str?.length > n ? str.substr(0, n - 1) + '...' : str;
+  }
+
   async function submitDataProduct(e) {
     e.preventDefault();
 
@@ -393,30 +397,12 @@ export default function ShopProductCard() {
       })
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
-          setOpen(false);
-          async function getProduct() {
-            await axiosNew
-              .get('/product', {
-                headers: {
-                  Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-                },
-              })
-              .then((res) => {
-                if (res.status === 200) {
-                  setProduct(res.data.data);
-                }
-              })
-              .catch((err) => {
-                if (err.response.status === 401) {
-                  localStorage.removeItem('token');
-                  window.location.href = '/login';
-                } else {
-                  alert(err.response.data.message);
-                }
-              });
-          }
+          setIsOpenCreate(false);
           getProduct();
         }
+      })
+      .catch((err) => {
+        alert(err);
       });
   }
 
@@ -479,7 +465,6 @@ export default function ShopProductCard() {
 
   return (
     <>
-
       <Button
         variant="contained"
         startIcon={<Iconify icon="eva:plus-fill" />}
@@ -487,7 +472,7 @@ export default function ShopProductCard() {
         style={{
           marginRight: isMobile ? 20 : 0,
           marginBottom: isMobile ? 10 : 0,
-          float: 'right'
+          float: 'right',
         }}
       >
         New Post
@@ -501,22 +486,26 @@ export default function ShopProductCard() {
           marginTop: 10,
           width: isMobile ? '85%' : '100%',
           marginLeft: 'auto',
-          marginRight: 'auto'
+          marginRight: 'auto',
         }}
       >
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: isMobile ? '100%' : 500,
-          bgcolor: 'background.paper',
-          border: '2px solid #000',
-          boxShadow: 24,
-          overflowY: 'scroll',
-          height: 500,
-          p: 4,
-        }} noValidate autoComplete="off">
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: isMobile ? '100%' : 500,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            overflowY: 'scroll',
+            height: 500,
+            p: 4,
+          }}
+          noValidate
+          autoComplete="off"
+        >
           <Typography
             style={{
               textAlign: 'center',
@@ -528,7 +517,6 @@ export default function ShopProductCard() {
             Masukan Data Product
           </Typography>
           <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
-
             <TextField
               required
               id="outlined"
@@ -584,7 +572,7 @@ export default function ShopProductCard() {
               value={newData.completeInvesment}
               onChange={(e) => completeInvesmentInputCurrencyToIDR(e.target.value)}
               InputProps={{
-                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Rp </span>
+                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Rp </span>,
               }}
               style={textFieldStyle}
             />
@@ -594,7 +582,7 @@ export default function ShopProductCard() {
               label="Minimum Invesment"
               value={newData.minimumInvesment}
               InputProps={{
-                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Rp </span>
+                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Rp </span>,
               }}
               onChange={(e) => minimumInvesmentInputCurrencyToIDR(e.target.value)}
               style={textFieldStyle}
@@ -605,7 +593,7 @@ export default function ShopProductCard() {
               label="Total Lot"
               type="number"
               InputProps={{
-                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>LOT</span>
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>LOT</span>,
               }}
               onChange={(e) => setNewData({ ...newData, totalLot: e.target.value })}
               style={textFieldStyle}
@@ -754,24 +742,15 @@ export default function ShopProductCard() {
                 autoWidth
                 label="Tenor"
                 defaultValue={500}
-              // value={500}
+                // value={500}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
                 </MenuItem>
-                <MenuItem value={3}>
-                  3 Bulan
-                </MenuItem>
-                <MenuItem value={6}>
-                  6 Bulan
-                </MenuItem>
-                <MenuItem value={9}>
-                  9 Bulan
-                </MenuItem>
-                <MenuItem value={12}>
-                  12 Bulan
-                </MenuItem>
-
+                <MenuItem value={3}>3 Bulan</MenuItem>
+                <MenuItem value={6}>6 Bulan</MenuItem>
+                <MenuItem value={9}>9 Bulan</MenuItem>
+                <MenuItem value={12}>12 Bulan</MenuItem>
               </Select>
             </FormControl>
             <TextField
@@ -780,7 +759,7 @@ export default function ShopProductCard() {
               label="Percentange Imbal"
               type="number"
               InputProps={{
-                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>%</span>
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>%</span>,
               }}
               onChange={(e) => setNewData({ ...newData, percentange_imbal: e.target.value })}
               style={textFieldStyle}
@@ -950,19 +929,23 @@ export default function ShopProductCard() {
         </Table>
       </TableContainer>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: isMobile ? '100%' : 500,
-          bgcolor: 'background.paper',
-          border: '2px solid #000',
-          boxShadow: 24,
-          overflowY: 'scroll',
-          height: 500,
-          p: 4,
-        }} noValidate autoComplete="off">
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: isMobile ? '100%' : 500,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            overflowY: 'scroll',
+            height: 500,
+            p: 4,
+          }}
+          noValidate
+          autoComplete="off"
+        >
           <Typography
             variant="h5"
             sx={{
@@ -975,7 +958,7 @@ export default function ShopProductCard() {
           {imageArray.map((e, i) => (
             <div key={i}>
               <img
-                src={`https://ed4a-114-124-239-45.ngrok-free.app/dashboard-api/static/product/${e}`}
+                src={`https://ae34-182-0-103-126.ngrok-free.app/dashboard-api/static/product/${e}`}
                 style={{
                   marginLeft: 'auto',
                   marginRight: 'auto',
@@ -998,22 +981,26 @@ export default function ShopProductCard() {
           marginTop: 10,
           width: isMobile ? '85%' : '100%',
           marginLeft: 'auto',
-          marginRight: 'auto'
+          marginRight: 'auto',
         }}
       >
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: isMobile ? '100%' : 500,
-          bgcolor: 'background.paper',
-          border: '2px solid #000',
-          boxShadow: 24,
-          overflowY: 'scroll',
-          height: 500,
-          p: 4,
-        }} noValidate autoComplete="off">
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: isMobile ? '100%' : 500,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            overflowY: 'scroll',
+            height: 500,
+            p: 4,
+          }}
+          noValidate
+          autoComplete="off"
+        >
           <Typography
             style={{
               textAlign: 'center',
