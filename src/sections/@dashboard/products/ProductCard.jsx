@@ -92,7 +92,7 @@ export default function ShopProductCard() {
   });
 
   const [editData, setEditData] = useState({
-    editId: '',
+    editId: 0,
     editCategory: '',
     editTitle: '',
     editLocation: '',
@@ -102,15 +102,15 @@ export default function ShopProductCard() {
     editMinimumInvesment: 0,
     editTotalLot: 0,
     editTotalInvestor: 0,
-    editRemainingDays: null,
-    editBusinessId: 0,
+    editRemainingDays: new Date(),
+    // editBusinessId: 0,
     editProductImage: '',
     editStatusCampaign: 0,
     editTenor: 0,
     editPercentangeImbal: 0,
     editPeriodImbal: 0,
     editDetail: '',
-    editProductDetailId: 0,
+    // editProductDetailId: 0,
     editUpdatedAt: new Date(),
   });
 
@@ -237,7 +237,6 @@ export default function ShopProductCard() {
     title,
     location,
     status_investment,
-    total_invesment,
     complete_invesment,
     minimum_invesment,
     total_lot,
@@ -250,7 +249,6 @@ export default function ShopProductCard() {
     percentange_imbal,
     period_imbal,
     detail,
-    product_detail_id,
     updatedAt
   ) {
     const updateData = {
@@ -259,7 +257,6 @@ export default function ShopProductCard() {
       editTitle: title,
       editLocation: location,
       editStatusInvestment: status_investment,
-      editTotalInvesment: total_invesment,
       editCompleteInvesment: complete_invesment,
       editMinimumInvesment: minimum_invesment,
       editTotalLot: total_lot,
@@ -268,16 +265,12 @@ export default function ShopProductCard() {
       editBusinessId: business_id,
       editProductImage: product_image,
       editStatusCampaign: status_campaign,
-      editLangtitude: langtitude,
-      editLongtitude: longtitude,
       editTenor: tenor,
       editPercentangeImbal: percentange_imbal,
       editPeriodImbal: period_imbal,
       editDetail: detail,
-      editProductDetailId: product_detail_id,
       editUpdatedAt: updatedAt,
     };
-
     setEditData(updateData);
     setOpenEditData(true);
   }
@@ -406,11 +399,10 @@ export default function ShopProductCard() {
         },
       })
       .then((res) => {
-        // if (res.status === 200 || res.status === 201) {
-        //   setIsOpenCreate(false);
-        //   getProduct();
-        // }
-        console.log(res.data)
+        if (res.status === 200 || res.status === 201) {
+          setIsOpenCreate(false);
+          getProduct();
+        }
       })
       .catch((err) => {
         alert(err);
@@ -739,7 +731,7 @@ export default function ShopProductCard() {
                 autoWidth
                 label="Tenor"
                 defaultValue={500}
-              // value={500}
+                // value={500}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
@@ -772,9 +764,17 @@ export default function ShopProductCard() {
               onChange={(e) => setNewData({ ...newData, period_imbal: e.target.value })}
               style={textFieldStyle}
             />
-            <ReactQuill theme="snow" value={newData.detail} onChange={(e) => setNewData({ ...newData, detail: e })} placeholder='Input Deskripsi' style={textFieldStyle} />
+            <ReactQuill
+              theme="snow"
+              value={newData.detail}
+              onChange={(e) => setNewData({ ...newData, detail: e })}
+              placeholder="Input Deskripsi"
+              style={textFieldStyle}
+            />
 
-            <Typography sx={{ marginTop: 4, marginBottom: 4 }}>Dibuat Pada: {moment(newData.createdAt).utc().format('Do MMMM YYYY')}</Typography>
+            <Typography sx={{ marginTop: 4, marginBottom: 4 }}>
+              Dibuat Pada: {moment(newData.createdAt).utc().format('Do MMMM YYYY')}
+            </Typography>
             <Button
               onClick={submitDataProduct}
               type="submit"
@@ -856,7 +856,6 @@ export default function ShopProductCard() {
                   <TableCell align="left">
                     {moment(result.remaining_days).utc().format('MMMM Do YYYY, h:mm:ss a')}
                   </TableCell>
-                  <TableCell align="left">{result.business_id}</TableCell>
                   <TableCell align="left">
                     <Button onClick={() => handleOpen(result.id)}>
                       <InsertDriveFileIcon />
@@ -878,20 +877,16 @@ export default function ShopProductCard() {
                           result.title,
                           result.location,
                           result.status_investment,
-                          result.total_invesment,
                           result.complete_invesment,
                           result.minimum_invesment,
                           result.total_lot,
-                          result.total_investor,
                           result.remaining_days,
-                          result.business_id,
                           result.product_image,
                           result.status_campaign,
                           result.tenor,
                           result.percentange_imbal,
                           result.period_imbal,
                           result.detail,
-                          result.product_detail_id,
                           result.updatedAt
                         )
                       }
@@ -1020,7 +1015,6 @@ export default function ShopProductCard() {
                 onChange={handleChangeEditLocation}
                 autoWidth
                 label="Location"
-                defaultValue=""
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -1053,18 +1047,7 @@ export default function ShopProductCard() {
                 ))}
               </Select>
             </FormControl>
-            <TextField
-              required
-              id="outlined"
-              label="Total Invesment"
-              type="number"
-              value={editData.editTotalInvesment}
-              InputProps={{
-                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
-              }}
-              onChange={(e) => setEditData({ ...editData, editTotalInvestment: e.target.value })}
-              style={textFieldStyle}
-            />
+
             <TextField
               required
               id="outlined"
@@ -1122,33 +1105,6 @@ export default function ShopProductCard() {
               onChange={(e) => setEditData({ ...editData, editRemainingDays: e.target.value })}
               style={textFieldStyle}
             />
-            {/* <TextField
-              required
-              id="outlined"
-              label="Business ID"
-              type="number"
-              value={editData.editBusinessId}
-              onChange={(e) => setEditData({ ...editData, editBusinessId: e.target.value })}
-              style={textFieldStyle}
-            /> */}
-            <FormControl style={textFieldStyle}>
-              <InputLabel id="demo-simple-select-autowidth-label">Business ID</InputLabel>
-              <Select
-                labelId="demo-simple-select-autowidth-label"
-                id="demo-simple-select-autowidth"
-                value={editData.editBusinessId}
-                onChange={handleChangeEditBusinessId}
-                autoWidth
-                label="Business ID"
-                defaultValue=""
-              >
-                {dataBusiness.map((data) => (
-                  <MenuItem key={data.id} value={data.id}>
-                    {data.id}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
             <TextField
               required
               accept="image/*"
@@ -1156,15 +1112,6 @@ export default function ShopProductCard() {
               onChange={(e) => setEditData({ ...editData, editProductImage: e.target.files[0] })}
               style={textFieldStyle}
             />
-            {/* <TextField
-              required
-              id="outlined"
-              label="Status Campaign"
-              type="number"
-              value={editData.editStatusCampaign}
-              onChange={(e) => setEditData({ ...editData, editStatusCampaign: e.target.value })}
-              style={textFieldStyle}
-            /> */}
             <FormControl style={textFieldStyle}>
               <InputLabel id="demo-simple-select-autowidth-label">Status Campaign</InputLabel>
               <Select
@@ -1195,8 +1142,8 @@ export default function ShopProductCard() {
                 onChange={(e) => setEditData({ ...editData, editTenor: e.target.value })}
                 autoWidth
                 label="Tenor"
-                defaultValue={500}
-              // value={500}
+                // defaultValue={500}
+                value={editData.editTenor}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
