@@ -7,8 +7,6 @@ import '../products/ProductImageStyle.css';
 import { StatusCampaignModels } from '../../../models/Status_Campaign_Models';
 import { StatusInvestmentModels } from '../../../models/Status_Investment_Models';
 import { LocationModels } from '../../../models/Location_Models';
-import { ToastContainer,toast } from 'react-toastify/dist/components';
-import 'react-toastify/dist/ReactToastify.css'
 
 import {
   Avatar,
@@ -30,7 +28,6 @@ import {
 import moment from 'moment';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
-import { Toast } from 'react-toastify/dist/components';
 
 const boxStyle = {
   position: 'absolute',
