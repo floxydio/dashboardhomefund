@@ -397,23 +397,24 @@ export default function ShopProductCard() {
     formData.append('detail', newData.detail);
     formData.append('createdAt', newData.createdAt);
 
-    const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-    await axiosNew
-      .post('/product', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-        },
-      })
-      .then((res) => {
-        if (res.status === 200 || res.status === 201) {
-          setIsOpenCreate(false);
-          getProduct();
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    // const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+    // await axiosNew
+    //   .post('/product', formData, {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //       Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+    //     },
+    //   })
+    //   .then((res) => {
+    //     if (res.status === 200 || res.status === 201) {
+    //       setIsOpenCreate(false);
+    //       getProduct();
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     alert(err);
+    //   });
+    console.log(newData.detail)
   }
 
   async function submitEditProduct(e) {
@@ -466,12 +467,13 @@ export default function ShopProductCard() {
         startIcon={<Iconify icon="eva:plus-fill" />}
         onClick={openModalCreate}
         style={{
+          width: isMobile ? '100%' : '',
           marginRight: isMobile ? 20 : 0,
-          marginBottom: isMobile ? 10 : 0,
-          float: 'right',
+          marginBottom: isMobile ? 30 : 50,
+          float: isMobile ? 'none' : 'right',
         }}
       >
-        New Post
+        Product Baru
       </Button>
       <Modal
         open={isOpenCreate}
@@ -769,7 +771,7 @@ export default function ShopProductCard() {
               onChange={(e) => setNewData({ ...newData, period_imbal: e.target.value })}
               style={textFieldStyle}
             />
-            <ReactQuill theme="snow" value={newData.detail} onChange={(e) => setNewData({ ...newData, detail: e.target.value })} placeholder='Input Deskripsi' />
+            <ReactQuill theme="snow" value={newData.detail} onChange={(e) => setNewData({ ...newData, detail: e })} placeholder='Input Deskripsi' style={textFieldStyle} />
 
             <Typography sx={{ marginTop: 4, marginBottom: 4 }}>Dibuat Pada: {moment(newData.createdAt).utc().format('Do MMMM YYYY')}</Typography>
             <Button
@@ -806,13 +808,13 @@ export default function ShopProductCard() {
                 },
               }}
             >
-              Close
+              Tutup
             </Button>
           </FormControl>
         </Box>
       </Modal>
       <TableContainer component={Paper} style={{ marginLeft: isMobile ? 20 : 0, marginRight: isMobile ? 20 : 0 }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: isMobile ? 0 : 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>No</TableCell>
@@ -1289,7 +1291,7 @@ export default function ShopProductCard() {
                 },
               }}
             >
-              Close
+              Tutup
             </Button>
           </FormControl>
         </Box>
