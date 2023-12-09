@@ -91,34 +91,68 @@ export default function ShopProductCard() {
     createdAt: new Date(),
   });
 
-  const [editData, setEditData] = useState({
-    editId: 0,
-    editCategory: '',
-    editTitle: '',
-    editLocation: '',
-    editStatusInvestment: 0,
-    editTotalInvesment: 0,
-    editCompleteInvesment: 0,
-    editMinimumInvesment: 0,
-    editTotalLot: 0,
-    editTotalInvestor: 0,
-    editRemainingDays: new Date(),
-    // editBusinessId: 0,
-    editProductImage: '',
-    editStatusCampaign: 0,
-    editTenor: 0,
-    editPercentangeImbal: 0,
-    editPeriodImbal: 0,
-    editDetail: '',
-    // editProductDetailId: 0,
-    editUpdatedAt: new Date(),
-  });
+  // const [editData, setEditData] = useState({
+  //   editId: 0,
+  //   editCategory: '',
+  //   editTitle: '',
+  //   editLocation: '',
+  //   editStatusInvestment: 0,
+  //   editTotalInvesment: 0,
+  //   editCompleteInvesment: 0,
+  //   editMinimumInvesment: 0,
+  //   editTotalLot: 0,
+  //   editTotalInvestor: 0,
+  //   editRemainingDays: new Date(),
+  //   // editBusinessId: 0,
+  //   editProductImage: '',
+  //   editStatusCampaign: 0,
+  //   editTenor: 0,
+  //   editPercentangeImbal: 0,
+  //   editPeriodImbal: 0,
+  //   editDetail: '',
+  //   // editProductDetailId: 0,
+  //   editUpdatedAt: new Date(),
+  // });
 
-  const editId = editData.editId;
+  // const editId = editData.editId;
 
-  // const handleChangeBusinessId = (e) => {
-  //   setNewData({ ...newData, businessId: e.target.value });
-  // };
+  const [editId, setEditId] = useState(0);
+  const [editCategory, setEditCategory] = useState('');
+  const [editTitle, setEditTitle] = useState('');
+  const [editLocation, setEditLocation] = useState('');
+  const [editStatusInvestment, setEditStatusInvestment] = useState(0);
+  const [editCompleteInvesment, setEditCompleteInvesment] = useState(0);
+  const [editMinimumInvesment, setEditMinimumInvesment] = useState(0);
+  const [editTotalLot, setEditTotalLot] = useState(0);
+  const [editRemainingDays, setEditRemainingDays] = useState(new Date());
+  const [editProductImage, setEditProductImage] = useState('');
+  const [editStatusCampaign, setEditStatusCampaign] = useState(0);
+  const [editTenor, setEditTenor] = useState(0);
+  const [editPercentangeImbal, setEditPercentangeImbal] = useState(0);
+  const [editPeriodImbal, setEditPeriodImbal] = useState(0);
+  const [editDetail, setEditDetail] = useState('');
+
+  const handleFunctionEdit = (id, category, title, location, statusInvestment, completeInvesment, minimumInvestment, totalLot, remainingDays, productImage, statusCampaign, tenor, percentangeImbal, periodImbal, detail) => {
+    setEditId(id)
+    setEditCategory(category)
+    setEditTitle(title)
+    setEditLocation(location)
+    setEditStatusInvestment(statusInvestment)
+    setEditCompleteInvesment(completeInvesment)
+    setEditMinimumInvesment(minimumInvestment)
+    setEditTotalLot(totalLot)
+    setEditRemainingDays(remainingDays)
+    setEditProductImage(productImage)
+    setEditStatusCampaign(statusCampaign)
+    setEditTenor(tenor)
+    setEditPercentangeImbal(percentangeImbal)
+    setEditPeriodImbal(periodImbal)
+    setEditDetail(detail)
+    setOpenEditData(true)
+
+  }
+
+
 
   const handleChangeStatusInvesment = (e) => {
     setNewData({ ...newData, statusInvestment: e.target.value });
@@ -251,6 +285,8 @@ export default function ShopProductCard() {
     detail,
     updatedAt
   ) {
+    console.log(total_investor)
+
     const updateData = {
       editId: id,
       editCategory: category,
@@ -468,6 +504,7 @@ export default function ShopProductCard() {
       >
         Product Baru
       </Button>
+      {/* Modal - Create */}
       <Modal
         open={isOpenCreate}
         onClose={closeModalCreate}
@@ -731,7 +768,7 @@ export default function ShopProductCard() {
                 autoWidth
                 label="Tenor"
                 defaultValue={500}
-                // value={500}
+              // value={500}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
@@ -871,24 +908,7 @@ export default function ShopProductCard() {
                   <TableCell align="left">
                     <Button
                       onClick={() =>
-                        handleEditProduct(
-                          result.id,
-                          result.category,
-                          result.title,
-                          result.location,
-                          result.status_investment,
-                          result.complete_invesment,
-                          result.minimum_invesment,
-                          result.total_lot,
-                          result.remaining_days,
-                          result.product_image,
-                          result.status_campaign,
-                          result.tenor,
-                          result.percentange_imbal,
-                          result.period_imbal,
-                          result.detail,
-                          result.updatedAt
-                        )
+                        handleFunctionEdit(result.id, result.category, result.title, result.location.result.status_investment, result.minimum_invesment, result.complete_invesment, result.minimum_invesment, result.total_lot, result.remaining_days, "", result.status_campaign, result.tenor, result.percentange_imbal, result.period_imbal, result.detail)
                       }
                     >
                       <EditIcon />
@@ -904,6 +924,7 @@ export default function ShopProductCard() {
         </Table>
       </TableContainer>
 
+      {/* Modal Image */}
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={{
@@ -948,6 +969,8 @@ export default function ShopProductCard() {
           ))}
         </Box>
       </Modal>
+
+      {/* Modal Edit */}
       <Modal
         open={openEditData}
         onClose={handleCloseEditData}
@@ -993,8 +1016,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Category"
               type="text"
-              value={editData.editCategory}
-              onChange={(e) => setEditData({ ...editData, editCategory: e.target.value })}
+              value={editCategory}
+              onChange={(e) => setEditCategory(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
@@ -1002,8 +1025,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Title"
               type="text"
-              value={editData.editTitle}
-              onChange={(e) => setEditData({ ...editData, editTitle: e.target.value })}
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
               style={textFieldStyle}
             />
             <FormControl style={textFieldStyle}>
@@ -1011,7 +1034,7 @@ export default function ShopProductCard() {
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
-                value={editData.editLocation}
+                value={editLocation}
                 onChange={handleChangeEditLocation}
                 autoWidth
                 label="Location"
@@ -1031,7 +1054,7 @@ export default function ShopProductCard() {
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
-                value={editData.editStatusInvestment}
+                value={editStatusInvestment}
                 onChange={handleChangeEditStatusInvestment}
                 autoWidth
                 label="Status Invesment"
@@ -1053,11 +1076,11 @@ export default function ShopProductCard() {
               id="outlined"
               label="Complete Invesment"
               type="number"
-              value={editData.editCompleteInvesment}
+              value={editCompleteInvesment}
               InputProps={{
                 endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
               }}
-              onChange={(e) => setEditData({ ...editData, editCompleteInvestment: e.target.value })}
+              onChange={(e) => setEditCompleteInvesment(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
@@ -1065,11 +1088,11 @@ export default function ShopProductCard() {
               id="outlined"
               label="Minimum Invesment"
               type="number"
-              value={editData.editMinimumInvesment}
+              value={editMinimumInvesment}
               InputProps={{
                 endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
               }}
-              onChange={(e) => setEditData({ ...editData, editMinimumInvestment: e.target.value })}
+              onChange={(e) => setEditMinimumInvesment(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
@@ -1077,39 +1100,28 @@ export default function ShopProductCard() {
               id="outlined"
               label="Total Lot"
               type="number"
-              value={editData.editTotalLot}
+              value={editTotalLot}
               InputProps={{
                 endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>LOT</span>,
               }}
-              onChange={(e) => setEditData({ ...editData, editTotalLot: e.target.value })}
+              onChange={(e) => setEditTotalLot(e.target.value)}
               style={textFieldStyle}
             />
-            <TextField
-              required
-              id="outlined"
-              label="Total Investor"
-              type="number"
-              value={editData.editTotalInvestor}
-              InputProps={{
-                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Orang</span>,
-              }}
-              onChange={(e) => setEditData({ ...editData, editTotalInvestor: e.target.value })}
-              style={textFieldStyle}
-            />
+
             <TextField
               required
               type="date"
               label="Remaining Days"
               InputLabelProps={{ shrink: true }}
-              value={editData.editRemainingDays}
-              onChange={(e) => setEditData({ ...editData, editRemainingDays: e.target.value })}
+              value={editRemainingDays}
+              onChange={(e) => setEditRemainingDays(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
               required
               accept="image/*"
               type="file"
-              onChange={(e) => setEditData({ ...editData, editProductImage: e.target.files[0] })}
+              onChange={(e) => setEditProductImage(e.target.value)}
               style={textFieldStyle}
             />
             <FormControl style={textFieldStyle}>
@@ -1117,7 +1129,7 @@ export default function ShopProductCard() {
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
-                value={editData.editStatusCampaign}
+                value={editStatusCampaign }
                 onChange={handleChangeEditStatusCampaign}
                 autoWidth
                 label="Status Campaign"
@@ -1139,11 +1151,11 @@ export default function ShopProductCard() {
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
-                onChange={(e) => setEditData({ ...editData, editTenor: e.target.value })}
+                onChange={(e) => setEditTenor(e.target.value)}
                 autoWidth
                 label="Tenor"
                 // defaultValue={500}
-                value={editData.editTenor}
+                value={editTenor}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
@@ -1159,11 +1171,11 @@ export default function ShopProductCard() {
               id="outlined"
               label="Percentange Imbal"
               type="number"
-              value={editData.editPercentangeImbal}
+              value={editPercentangeImbal}
               InputProps={{
                 endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>%</span>,
               }}
-              onChange={(e) => setEditData({ ...editData, editPercentangeImbal: e.target.value })}
+              onChange={(e) => setEditPercentangeImbal(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
@@ -1171,11 +1183,11 @@ export default function ShopProductCard() {
               id="outlined"
               label="Period Imbal"
               type="number"
-              value={editData.editPeriodImbal}
+              value={editPeriodImbal}
               InputProps={{
                 endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Bulan</span>,
               }}
-              onChange={(e) => setEditData({ ...editData, editPeriodImbal: e.target.value })}
+              onChange={(e) => setEditPeriodeImbal(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
@@ -1183,8 +1195,8 @@ export default function ShopProductCard() {
               id="outlined"
               label="Detail"
               type="text"
-              value={editData.editDetail}
-              onChange={(e) => setEditData({ ...editData, editDetail: e.target.value })}
+              value={editDetail}
+              onChange={(e) => setEditDetail(e.target.value)}
               style={textFieldStyle}
             />
             <Box
@@ -1197,7 +1209,7 @@ export default function ShopProductCard() {
               }}
             >
               <Typography>
-                Diupdate Pada: {moment(editData.editUpdatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}
+                Diupdate Pada: {moment(editUpdatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}
               </Typography>
             </Box>
             <Button
