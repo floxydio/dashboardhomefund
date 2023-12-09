@@ -30,7 +30,8 @@ import { StatusInvestmentModels } from '../../../models/Status_Investment_Models
 import { StatusCampaignModels } from '../../../models/Status_Campaign_Models';
 import { nanoid } from 'nanoid';
 import { useMediaQuery } from 'react-responsive';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 // ----------------------------------------------------------------------
 
 const textFieldStyle = {
@@ -54,6 +55,7 @@ export default function ShopProductCard() {
   const [selectedFile, setSelectedFile] = useState([]);
   const [files, setFiles] = useState([]);
   const [product, setProduct] = useState([]);
+  const [value, setValue] = useState('');
 
   //use State Modal
   const [open, setOpen] = useState(false);
@@ -734,7 +736,7 @@ export default function ShopProductCard() {
                 autoWidth
                 label="Tenor"
                 defaultValue={500}
-                // value={500}
+              // value={500}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
@@ -767,16 +769,9 @@ export default function ShopProductCard() {
               onChange={(e) => setNewData({ ...newData, period_imbal: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
-              required
-              id="outlined"
-              label="Detail"
-              type="text"
-              onChange={(e) => setNewData({ ...newData, detail: e.target.value })}
-              style={textFieldStyle}
-            />
+            <ReactQuill theme="snow" value={newData.detail} onChange={(e) => setNewData({ ...newData, detail: e.target.value })} placeholder='Input Deskripsi' />
 
-            <Typography>Dibuat Pada: {moment(newData.createdAt).utc().format('Do MMMM YYYY')}</Typography>
+            <Typography sx={{ marginTop: 4, marginBottom: 4 }}>Dibuat Pada: {moment(newData.createdAt).utc().format('Do MMMM YYYY')}</Typography>
             <Button
               onClick={submitDataProduct}
               type="submit"
@@ -1203,7 +1198,7 @@ export default function ShopProductCard() {
                 autoWidth
                 label="Tenor"
                 defaultValue={500}
-                // value={500}
+              // value={500}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
