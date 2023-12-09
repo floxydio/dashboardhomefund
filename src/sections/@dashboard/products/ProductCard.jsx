@@ -383,7 +383,6 @@ export default function ShopProductCard() {
     formData.append('total_invesment', newData.totalInvesment.toString().replace('.', ''));
     formData.append('minimum_investment', newData.minimumInvesment.toString().replaceAll('.', ''));
     formData.append('total_lot', newData.totalLot);
-    formData.append('total_investor', newData.totalInvestor);
     formData.append('remaining_days', newData.remainingDays);
     formData.append('business_id', newData.businessId);
     for (let i = 0; i < files.length; i++) {
