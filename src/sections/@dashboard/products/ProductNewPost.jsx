@@ -7,8 +7,6 @@ import '../products/ProductImageStyle.css';
 import { StatusCampaignModels } from '../../../models/Status_Campaign_Models';
 import { StatusInvestmentModels } from '../../../models/Status_Investment_Models';
 import { LocationModels } from '../../../models/Location_Models';
-import { ToastContainer,toast } from 'react-toastify/dist/components';
-import 'react-toastify/dist/ReactToastify.css'
 
 import {
   Avatar,
@@ -30,7 +28,6 @@ import {
 import moment from 'moment';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
-import { Toast } from 'react-toastify/dist/components';
 
 const boxStyle = {
   position: 'absolute',
@@ -50,22 +47,7 @@ const textFieldStyle = {
   marginBottom: 10,
   marginTop: 10,
 };
-export default function ProductNewPost() {
-  const [state, setState] = React.useState({
-    snackbarOpen: false,
-    vertical: 'top',
-    horizontal: 'right',
-    status: 0
-  })
-  const {vertical,horizontal,snackbarOpen,status} = state
-  const handleSnackbarClick = (newState) => () => {
-    setState({ ...newState, open: true })
-  }
-
-  const handleSnackbarClose = () => {
-    setState({ ...state, open: false })
-  }
-
+export default function ProductNewPost() {  
   const [newData, setNewData] = useState({
     category: '',
     title: '',
@@ -264,7 +246,7 @@ export default function ProductNewPost() {
             <TextField
               disabled
               id="outlined"
-              label="Category"
+              label="Kategori"
               type="text"
               defaultValue="Rumah"
               style={textFieldStyle}
@@ -272,7 +254,7 @@ export default function ProductNewPost() {
             <TextField
               required
               id="outlined"
-              label="Title"
+              label="Judul"
               type="text"
               onChange={(e) => setNewData({ ...newData, title: e.target.value })}
               style={textFieldStyle}
@@ -285,7 +267,7 @@ export default function ProductNewPost() {
                 value={newData.location}
                 onChange={handleChangeLocation}
                 autoWidth
-                label="Location"
+                label="Lokasi"
                 defaultValue=""
               >
                 <MenuItem value="">
@@ -306,7 +288,7 @@ export default function ProductNewPost() {
                 value={newData.statusInvestment}
                 onChange={handleChangeStatusInvesment}
                 autoWidth
-                label="Status Invesment"
+                label="Status Investasi"
                 defaultValue=""
               >
                 <MenuItem value="">
@@ -322,7 +304,7 @@ export default function ProductNewPost() {
             <TextField
               required
               id="outlined"
-              label="Complete Invesment"
+              label="Dana Tercapai"
               value={newData.completeInvesment}
               onChange={(e) => completeInvesmentInputCurrencyToIDR(e.target.value)}
               style={textFieldStyle}
@@ -330,7 +312,7 @@ export default function ProductNewPost() {
             <TextField
               required
               id="outlined"
-              label="Minimum Invesment"
+              label="Minimal Investasi"
               value={newData.minimumInvesment}
               onChange={(e) => minimumInvesmentInputCurrencyToIDR(e.target.value)}
               style={textFieldStyle}
@@ -338,7 +320,7 @@ export default function ProductNewPost() {
             <TextField
               required
               id="outlined"
-              label="Total Lot"
+              label="Total LOT"
               type="number"
               onChange={(e) => setNewData({ ...newData, totalLot: e.target.value })}
               style={textFieldStyle}
@@ -354,7 +336,7 @@ export default function ProductNewPost() {
             <TextField
               required
               type="date"
-              label="Remaining Days"
+              label="Masa Pengumpulan"
               InputLabelProps={{ shrink: true }}
               onChange={(e) => setNewData({ ...newData, remainingDays: e.target.value })}
               style={textFieldStyle}
@@ -375,7 +357,7 @@ export default function ProductNewPost() {
                 value={newData.businessId}
                 onChange={handleChangeBusinessId}
                 autoWidth
-                label="Business ID"
+                label="Id Bisnis"
                 defaultValue=""
               >
                 {dataBusiness.map((data) => (
@@ -434,7 +416,7 @@ export default function ProductNewPost() {
                                         className="file-action-btn"
                                         onClick={() => deleteSelectFile(id)}
                                       >
-                                        Delete
+                                        Hapus
                                       </button>
                                     </div>
                                   </div>
@@ -465,7 +447,7 @@ export default function ProductNewPost() {
                 value={newData.statusCampaign}
                 onChange={handleChangeStatusCampaign}
                 autoWidth
-                label="Status Campaign"
+                label="Status Produk"
                 defaultValue=""
               >
                 <MenuItem value="">
@@ -505,7 +487,7 @@ export default function ProductNewPost() {
             <TextField
               required
               id="outlined"
-              label="Percentange Imbal"
+              label="Persentase Pembagian Imbal"
               type="number"
               onChange={(e) => setNewData({ ...newData, percentange_imbal: e.target.value })}
               style={textFieldStyle}
@@ -513,7 +495,7 @@ export default function ProductNewPost() {
             <TextField
               required
               id="outlined"
-              label="Period Imbal"
+              label="Periode Pembagian Imbal"
               type="number"
               onChange={(e) => setNewData({ ...newData, period_imbal: e.target.value })}
               style={textFieldStyle}

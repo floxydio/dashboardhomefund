@@ -525,19 +525,19 @@ export default function ShopProductCard() {
             <TextField
               required
               id="outlined"
-              label="Title"
+              label="Judul"
               type="text"
               onChange={(e) => setNewData({ ...newData, title: e.target.value })}
               style={textFieldStyle}
             />
             <FormControl style={textFieldStyle}>
-              <InputLabel id="demo-simple-select-autowidth-label">Location</InputLabel>
+              <InputLabel id="demo-simple-select-autowidth-label">Lokasi</InputLabel>
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
                 onChange={handleChangeLocation}
                 autoWidth
-                label="Location"
+                label="Lokasi"
                 defaultValue={500}
               >
                 <MenuItem value={500} disabled>
@@ -551,13 +551,13 @@ export default function ShopProductCard() {
               </Select>
             </FormControl>
             <FormControl style={textFieldStyle}>
-              <InputLabel id="demo-simple-select-autowidth-label">Status Investment</InputLabel>
+              <InputLabel id="demo-simple-select-autowidth-label">Status Investasi</InputLabel>
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
                 onChange={handleChangeStatusInvesment}
                 autoWidth
-                label="Status Invesment"
+                label="Status Investasi"
                 defaultValue={500}
               >
                 <MenuItem value={500} disabled>
@@ -573,7 +573,7 @@ export default function ShopProductCard() {
             <TextField
               required
               id="outlined"
-              label="Total Invesment"
+              label="Total Investor"
               value={newData.totalInvesment}
               onChange={(e) => totalInvesmentInputCurrencyToIDR(e.target.value)}
               InputProps={{
@@ -584,7 +584,7 @@ export default function ShopProductCard() {
             <TextField
               required
               id="outlined"
-              label="Complete Invesment"
+              label="Target Pendanaan"
               value={newData.completeInvesment}
               onChange={(e) => completeInvesmentInputCurrencyToIDR(e.target.value)}
               InputProps={{
@@ -595,7 +595,7 @@ export default function ShopProductCard() {
             <TextField
               required
               id="outlined"
-              label="Minimum Invesment"
+              label="Minimal Investasi"
               value={newData.minimumInvesment}
               InputProps={{
                 startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Rp </span>,
@@ -628,7 +628,7 @@ export default function ShopProductCard() {
             <TextField
               required
               type="date"
-              label="Remaining Days"
+              label="Masa Pengumpulan Dana"
               InputLabelProps={{ shrink: true }}
               onChange={(e) => setNewData({ ...newData, remainingDays: e.target.value })}
               style={textFieldStyle}
@@ -717,17 +717,17 @@ export default function ShopProductCard() {
               </div>
             </Stack>
             <FormControl style={textFieldStyle}>
-              <InputLabel id="demo-simple-select-autowidth-label">Status Campaign</InputLabel>
+              <InputLabel id="demo-simple-select-autowidth-label">Status Produk</InputLabel>
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
                 onChange={handleChangeStatusCampaign}
                 autoWidth
-                label="Status Campaign"
+                label="Status Produk"
                 defaultValue={500}
               >
                 <MenuItem value={500} disabled>
-                  <em>Pilih Status Campaign</em>
+                  <em>Pilih Status Produk</em>
                 </MenuItem>
                 {StatusCampaignModels.map((campaign) => (
                   <MenuItem key={campaign.value} value={campaign.value}>
@@ -775,7 +775,7 @@ export default function ShopProductCard() {
             <TextField
               required
               id="outlined"
-              label="Percentange Imbal"
+              label="Persentase Imbal"
               type="number"
               InputProps={{
                 endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>%</span>,
@@ -786,7 +786,7 @@ export default function ShopProductCard() {
             <TextField
               required
               id="outlined"
-              label="Period Imbal"
+              label="Periode   Imbal"
               type="number"
               InputProps={{
                 endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Bulan</span>,
