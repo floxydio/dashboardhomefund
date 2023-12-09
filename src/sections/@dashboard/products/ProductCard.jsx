@@ -842,7 +842,7 @@ export default function ShopProductCard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataProduct.map((result, i) => {
+            {dataProduct?.map((result, i) => {
               return (
                 <TableRow sx={{ '&:last-child td, &:lastchild th': { border: 0 } }} key={result.id}>
                   <TableCell component="th" scope="row">
