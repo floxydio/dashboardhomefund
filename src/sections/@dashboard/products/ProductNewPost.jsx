@@ -7,6 +7,8 @@ import '../products/ProductImageStyle.css';
 import { StatusCampaignModels } from '../../../models/Status_Campaign_Models';
 import { StatusInvestmentModels } from '../../../models/Status_Investment_Models';
 import { LocationModels } from '../../../models/Location_Models';
+import { ToastContainer,toast } from 'react-toastify/dist/components';
+import 'react-toastify/dist/ReactToastify.css'
 
 import {
   Avatar,
@@ -28,6 +30,7 @@ import {
 import moment from 'moment';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
+import { Toast } from 'react-toastify/dist/components';
 
 const boxStyle = {
   position: 'absolute',
@@ -214,6 +217,11 @@ export default function ProductNewPost() {
       .toString();
     const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     setNewData({ ...newData, minimumInvesment: currency });
+  }
+
+  function toastAfterSubmit() {
+    const notify = () => toast("Submit Selesai")
+
   }
 
   return (
@@ -540,7 +548,7 @@ export default function ProductNewPost() {
                 '&:hover': {
                   backgroundColor: 'darkblue',
                 },
-              }}
+              }}  
             >
               Submit
             </Button>

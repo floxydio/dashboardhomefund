@@ -380,7 +380,7 @@ export default function ShopProductCard() {
     formData.append('percentange_imbal', newData.percentange_imbal);
     formData.append('period_imbal', newData.period_imbal);
     formData.append('detail', newData.detail);
-    formData.append('product_detail_id', newData.productDetailId);
+    // formData.append('product_detail_id', newData.productDetailId);
     formData.append('createdAt', newData.createdAt);
 
     const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
