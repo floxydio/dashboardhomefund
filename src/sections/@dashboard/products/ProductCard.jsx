@@ -150,7 +150,7 @@ export default function ShopProductCard() {
         },
       })
       .then(() => {
-        setIsOpenDelete(false);
+        // setIsOpenDelete(false);
         getProduct();
       })
       .catch((err) => {
@@ -397,24 +397,25 @@ export default function ShopProductCard() {
     formData.append('detail', newData.detail);
     formData.append('createdAt', newData.createdAt);
 
-    // const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-    // await axiosNew
-    //   .post('/product', formData, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data',
-    //       Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-    //     },
-    //   })
-    //   .then((res) => {
-    //     if (res.status === 200 || res.status === 201) {
-    //       setIsOpenCreate(false);
-    //       getProduct();
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     alert(err);
-    //   });
-    console.log(newData.detail)
+    const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+    await axiosNew
+      .post('/product', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+        },
+      })
+      .then((res) => {
+        // if (res.status === 200 || res.status === 201) {
+        //   setIsOpenCreate(false);
+        //   getProduct();
+        // }
+        console.log(res.data)
+      })
+      .catch((err) => {
+        alert(err);
+      });
+    // console.log(newData.detail)
   }
 
   async function submitEditProduct(e) {
@@ -814,7 +815,7 @@ export default function ShopProductCard() {
         </Box>
       </Modal>
       <TableContainer component={Paper} style={{ marginLeft: isMobile ? 20 : 0, marginRight: isMobile ? 20 : 0 }}>
-        <Table sx={{ minWidth: isMobile ? 0 : 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>No</TableCell>
@@ -904,7 +905,7 @@ export default function ShopProductCard() {
                     </Button>
                   </TableCell>
                   <TableCell align="left">
-                    <Button onClick={deleteProduct(result.id)}>Delete</Button>
+                    <Button onClick={() => deleteProduct(result.id)}>Delete</Button>
                   </TableCell>
                 </TableRow>
               );
