@@ -48,16 +48,18 @@ const override = {
 export default function ShopProductCard() {
   const [dataProduct, setDataProduct] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
   const [idProduct, setIdProduct] = useState();
-  // const [dataBusiness, setDataBusiness] = useState([]);
   const [imageProduct, setImageProduct] = useState('');
-  const [isOpenCreate, setIsOpenCreate] = useState(false);
   const [imageArray, setImageArray] = useState([]);
-  const [openEditData, setOpenEditData] = useState(false);
   const [selectedFile, setSelectedFile] = useState([]);
   const [files, setFiles] = useState([]);
   const [product, setProduct] = useState([]);
+
+  //use State Modal
+  const [open, setOpen] = useState(false);
+  const [openEditData, setOpenEditData] = useState(false); //Ini Buat Edit Modal
+  const [isOpenCreate, setIsOpenCreate] = useState(false); //Ini Buat Create Modal
+  const [isOpenDelete, setIsOpenDelete] = useState(false); //Ini Buat Delete Modal
 
   // Media Query
   const isMobile = useMediaQuery({ query: '(max-width: 700px)' });
@@ -71,6 +73,7 @@ export default function ShopProductCard() {
     location: '',
     statusInvestment: 0,
     completeInvesment: 0,
+    totalInvesment: 0,
     minimumInvesment: 0,
     totalLot: 0,
     totalInvestor: 0,
@@ -136,6 +139,9 @@ export default function ShopProductCard() {
   const openModalCreate = () => setIsOpenCreate(true);
   const closeModalCreate = () => setIsOpenCreate(false);
 
+  const openModalDelete = () => setIsOpenDelete(true);
+  const closeModalDelete = () => setIsOpenDelete(false);
+
   function deleteProduct(id) {
     const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
 
@@ -146,7 +152,8 @@ export default function ShopProductCard() {
         },
       })
       .then(() => {
-        window.location.reload();
+        setIsOpenDelete(false);
+        getProduct();
       })
       .catch((err) => {
         if (err.response.status === 401) {
@@ -337,6 +344,16 @@ export default function ShopProductCard() {
     }
   };
 
+  function totalInvesmentInputCurrencyToIDR(e) {
+    const value = e;
+    const valueString = value
+      .toString()
+      .replace(/[^,\d]/g, '')
+      .toString();
+    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    setNewData({ ...newData, totalInvesment: currency });
+  }
+
   function completeInvesmentInputCurrencyToIDR(e) {
     const value = e;
     const valueString = value
@@ -366,9 +383,11 @@ export default function ShopProductCard() {
 
     let formData = new FormData();
     formData.append('category', 'Rumah');
-    formData.append('title', newData.title), formData.append('location', newData.location);
+    formData.append('title', newData.title);
+    formData.append('location', newData.location);
     formData.append('status_investment', newData.statusInvestment);
     formData.append('complete_invesment', newData.completeInvesment.toString().replaceAll('.', ''));
+    formData.append('total_invesment', newData.totalInvesment.toString().replace('.', ''));
     formData.append('minimum_investment', newData.minimumInvesment.toString().replaceAll('.', ''));
     formData.append('total_lot', newData.totalLot);
     formData.append('total_investor', newData.totalInvestor);
@@ -436,25 +455,11 @@ export default function ShopProductCard() {
       .then((result) => {
         if (result.status === 200 || result.status === 201) {
           setOpenEditData(false);
-          async function getProduct() {
-            await axiosNew
-              .get('/product')
-              .then((result) => {
-                if (result.status === 200) {
-                  setDataProduct(result.data.data);
-                }
-              })
-              .catch((err) => {
-                if (err.response.status === 401) {
-                  localStorage.removeItem('token');
-                  window.location.href = '/login';
-                } else {
-                  alert(err.response.data.message);
-                }
-              });
-          }
           getProduct();
         }
+      })
+      .catch((err) => {
+        alert(err);
       });
   }
 
@@ -568,6 +573,17 @@ export default function ShopProductCard() {
             <TextField
               required
               id="outlined"
+              label="Total Invesment"
+              value={newData.totalInvesment}
+              onChange={(e) => totalInvesmentInputCurrencyToIDR(e.target.value)}
+              InputProps={{
+                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Rp </span>,
+              }}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
               label="Complete Invesment"
               value={newData.completeInvesment}
               onChange={(e) => completeInvesmentInputCurrencyToIDR(e.target.value)}
@@ -602,6 +618,9 @@ export default function ShopProductCard() {
               required
               id="outlined"
               label="Total Investor"
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Orang</span>,
+              }}
               type="number"
               onChange={(e) => setNewData({ ...newData, totalInvestor: e.target.value })}
               style={textFieldStyle}
@@ -769,6 +788,9 @@ export default function ShopProductCard() {
               id="outlined"
               label="Period Imbal"
               type="number"
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Bulan</span>,
+              }}
               onChange={(e) => setNewData({ ...newData, period_imbal: e.target.value })}
               style={textFieldStyle}
             />
@@ -920,7 +942,72 @@ export default function ShopProductCard() {
                     </Button>
                   </TableCell>
                   <TableCell align="left">
-                    <Button onClick={() => deleteProduct(result.id)}>Delete</Button>
+                    <Button onClick={openModalDelete}>Delete</Button>
+                    <Modal open={isOpenDelete} onClose={closeModalDelete}>
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          transform: 'translate(-50%, -50%)',
+                          width: isMobile ? '100%' : 500,
+                          bgcolor: 'background.paper',
+                          border: '2px solid #000',
+                          boxShadow: 24,
+                          overflowY: 'scroll',
+                          height: 500,
+                          p: 4,
+                        }}
+                        noValidate
+                        autoComplete="off"
+                      >
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            textAlign: 'center',
+                            marginBottom: 3,
+                          }}
+                        >
+                          Delete Data
+                        </Typography>
+                        <Button
+                          // onClick={deleteProduct()}
+                          type="submit"
+                          sx={{
+                            height: 45,
+                            backgroundColor: '#4169E1',
+                            color: 'white',
+                            fontWeight: 'bold',
+                            borderColor: 'transparent',
+                            borderRadius: 20,
+                            marginTop: 2,
+                            '&:hover': {
+                              backgroundColor: '#4169E1',
+                            },
+                          }}
+                        >
+                          Submit
+                        </Button>
+                        <Button
+                          onClick={closeModalDelete}
+                          type="submit"
+                          sx={{
+                            height: 45,
+                            backgroundColor: 'red',
+                            color: 'white',
+                            fontWeight: 'bold',
+                            borderColor: 'transparent',
+                            borderRadius: 20,
+                            marginTop: 2,
+                            '&:hover': {
+                              backgroundColor: 'red',
+                            },
+                          }}
+                        >
+                          Close
+                        </Button>
+                      </Box>
+                    </Modal>
                   </TableCell>
                 </TableRow>
               );
@@ -928,6 +1015,7 @@ export default function ShopProductCard() {
           </TableBody>
         </Table>
       </TableContainer>
+
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={{
