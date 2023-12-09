@@ -48,16 +48,18 @@ const override = {
 export default function ShopProductCard() {
   const [dataProduct, setDataProduct] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
   const [idProduct, setIdProduct] = useState();
-  // const [dataBusiness, setDataBusiness] = useState([]);
   const [imageProduct, setImageProduct] = useState('');
-  const [isOpenCreate, setIsOpenCreate] = useState(false);
   const [imageArray, setImageArray] = useState([]);
-  const [openEditData, setOpenEditData] = useState(false);
   const [selectedFile, setSelectedFile] = useState([]);
   const [files, setFiles] = useState([]);
   const [product, setProduct] = useState([]);
+
+  //use State Modal
+  const [open, setOpen] = useState(false);
+  const [openEditData, setOpenEditData] = useState(false); //Ini Buat Edit Modal
+  const [isOpenCreate, setIsOpenCreate] = useState(false); //Ini Buat Create Modal
+  const [isOpenDelete, setIsOpenDelete] = useState(false); //Ini Buat Delete Modal
 
   // Media Query
   const isMobile = useMediaQuery({ query: '(max-width: 700px)' });
@@ -71,6 +73,7 @@ export default function ShopProductCard() {
     location: '',
     statusInvestment: 0,
     completeInvesment: 0,
+    totalInvesment: 0,
     minimumInvesment: 0,
     totalLot: 0,
     totalInvestor: 0,
@@ -78,8 +81,6 @@ export default function ShopProductCard() {
     businessId: 0,
     productImage: '',
     statusCampaign: 0,
-    langtitude: '',
-    longtitude: '',
     tenor: 0,
     percentange_imbal: 0,
     period_imbal: 0,
@@ -103,8 +104,6 @@ export default function ShopProductCard() {
     editBusinessId: 0,
     editProductImage: '',
     editStatusCampaign: 0,
-    editLangtitude: '',
-    editLongtitude: '',
     editTenor: 0,
     editPercentangeImbal: 0,
     editPeriodImbal: 0,
@@ -115,9 +114,9 @@ export default function ShopProductCard() {
 
   const editId = editData.editId;
 
-  const handleChangeBusinessId = (e) => {
-    setNewData({ ...newData, businessId: e.target.value });
-  };
+  // const handleChangeBusinessId = (e) => {
+  //   setNewData({ ...newData, businessId: e.target.value });
+  // };
 
   const handleChangeStatusInvesment = (e) => {
     setNewData({ ...newData, statusInvestment: e.target.value });
@@ -136,6 +135,9 @@ export default function ShopProductCard() {
   const openModalCreate = () => setIsOpenCreate(true);
   const closeModalCreate = () => setIsOpenCreate(false);
 
+  const openModalDelete = () => setIsOpenDelete(true);
+  const closeModalDelete = () => setIsOpenDelete(false);
+
   function deleteProduct(id) {
     const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
 
@@ -146,7 +148,8 @@ export default function ShopProductCard() {
         },
       })
       .then(() => {
-        window.location.reload();
+        setIsOpenDelete(false);
+        getProduct();
       })
       .catch((err) => {
         if (err.response.status === 401) {
@@ -185,7 +188,6 @@ export default function ShopProductCard() {
   }
 
   function handleOpen(id) {
-    setImageArray([]);
     function getProductImage() {
       const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
       axiosNew
@@ -242,8 +244,6 @@ export default function ShopProductCard() {
     business_id,
     product_image,
     status_campaign,
-    langtitude,
-    longtitude,
     tenor,
     percentange_imbal,
     period_imbal,
@@ -337,6 +337,16 @@ export default function ShopProductCard() {
     }
   };
 
+  function totalInvesmentInputCurrencyToIDR(e) {
+    const value = e;
+    const valueString = value
+      .toString()
+      .replace(/[^,\d]/g, '')
+      .toString();
+    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    setNewData({ ...newData, totalInvesment: currency });
+  }
+
   function completeInvesmentInputCurrencyToIDR(e) {
     const value = e;
     const valueString = value
@@ -366,25 +376,23 @@ export default function ShopProductCard() {
 
     let formData = new FormData();
     formData.append('category', 'Rumah');
-    formData.append('title', newData.title), formData.append('location', newData.location);
+    formData.append('title', newData.title);
+    formData.append('location', newData.location);
     formData.append('status_investment', newData.statusInvestment);
     formData.append('complete_invesment', newData.completeInvesment.toString().replaceAll('.', ''));
+    formData.append('total_invesment', newData.totalInvesment.toString().replace('.', ''));
     formData.append('minimum_investment', newData.minimumInvesment.toString().replaceAll('.', ''));
     formData.append('total_lot', newData.totalLot);
-    formData.append('total_investor', newData.totalInvestor);
     formData.append('remaining_days', newData.remainingDays);
     formData.append('business_id', newData.businessId);
     for (let i = 0; i < files.length; i++) {
       formData.append('image_product', files[i][0]);
     }
     formData.append('status_campaign', newData.statusCampaign);
-    formData.append('langtitude', newData.langtitude);
-    formData.append('longtitude', newData.longtitude);
     formData.append('tenor', newData.tenor);
     formData.append('percentange_imbal', newData.percentange_imbal);
     formData.append('period_imbal', newData.period_imbal);
     formData.append('detail', newData.detail);
-    formData.append('product_detail_id', newData.productDetailId);
     formData.append('createdAt', newData.createdAt);
 
     const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
@@ -436,25 +444,11 @@ export default function ShopProductCard() {
       .then((result) => {
         if (result.status === 200 || result.status === 201) {
           setOpenEditData(false);
-          async function getProduct() {
-            await axiosNew
-              .get('/product')
-              .then((result) => {
-                if (result.status === 200) {
-                  setDataProduct(result.data.data);
-                }
-              })
-              .catch((err) => {
-                if (err.response.status === 401) {
-                  localStorage.removeItem('token');
-                  window.location.href = '/login';
-                } else {
-                  alert(err.response.data.message);
-                }
-              });
-          }
           getProduct();
         }
+      })
+      .catch((err) => {
+        alert(err);
       });
   }
 
@@ -565,6 +559,17 @@ export default function ShopProductCard() {
                 ))}
               </Select>
             </FormControl>
+            {/* <TextField
+              required
+              id="outlined"
+              label="Total Invesment"
+              value={newData.totalInvesment}
+              onChange={(e) => totalInvesmentInputCurrencyToIDR(e.target.value)}
+              InputProps={{
+                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Rp </span>,
+              }}
+              style={textFieldStyle}
+            /> */}
             <TextField
               required
               id="outlined"
@@ -598,14 +603,17 @@ export default function ShopProductCard() {
               onChange={(e) => setNewData({ ...newData, totalLot: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
+            {/* <TextField
               required
               id="outlined"
               label="Total Investor"
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Orang</span>,
+              }}
               type="number"
               onChange={(e) => setNewData({ ...newData, totalInvestor: e.target.value })}
               style={textFieldStyle}
-            />
+            /> */}
             <TextField
               required
               type="date"
@@ -717,22 +725,6 @@ export default function ShopProductCard() {
                 ))}
               </Select>
             </FormControl>
-            <TextField
-              required
-              id="outlined"
-              label="Langtitude"
-              type="text"
-              onChange={(e) => setNewData({ ...newData, langtitude: e.target.value })}
-              style={textFieldStyle}
-            />
-            <TextField
-              required
-              id="outlined"
-              label="Longtitude"
-              type="text"
-              onChange={(e) => setNewData({ ...newData, longtitude: e.target.value })}
-              style={textFieldStyle}
-            />
             <FormControl style={textFieldStyle}>
               <InputLabel id="demo-simple-select-autowidth-label">Tenor</InputLabel>
               <Select
@@ -767,8 +759,11 @@ export default function ShopProductCard() {
             <TextField
               required
               id="outlined"
-              label="Period Imbal"
+              label="Masa Funding"
               type="number"
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Bulan</span>,
+              }}
               onChange={(e) => setNewData({ ...newData, period_imbal: e.target.value })}
               style={textFieldStyle}
             />
@@ -830,7 +825,6 @@ export default function ShopProductCard() {
               <TableCell>Title</TableCell>
               <TableCell>Location</TableCell>
               <TableCell>Status Invesment</TableCell>
-              <TableCell>Total Invesment</TableCell>
               <TableCell>Complete Invesment</TableCell>
               <TableCell>Minimun Invesment</TableCell>
               <TableCell>Total Lot</TableCell>
@@ -839,13 +833,10 @@ export default function ShopProductCard() {
               <TableCell>Business ID</TableCell>
               <TableCell>Product Image</TableCell>
               <TableCell>Status Campaign</TableCell>
-              <TableCell>Langtitude</TableCell>
-              <TableCell>Longtitude</TableCell>
               <TableCell>Tenor</TableCell>
               <TableCell>Percentage Imbal</TableCell>
               <TableCell>Period Imbal</TableCell>
               <TableCell>Detail</TableCell>
-              <TableCell>Product Detail ID</TableCell>
               <TableCell>Created At</TableCell>
               <TableCell>Updated At</TableCell>
               <TableCell>Edit</TableCell>
@@ -878,8 +869,6 @@ export default function ShopProductCard() {
                     </Button>
                   </TableCell>
                   <TableCell align="left">{result.status_campaign}</TableCell>
-                  <TableCell align="left">{result.langtitude}</TableCell>
-                  <TableCell align="left">{result.longtitude}</TableCell>
                   <TableCell align="left">{result.tenor}</TableCell>
                   <TableCell align="left">{result.percentange_imbal}%</TableCell>
                   <TableCell align="left">{result.period_imbal}%</TableCell>
@@ -905,8 +894,6 @@ export default function ShopProductCard() {
                           result.business_id,
                           result.product_image,
                           result.status_campaign,
-                          result.langtitude,
-                          result.longtitude,
                           result.tenor,
                           result.percentange_imbal,
                           result.period_imbal,
@@ -920,7 +907,7 @@ export default function ShopProductCard() {
                     </Button>
                   </TableCell>
                   <TableCell align="left">
-                    <Button onClick={() => deleteProduct(result.id)}>Delete</Button>
+                    <Button onClick={deleteProduct(result.id)}>Delete</Button>
                   </TableCell>
                 </TableRow>
               );
@@ -928,6 +915,7 @@ export default function ShopProductCard() {
           </TableBody>
         </Table>
       </TableContainer>
+
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={{
@@ -1030,15 +1018,6 @@ export default function ShopProductCard() {
               onChange={(e) => setEditData({ ...editData, editTitle: e.target.value })}
               style={textFieldStyle}
             />
-            {/* <TextField
-              required
-              id="outlined"
-              label="Location"
-              type="text"
-              value={editData.editLocation}
-              onChange={(e) => setEditData({ ...editData, editLocation: e.target.value })}
-              style={textFieldStyle}
-            /> */}
             <FormControl style={textFieldStyle}>
               <InputLabel id="demo-simple-select-autowidth-label">Location</InputLabel>
               <Select
@@ -1087,6 +1066,9 @@ export default function ShopProductCard() {
               label="Total Invesment"
               type="number"
               value={editData.editTotalInvesment}
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
+              }}
               onChange={(e) => setEditData({ ...editData, editTotalInvestment: e.target.value })}
               style={textFieldStyle}
             />
@@ -1096,6 +1078,9 @@ export default function ShopProductCard() {
               label="Complete Invesment"
               type="number"
               value={editData.editCompleteInvesment}
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
+              }}
               onChange={(e) => setEditData({ ...editData, editCompleteInvestment: e.target.value })}
               style={textFieldStyle}
             />
@@ -1105,6 +1090,9 @@ export default function ShopProductCard() {
               label="Minimum Invesment"
               type="number"
               value={editData.editMinimumInvesment}
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
+              }}
               onChange={(e) => setEditData({ ...editData, editMinimumInvestment: e.target.value })}
               style={textFieldStyle}
             />
@@ -1114,6 +1102,9 @@ export default function ShopProductCard() {
               label="Total Lot"
               type="number"
               value={editData.editTotalLot}
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>LOT</span>,
+              }}
               onChange={(e) => setEditData({ ...editData, editTotalLot: e.target.value })}
               style={textFieldStyle}
             />
@@ -1123,6 +1114,9 @@ export default function ShopProductCard() {
               label="Total Investor"
               type="number"
               value={editData.editTotalInvestor}
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Orang</span>,
+              }}
               onChange={(e) => setEditData({ ...editData, editTotalInvestor: e.target.value })}
               style={textFieldStyle}
             />
@@ -1199,39 +1193,36 @@ export default function ShopProductCard() {
                 ))}
               </Select>
             </FormControl>
-            <TextField
-              required
-              id="outlined"
-              label="Langtitude"
-              type="text"
-              value={editData.editLangtitude}
-              onChange={(e) => setEditData({ ...editData, editLangtitude: e.target.value })}
-              style={textFieldStyle}
-            />
-            <TextField
-              required
-              id="outlined"
-              label="Longtitude"
-              type="text"
-              value={editData.editLongtitude}
-              onChange={(e) => setEditData({ ...editData, editLongtitude: e.target.value })}
-              style={textFieldStyle}
-            />
-            <TextField
-              required
-              id="outlined"
-              label="Tenor"
-              type="number"
-              value={editData.editTenor}
-              onChange={(e) => setEditData({ ...editData, editTenor: e.target.value })}
-              style={textFieldStyle}
-            />
+
+            <FormControl style={textFieldStyle}>
+              <InputLabel id="demo-simple-select-autowidth-label">Tenor</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                onChange={(e) => setEditData({ ...editData, editTenor: e.target.value })}
+                autoWidth
+                label="Tenor"
+                defaultValue={500}
+                // value={500}
+              >
+                <MenuItem value={500} disabled>
+                  <em>Pilih Status Tenor</em>
+                </MenuItem>
+                <MenuItem value={3}>3 Bulan</MenuItem>
+                <MenuItem value={6}>6 Bulan</MenuItem>
+                <MenuItem value={9}>9 Bulan</MenuItem>
+                <MenuItem value={12}>12 Bulan</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               required
               id="outlined"
               label="Percentange Imbal"
               type="number"
               value={editData.editPercentangeImbal}
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>%</span>,
+              }}
               onChange={(e) => setEditData({ ...editData, editPercentangeImbal: e.target.value })}
               style={textFieldStyle}
             />
@@ -1241,6 +1232,9 @@ export default function ShopProductCard() {
               label="Period Imbal"
               type="number"
               value={editData.editPeriodImbal}
+              InputProps={{
+                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Bulan</span>,
+              }}
               onChange={(e) => setEditData({ ...editData, editPeriodImbal: e.target.value })}
               style={textFieldStyle}
             />
@@ -1253,15 +1247,6 @@ export default function ShopProductCard() {
               onChange={(e) => setEditData({ ...editData, editDetail: e.target.value })}
               style={textFieldStyle}
             />
-            <TextField
-              required
-              id="outlined"
-              label="Product Detail ID"
-              type="number"
-              value={editData.editProductDetailId}
-              onChange={(e) => setEditData({ ...editData, editProductDetailId: e.target.value })}
-              style={textFieldStyle}
-            />
             <Box
               sx={{
                 border: '1px solid #ccc',
@@ -1272,7 +1257,7 @@ export default function ShopProductCard() {
               }}
             >
               <Typography>
-                Updated At: {moment(editData.editUpdatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}
+                Diupdate Pada: {moment(editData.editUpdatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}
               </Typography>
             </Box>
             <Button

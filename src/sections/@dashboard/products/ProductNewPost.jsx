@@ -48,6 +48,21 @@ const textFieldStyle = {
   marginTop: 10,
 };
 export default function ProductNewPost() {
+  const [state, setState] = React.useState({
+    snackbarOpen: false,
+    vertical: 'top',
+    horizontal: 'right',
+    status: 0
+  })
+  const {vertical,horizontal,snackbarOpen,status} = state
+  const handleSnackbarClick = (newState) => () => {
+    setState({ ...newState, open: true })
+  }
+
+  const handleSnackbarClose = () => {
+    setState({ ...state, open: false })
+  }
+
   const [newData, setNewData] = useState({
     category: '',
     title: '',
@@ -215,6 +230,7 @@ export default function ProductNewPost() {
     const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     setNewData({ ...newData, minimumInvesment: currency });
   }
+
 
   return (
     <>
@@ -540,8 +556,8 @@ export default function ProductNewPost() {
                 '&:hover': {
                   backgroundColor: 'darkblue',
                 },
-              }}
-            >
+              }}    
+            > 
               Submit
             </Button>
           </FormControl>
