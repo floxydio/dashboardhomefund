@@ -826,9 +826,7 @@ export default function ShopProductCard() {
               <TableCell>Complete Invesment</TableCell>
               <TableCell>Minimun Invesment</TableCell>
               <TableCell>Total Lot</TableCell>
-              <TableCell>Total Investor</TableCell>
               <TableCell>Remaining Days</TableCell>
-              <TableCell>Business ID</TableCell>
               <TableCell>Product Image</TableCell>
               <TableCell>Status Campaign</TableCell>
               <TableCell>Tenor</TableCell>
@@ -852,11 +850,9 @@ export default function ShopProductCard() {
                   <TableCell align="left">{result.title}</TableCell>
                   <TableCell align="left">{result.location}</TableCell>
                   <TableCell align="left">{result.status_investment}</TableCell>
-                  <TableCell align="left">Rp{result.total_invesment.toLocaleString()}</TableCell>
                   <TableCell align="left">Rp{result.complete_invesment.toLocaleString()}</TableCell>
                   <TableCell align="left">Rp{result.minimum_invesment.toLocaleString()}</TableCell>
                   <TableCell align="left">{result.total_lot.toLocaleString()}</TableCell>
-                  <TableCell align="left">{result.total_investor}</TableCell>
                   <TableCell align="left">
                     {moment(result.remaining_days).utc().format('MMMM Do YYYY, h:mm:ss a')}
                   </TableCell>
@@ -871,7 +867,6 @@ export default function ShopProductCard() {
                   <TableCell align="left">{result.percentange_imbal}%</TableCell>
                   <TableCell align="left">{result.period_imbal}%</TableCell>
                   <TableCell align="left">{result.detail}</TableCell>
-                  <TableCell align="left">{result.product_detail_id}</TableCell>
                   <TableCell align="left">{moment(result.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
                   <TableCell align="left">{moment(result.updatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
                   <TableCell align="left">
