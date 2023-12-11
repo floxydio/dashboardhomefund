@@ -14,6 +14,7 @@ import BusinessPage from './pages/BusinessPage';
 import VirtualAccountPage from './pages/VirtualAccountPage';
 import TransactionPage from './pages/TransactionPage';
 import ResetDevUrPage from './pages/ResetDevUrPage';
+import SettingPage from './pages/SettingsPage';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +37,7 @@ export default function Router() {
           { path: 'business', element: <BusinessPage /> },
           { path: 'virtual-account', element: <VirtualAccountPage /> },
           { path: 'transaction', element: <TransactionPage /> },
+          { path: 'setting-account', element: <SettingPage /> },
         ],
       },
       {
@@ -45,7 +47,7 @@ export default function Router() {
       },
       {
         path: '/reset',
-        element: <ResetDevUrPage />
+        element: <ResetDevUrPage />,
       },
       {
         element: <SimpleLayout />,
@@ -70,7 +72,7 @@ export default function Router() {
       },
       {
         path: '/reset',
-        element: <ResetDevUrPage />
+        element: <ResetDevUrPage />,
       },
       {
         element: <SimpleLayout />,
