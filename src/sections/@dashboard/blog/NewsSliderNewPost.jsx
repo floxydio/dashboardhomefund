@@ -26,7 +26,7 @@ const textFieldStyle = {
 export default function NewPost() {
   const [name, setName] = useState('');
   const [detail, setDetail] = useState('');
-  const [image, setImage] = useState();
+  const [image, setImage] = useState('');
   const [status, setStatus] = useState(1);
   const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
   const [open, setOpen] = useState(false);
@@ -39,11 +39,19 @@ export default function NewPost() {
 
   async function submitDataNewPost(e) {
     e.preventDefault();
+
+
+    console.log("nama =>", name)
+    console.log("detail =>", detail)
+    console.log("image_slider =>", image)
+    console.log("Status =>", status)
+
     let formData = new FormData();
     formData.append('name', name);
     formData.append('detail', detail);
     formData.append('image_slider', image);
     formData.append('status', status);
+
 
     const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
@@ -130,7 +138,7 @@ export default function NewPost() {
               id="outlined"
               label="Status"
               type="number"
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={(e) => setStatus(e.target.files)}
               style={textFieldStyle}
             />
             <Button

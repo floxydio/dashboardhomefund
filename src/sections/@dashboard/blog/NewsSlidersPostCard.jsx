@@ -110,30 +110,32 @@ export default function SliderTable() {
         } });
   }
 
-  useEffect(() => {
-    setLoading(true);
+  async function getSlider() {
+    setSlider([]);
+
     const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-    async function getSlider() {
-      await axiosNew
-        .get('/slider', {
-          headers: {
-            Authorization: decrypt.toString(cryptoJs.enc.Utf8),
-          },
-        })
-        .then((result) => {
-          if(result.status === 200) {
-          setSlider(result.data.data);
-          setLoading(false);
-          }
-        }).catch((err) => {
-          if(err.response.status === 401) {
-            localStorage.removeItem("token")
-            window.location.href = "/login"
-          } else {
-            alert(err.response.data.message)
-          }
-        });
-    }
+    await axiosNew
+    .get('/slider', {
+      headers: {
+        Authorization: decrypt.toString(cryptoJs.enc.Utf8),
+      },
+    })
+    .then((result) => {
+      if(result.status === 200) {
+      setSlider(result.data.data);
+      setLoading(false);
+      }
+    }).catch((err) => {
+      if(err.response.status === 401) {
+        localStorage.removeItem("token")
+        window.location.href = "/login"
+      } else {
+        alert(err.response.data.message)
+      }
+    });
+  }
+
+  useEffect(() => {
     getSlider();
   }, []);
 

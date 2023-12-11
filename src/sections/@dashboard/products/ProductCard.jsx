@@ -61,7 +61,7 @@ export default function ShopProductCard() {
   const [open, setOpen] = useState(false);
   const [openEditData, setOpenEditData] = useState(false); //Ini Buat Edit Modal
   const [isOpenCreate, setIsOpenCreate] = useState(false); //Ini Buat Create Modal
-  const [isOpenDelete, setIsOpenDelete] = useState(false); //Ini Buat Delete Modal
+  const [isOpenDelete, setIsOpenDelete] = useState(false); //Ini Buat Delete Modal  
 
   // Media Query
   const isMobile = useMediaQuery({ query: '(max-width: 700px)' });
@@ -131,6 +131,8 @@ export default function ShopProductCard() {
   const [editPercentangeImbal, setEditPercentangeImbal] = useState(0);
   const [editPeriodImbal, setEditPeriodImbal] = useState(0);
   const [editDetail, setEditDetail] = useState('');
+  const [editUpdatedAt, setEditUpdateAt] = useState(new Date());
+
 
   const handleFunctionEdit = (id, category, title, location, statusInvestment, completeInvesment, minimumInvestment, totalLot, remainingDays, productImage, statusCampaign, tenor, percentangeImbal, periodImbal, detail) => {
     setEditId(id)
@@ -263,52 +265,6 @@ export default function ShopProductCard() {
       .then((result) => {
         setDataBusiness(result.data.data);
       });
-  }
-
-  function handleEditProduct(
-    id,
-    category,
-    title,
-    location,
-    status_investment,
-    complete_invesment,
-    minimum_invesment,
-    total_lot,
-    total_investor,
-    remaining_days,
-    business_id,
-    product_image,
-    status_campaign,
-    tenor,
-    percentange_imbal,
-    period_imbal,
-    detail,
-    updatedAt
-  ) {
-    console.log(total_investor)
-
-    const updateData = {
-      editId: id,
-      editCategory: category,
-      editTitle: title,
-      editLocation: location,
-      editStatusInvestment: status_investment,
-      editCompleteInvesment: complete_invesment,
-      editMinimumInvesment: minimum_invesment,
-      editTotalLot: total_lot,
-      editTotalInvestor: total_investor,
-      editRemainingDays: remaining_days,
-      editBusinessId: business_id,
-      editProductImage: product_image,
-      editStatusCampaign: status_campaign,
-      editTenor: tenor,
-      editPercentangeImbal: percentange_imbal,
-      editPeriodImbal: period_imbal,
-      editDetail: detail,
-      editUpdatedAt: updatedAt,
-    };
-    setEditData(updateData);
-    setOpenEditData(true);
   }
 
   const handleClose = () => setOpen(false);
@@ -1129,7 +1085,7 @@ export default function ShopProductCard() {
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
-                value={editStatusCampaign }
+                value={editStatusCampaign}
                 onChange={handleChangeEditStatusCampaign}
                 autoWidth
                 label="Status Campaign"
