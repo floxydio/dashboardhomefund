@@ -21,8 +21,8 @@ export default function BusinessPage() {
         <Typography variant="h4" gutterBottom>
           Setting Page
         </Typography>
-        <SettingCard />
       </Stack>
+      <SettingCard />
     </>
   );
 }

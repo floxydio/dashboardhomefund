@@ -61,7 +61,7 @@ export default function ShopProductCard() {
   const [open, setOpen] = useState(false);
   const [openEditData, setOpenEditData] = useState(false); //Ini Buat Edit Modal
   const [isOpenCreate, setIsOpenCreate] = useState(false); //Ini Buat Create Modal
-  const [isOpenDelete, setIsOpenDelete] = useState(false); //Ini Buat Delete Modal  
+  const [isOpenDelete, setIsOpenDelete] = useState(false); //Ini Buat Delete Modal
 
   // Media Query
   const isMobile = useMediaQuery({ query: '(max-width: 700px)' });
@@ -133,28 +133,40 @@ export default function ShopProductCard() {
   const [editDetail, setEditDetail] = useState('');
   const [editUpdatedAt, setEditUpdateAt] = useState(new Date());
 
-
-  const handleFunctionEdit = (id, category, title, location, statusInvestment, completeInvesment, minimumInvestment, totalLot, remainingDays, productImage, statusCampaign, tenor, percentangeImbal, periodImbal, detail) => {
-    setEditId(id)
-    setEditCategory(category)
-    setEditTitle(title)
-    setEditLocation(location)
-    setEditStatusInvestment(statusInvestment)
-    setEditCompleteInvesment(completeInvesment)
-    setEditMinimumInvesment(minimumInvestment)
-    setEditTotalLot(totalLot)
-    setEditRemainingDays(remainingDays)
-    setEditProductImage(productImage)
-    setEditStatusCampaign(statusCampaign)
-    setEditTenor(tenor)
-    setEditPercentangeImbal(percentangeImbal)
-    setEditPeriodImbal(periodImbal)
-    setEditDetail(detail)
-    setOpenEditData(true)
-
-  }
-
-
+  const handleFunctionEdit = (
+    id,
+    category,
+    title,
+    location,
+    statusInvestment,
+    completeInvesment,
+    minimumInvestment,
+    totalLot,
+    remainingDays,
+    productImage,
+    statusCampaign,
+    tenor,
+    percentangeImbal,
+    periodImbal,
+    detail
+  ) => {
+    setEditId(id);
+    setEditCategory(category);
+    setEditTitle(title);
+    setEditLocation(location);
+    setEditStatusInvestment(statusInvestment);
+    setEditCompleteInvesment(completeInvesment);
+    setEditMinimumInvesment(minimumInvestment);
+    setEditTotalLot(totalLot);
+    setEditRemainingDays(remainingDays);
+    setEditProductImage(productImage);
+    setEditStatusCampaign(statusCampaign);
+    setEditTenor(tenor);
+    setEditPercentangeImbal(percentangeImbal);
+    setEditPeriodImbal(periodImbal);
+    setEditDetail(detail);
+    setOpenEditData(true);
+  };
 
   const handleChangeStatusInvesment = (e) => {
     setNewData({ ...newData, statusInvestment: e.target.value });
@@ -724,7 +736,7 @@ export default function ShopProductCard() {
                 autoWidth
                 label="Tenor"
                 defaultValue={500}
-              // value={500}
+                // value={500}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
@@ -864,7 +876,23 @@ export default function ShopProductCard() {
                   <TableCell align="left">
                     <Button
                       onClick={() =>
-                        handleFunctionEdit(result.id, result.category, result.title, result.location.result.status_investment, result.minimum_invesment, result.complete_invesment, result.minimum_invesment, result.total_lot, result.remaining_days, "", result.status_campaign, result.tenor, result.percentange_imbal, result.period_imbal, result.detail)
+                        handleFunctionEdit(
+                          result.id,
+                          result.category,
+                          result.title,
+                          result.location.result.status_investment,
+                          result.minimum_invesment,
+                          result.complete_invesment,
+                          result.minimum_invesment,
+                          result.total_lot,
+                          result.remaining_days,
+                          '',
+                          result.status_campaign,
+                          result.tenor,
+                          result.percentange_imbal,
+                          result.period_imbal,
+                          result.detail
+                        )
                       }
                     >
                       <EditIcon />
@@ -1164,9 +1192,7 @@ export default function ShopProductCard() {
                 boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <Typography>
-                Diupdate Pada: {moment(editUpdatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}
-              </Typography>
+              <Typography>Diupdate Pada: {moment(editUpdatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</Typography>
             </Box>
             <Button
               onClick={submitEditProduct}
