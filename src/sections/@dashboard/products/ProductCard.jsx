@@ -244,7 +244,6 @@ export default function ShopProductCard() {
         .get(`/product/${id}`, {
           headers: {
             Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-
             Accept: 'application/json',
           },
         })
@@ -936,10 +935,10 @@ export default function ShopProductCard() {
           >
             Product Image
           </Typography>
-          {imageArray.map((e, i) => (
+          {imageArray?.map((e, i) => (
             <div key={i}>
               <img
-                src={`https://ae34-182-0-103-126.ngrok-free.app/dashboard-api/static/product/${e}`}
+                src={`https://bd74-114-124-236-156.ngrok-free.app/dashboard-api/static/product/${e}`}
                 style={{
                   marginLeft: 'auto',
                   marginRight: 'auto',

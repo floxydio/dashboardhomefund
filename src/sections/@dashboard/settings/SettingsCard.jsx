@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import CryptoJS from 'crypto-js';
 import axiosNew from '../../../components/AxiosConfig';
 import { useMediaQuery } from 'react-responsive';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, GridRowModes } from '@mui/x-data-grid';
+import { Cancel, Edit, Save } from '@mui/icons-material';
 
 export default function SettingCard() {
-  const [dataSetting, setDataSetting] = useState([]);
+  const [dataSetting, setDataSetting] = useState({});
 
   const token = localStorage.getItem('token');
 
@@ -14,6 +15,14 @@ export default function SettingCard() {
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 1224px)',
   });
+
+  // function handleEditClick(id) {
+  //   setDataSetting({ ...dataSetting, {dataSetting.id}: { mode: GridRowModes.Edit } });
+  // }
+
+  function handleSaveClick() {
+    setDataSetting({ ...dataSetting, 1: { mode: GridRowModes.View } });
+  }
 
   async function getSetting() {
     setDataSetting([]);
@@ -57,7 +66,12 @@ export default function SettingCard() {
     { field: 'url_profile', headerName: 'Url Profile', width: 180, editable: true },
     { field: 'url_slider', headerName: 'Url Slider', width: 180, editable: true },
     { field: 'version_app', headerName: 'Version App', width: 180, editable: true },
-    { field: 'wallet_setting', headerName: 'Wallet Setting', width: 180, editable: true },
+    {
+      field: 'wallet_setting',
+      headerName: 'Wallet Setting',
+      width: 180,
+      editable: true,
+    },
   ];
 
   const rows = [
@@ -81,45 +95,14 @@ export default function SettingCard() {
 
   return (
     <>
-      {/* <TableContainer component={Paper} style={{ marginLeft: isMobile ? 20 : 0, marginRight: isMobile ? 20 : 0 }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Maintenance Status</TableCell>
-              <TableCell>Maintenance Note</TableCell>
-              <TableCell>Fee</TableCell>
-              <TableCell>Version App</TableCell>
-              <TableCell>Product Setting</TableCell>
-              <TableCell>Saldo Setting</TableCell>
-              <TableCell>Slider Setting</TableCell>
-              <TableCell>Wallet Setting</TableCell>
-              <TableCell>Url Certificate</TableCell>
-              <TableCell>Url Introduction</TableCell>
-              <TableCell>Url Product</TableCell>
-              <TableCell>Url Profile</TableCell>
-              <TableCell>Url Slider</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow sx={{ '&:last-child td, &:lastchild th': { border: 0 } }}>
-              <TableCell align="left">{dataSetting.maintenance_status}</TableCell>
-              <TableCell align="left">{dataSetting.maintenance_note}</TableCell>
-              <TableCell align="left">{dataSetting.fee}</TableCell>
-              <TableCell align="left">{dataSetting.version_app}</TableCell>
-              <TableCell align="left">{dataSetting.product_setting}</TableCell>
-              <TableCell align="left">{dataSetting.saldo_setting}</TableCell>
-              <TableCell align="left">{dataSetting.slider_setting}</TableCell>
-              <TableCell align="left">{dataSetting.wallet_setting}</TableCell>
-              <TableCell align="left">{dataSetting.url_certificate}</TableCell>
-              <TableCell align="left">{dataSetting.url_introduction}</TableCell>
-              <TableCell align="left">{dataSetting.url_product}</TableCell>
-              <TableCell align="left">{dataSetting.url_profile}</TableCell>
-              <TableCell align="left">{dataSetting.url_slider}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer> */}
-      <DataGrid editMode="row" rows={rows} columns={columns} autoHeight row pagination={false} rowsPe />
+      <DataGrid
+        editMode="row"
+        rows={rows}
+        columns={columns}
+        autoHeight
+        hideFooterPagination
+        hideFooterSelectedRowCount
+      />
     </>
   );
 }
