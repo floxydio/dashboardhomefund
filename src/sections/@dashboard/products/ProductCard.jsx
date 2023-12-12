@@ -32,6 +32,7 @@ import { nanoid } from 'nanoid';
 import { useMediaQuery } from 'react-responsive';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { DataGrid } from '@mui/x-data-grid';
 // ----------------------------------------------------------------------
 
 const textFieldStyle = {
@@ -471,6 +472,9 @@ export default function ShopProductCard() {
       >
         Product Baru
       </Button>
+      <div style={{
+              }}>
+      <DataGrid  rows={dataProduct} columns={columns} autoHeight/></div>
       {/* Modal - Create */}
       <Modal
         open={isOpenCreate}
@@ -735,7 +739,7 @@ export default function ShopProductCard() {
                 autoWidth
                 label="Tenor"
                 defaultValue={500}
-                // value={500}
+              // value={500}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
@@ -818,6 +822,8 @@ export default function ShopProductCard() {
           </FormControl>
         </Box>
       </Modal>
+
+
       <TableContainer component={Paper} style={{ marginLeft: isMobile ? 20 : 0, marginRight: isMobile ? 20 : 0 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -906,6 +912,8 @@ export default function ShopProductCard() {
           </TableBody>
         </Table>
       </TableContainer>
+      
+
 
       {/* Modal Image */}
       <Modal open={open} onClose={handleClose}>
