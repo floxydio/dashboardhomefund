@@ -287,15 +287,15 @@ export default function ShopProductCard() {
   const [dataBusiness, setDataBusiness] = useState([]);
 
   const handleChangeEditLocation = (e) => {
-    setEditData({ ...editData, editLocation: e.target.value });
+    setEditLocation((e) => e.target.value);
   };
 
   const handleChangeEditStatusInvestment = (e) => {
-    setEditData({ ...editData, editStatusInvestment: e.target.value });
+    setEditStatusInvestment((e) => e.target.value);
   };
 
   const handleChangeEditStatusCampaign = (e) => {
-    setEditData({ ...editData, editStatusCampaign: e.target.value });
+    setEditStatusCampaign((e) => e.target.value);
   };
 
   const handleChangeEditBusinessId = (e) => {
@@ -419,21 +419,17 @@ export default function ShopProductCard() {
     e.preventDefault();
 
     let formData = new FormData();
-    formData.append('category', editData.editCategory);
-    formData.append('title', editData.editTitle);
-    formData.append('location', editData.editLocation);
-    formData.append('status_investment', editData.editStatusInvestment);
-    formData.append('total_invesment', editData.editTotalInvesment);
-    formData.append('complete_invesment', editData.editCompleteInvesment);
-    formData.append('minimum_invesment', editData.editMinimumInvesment);
-    formData.append('total_lot', editData.editTotalLot);
-    formData.append('total_investor', editData.editTotalInvestor);
-    formData.append('remaining_days', editData.editRemainingDays);
-    formData.append('business_id', editData.editBusinessId);
-    formData.append('product_image', editData.editProductImage);
-    formData.append('status_campaign', editData.editStatusCampaign);
-    formData.append('product_detail_id', editData.editProductDetailId);
-    formData.append('updatedAt', editData.editUpdatedAt);
+    formData.append('category', editCategory);
+    formData.append('title', editTitle);
+    formData.append('location', editLocation);
+    formData.append('status_investment', editStatusInvestment);
+    formData.append('complete_invesment', editCompleteInvesment);
+    formData.append('minimum_invesment', editMinimumInvesment);
+    formData.append('total_lot', editTotalLot);
+    formData.append('remaining_days', editRemainingDays);
+    formData.append('product_image', editProductImage);
+    formData.append('status_campaign', editStatusCampaign);
+    formData.append('updatedAt', editUpdatedAt);
 
     const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
@@ -883,13 +879,13 @@ export default function ShopProductCard() {
                           result.id,
                           result.category,
                           result.title,
-                          result.location.result.status_investment,
+                          result.location,
+                          result.status_investment,
                           result.minimum_invesment,
                           result.complete_invesment,
                           result.minimum_invesment,
                           result.total_lot,
                           result.remaining_days,
-                          '',
                           result.status_campaign,
                           result.tenor,
                           result.percentange_imbal,
@@ -942,7 +938,7 @@ export default function ShopProductCard() {
           {imageArray?.map((e, i) => (
             <div key={i}>
               <img
-                src={`https://bd74-114-124-236-156.ngrok-free.app/dashboard-api/static/product/${e}`}
+                src={`https://279e-2400-9800-4e0-d302-dbdd-caa4-eee2-741f.ngrok-free.app/dashboard-api/static/product/${e}`}
                 style={{
                   marginLeft: 'auto',
                   marginRight: 'auto',

@@ -5,12 +5,8 @@ import axiosNew from '../../../components/AxiosConfig';
 import cryptoJs from 'crypto-js';
 // import ImageUpload from '../../../components/image-uploader/uploader';
 // import { formatDistanceStrict } from 'date-fns';
-<<<<<<< HEAD
-import { useMediaQuery } from 'react-responsive'
-
-=======
 import { useMediaQuery } from 'react-responsive';
->>>>>>> 43102f1 (.)
+import ReactQuill from 'react-quill';
 const boxStyle = {
   position: 'absolute',
   top: '50%',
@@ -33,7 +29,7 @@ export default function NewPost() {
   const [detail, setDetail] = useState('');
   const [image, setImage] = useState();
   const [status, setStatus] = useState(0);
-  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+  const isMobile = useMediaQuery({ query: '(max-width: 700px)' });
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -126,12 +122,19 @@ export default function NewPost() {
               onChange={(e) => setName(e.target.value)}
               style={textFieldStyle}
             />
-            <TextField
+            {/* <TextField
               required
               id="outlined"
               label="Detail"
               type="text"
               onChange={(e) => setDetail(e.target.value)}
+              style={textFieldStyle}
+            /> */}
+            <ReactQuill
+              theme="snow"
+              value={detail}
+              onChange={(e) => setDetail(e.target.value)}
+              placeholder="Input Deskripsi"
               style={textFieldStyle}
             />
             <TextField
@@ -139,7 +142,7 @@ export default function NewPost() {
               accept="image/*"
               type="file"
               onChange={(e) => {
-                setImage(e.target.files[0])
+                setImage(e.target.files[0]);
               }}
               style={textFieldStyle}
             />
