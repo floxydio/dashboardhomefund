@@ -24,8 +24,12 @@ import axiosNew from '../../../components/AxiosConfig';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { MutatingDots } from 'react-loader-spinner';
 import cryptoJs from 'crypto-js';
+<<<<<<< HEAD
 import { useMediaQuery } from 'react-responsive'
 import ImageIcon from '@mui/icons-material/Image';
+=======
+import { useMediaQuery } from 'react-responsive';
+>>>>>>> 43102f1 (.)
 // ----------------------------------------------------------------------
 
 const boxStyle = {
@@ -59,7 +63,7 @@ export default function SliderTable() {
   const handleCloseEdit = () => setOpenEdit(false);
   const handleClose = () => setOpen(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
-  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+  const isMobile = useMediaQuery({ query: '(max-width: 700px)' });
   const [editStatus, setEditStatus] = useState('');
   const [editName, setEditName] = useState('');
   const [editDetail, setEditDetail] = useState('');
@@ -71,7 +75,7 @@ export default function SliderTable() {
   }
 
   const token = localStorage.getItem('token');
-  
+
   async function editSlider() {
     setLoadingEdit(true);
 
@@ -86,7 +90,7 @@ export default function SliderTable() {
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': decrypt.toString(cryptoJs.enc.Utf8),
+            Authorization: decrypt.toString(cryptoJs.enc.Utf8),
           },
         }
       )
@@ -102,13 +106,15 @@ export default function SliderTable() {
           getSlider();
           setLoadingEdit(false);
         }
-      }).catch((err) => {
-        if(err.response.status === 401) {
-          localStorage.removeItem("token")
-          window.location.href = "/login"
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
         } else {
-          alert(err.response.data.message)
-        } });
+          alert(err.response.data.message);
+        }
+      });
   }
 
   async function getSlider() {
@@ -116,24 +122,25 @@ export default function SliderTable() {
 
     const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
-    .get('/slider', {
-      headers: {
-        Authorization: decrypt.toString(cryptoJs.enc.Utf8),
-      },
-    })
-    .then((result) => {
-      if(result.status === 200) {
-      setSlider(result.data.data);
-      setLoading(false);
-      }
-    }).catch((err) => {
-      if(err.response.status === 401) {
-        localStorage.removeItem("token")
-        window.location.href = "/login"
-      } else {
-        alert(err.response.data.message)
-      }
-    });
+      .get('/slider', {
+        headers: {
+          Authorization: decrypt.toString(cryptoJs.enc.Utf8),
+        },
+      })
+      .then((result) => {
+        if (result.status === 200) {
+          setSlider(result.data.data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          alert(err.response.data.message);
+        }
+      });
   }
 
   useEffect(() => {

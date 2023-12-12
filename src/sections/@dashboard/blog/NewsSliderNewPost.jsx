@@ -5,8 +5,12 @@ import axiosNew from '../../../components/AxiosConfig';
 import cryptoJs from 'crypto-js';
 // import ImageUpload from '../../../components/image-uploader/uploader';
 // import { formatDistanceStrict } from 'date-fns';
+<<<<<<< HEAD
 import { useMediaQuery } from 'react-responsive'
 
+=======
+import { useMediaQuery } from 'react-responsive';
+>>>>>>> 43102f1 (.)
 const boxStyle = {
   position: 'absolute',
   top: '50%',
@@ -36,7 +40,7 @@ export default function NewPost() {
 
   const handleClose = () => setOpen(false);
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   async function submitDataNewPost(e) {
     e.preventDefault();
@@ -47,25 +51,26 @@ export default function NewPost() {
     formData.append('image_slider', image);
     formData.append('status', status);
 
-
     const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
       .post('/slider', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': decrypt.toString(cryptoJs.enc.Utf8),
+          Authorization: decrypt.toString(cryptoJs.enc.Utf8),
         },
       })
       .then((res) => {
         if (res.status === 201) {
           window.location.reload();
+          // console.log(res);
         }
-      }).catch((err) => {
+      })
+      .catch((err) => {
         if (err.response.status === 401) {
-          localStorage.removeItem("token")
-          window.location.href = "/login"
+          localStorage.removeItem('token');
+          window.location.href = '/login';
         } else {
-          alert(err.response.data.message)
+          alert(err.response.data.message);
         }
       });
   }
@@ -75,27 +80,35 @@ export default function NewPost() {
       <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpen}>
         New Post
       </Button>
-      <Modal open={open} sx={{
-        height: 500,
-        overflowY: 'scroll',
-        marginTop: 10,
-        width: isMobile ? '85%' : '100%',
-        marginLeft: 'auto',
-        marginRight: 'auto'
-      }} onClose={handleClose}>
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: isMobile ? '100%' : 500,
-          bgcolor: 'background.paper',
-          border: '2px solid #000',
-          boxShadow: 24,
-          overflowY: 'scroll',
+      <Modal
+        open={open}
+        sx={{
           height: 500,
-          p: 4,
-        }} noValidate autoComplete="off">
+          overflowY: 'scroll',
+          marginTop: 10,
+          width: isMobile ? '85%' : '100%',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
+        onClose={handleClose}
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: isMobile ? '100%' : 500,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            overflowY: 'scroll',
+            height: 500,
+            p: 4,
+          }}
+          noValidate
+          autoComplete="off"
+        >
           <Typography
             style={{
               textAlign: 'center',

@@ -420,7 +420,8 @@ export default function ShopProductCard() {
 
     let formData = new FormData();
     formData.append('category', editData.editCategory);
-    formData.append('title', editData.editTitle), formData.append('location', editData.editLocation);
+    formData.append('title', editData.editTitle);
+    formData.append('location', editData.editLocation);
     formData.append('status_investment', editData.editStatusInvestment);
     formData.append('total_invesment', editData.editTotalInvesment);
     formData.append('complete_invesment', editData.editCompleteInvesment);
@@ -473,7 +474,6 @@ export default function ShopProductCard() {
       >
         Product Baru
       </Button>
-      
       {/* Modal - Create */}
       <Modal
         open={isOpenCreate}
@@ -738,7 +738,7 @@ export default function ShopProductCard() {
                 autoWidth
                 label="Tenor"
                 defaultValue={500}
-              // value={500}
+                // value={500}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
@@ -821,7 +821,6 @@ export default function ShopProductCard() {
           </FormControl>
         </Box>
       </Modal>
-
 
       <TableContainer component={Paper} style={{ marginLeft: isMobile ? 20 : 0, marginRight: isMobile ? 20 : 0 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -911,8 +910,6 @@ export default function ShopProductCard() {
           </TableBody>
         </Table>
       </TableContainer>
-      
-
 
       {/* Modal Image */}
       <Modal open={open} onClose={handleClose}>
