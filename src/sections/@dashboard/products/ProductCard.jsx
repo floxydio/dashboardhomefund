@@ -33,6 +33,7 @@ import { useMediaQuery } from 'react-responsive';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { DataGrid } from '@mui/x-data-grid';
+import ImageIcon from '@mui/icons-material/Image';
 // ----------------------------------------------------------------------
 
 const textFieldStyle = {
@@ -866,7 +867,7 @@ export default function ShopProductCard() {
                   </TableCell>
                   <TableCell align="left">
                     <Button onClick={() => handleOpen(result.id)}>
-                      <InsertDriveFileIcon />
+                      <ImageIcon/>
                     </Button>
                   </TableCell>
                   <TableCell align="left">{result.status_campaign}</TableCell>

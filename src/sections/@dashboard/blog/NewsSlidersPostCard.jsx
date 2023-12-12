@@ -25,6 +25,7 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { MutatingDots } from 'react-loader-spinner';
 import cryptoJs from 'crypto-js';
 import { useMediaQuery } from 'react-responsive'
+import ImageIcon from '@mui/icons-material/Image';
 // ----------------------------------------------------------------------
 
 const boxStyle = {
@@ -169,7 +170,7 @@ export default function SliderTable() {
                   <TableCell align="left">{result.detail}</TableCell>
                   <TableCell align="left">
                     <Button onClick={() => handleOpen(result.image)}>
-                      <InsertDriveFileIcon />
+                      <ImageIcon/>
                     </Button>
                   </TableCell>
                   <TableCell align="left">

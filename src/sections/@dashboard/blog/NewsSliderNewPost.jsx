@@ -6,6 +6,7 @@ import cryptoJs from 'crypto-js';
 // import ImageUpload from '../../../components/image-uploader/uploader';
 // import { formatDistanceStrict } from 'date-fns';
 import { useMediaQuery } from 'react-responsive'
+
 const boxStyle = {
   position: 'absolute',
   top: '50%',
