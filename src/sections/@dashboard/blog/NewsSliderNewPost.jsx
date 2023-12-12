@@ -26,8 +26,8 @@ const textFieldStyle = {
 export default function NewPost() {
   const [name, setName] = useState('');
   const [detail, setDetail] = useState('');
-  const [image, setImage] = useState('');
-  const [status, setStatus] = useState(1);
+  const [image, setImage] = useState();
+  const [status, setStatus] = useState(0);
   const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
   const [open, setOpen] = useState(false);
 
@@ -39,12 +39,6 @@ export default function NewPost() {
 
   async function submitDataNewPost(e) {
     e.preventDefault();
-
-
-    console.log("nama =>", name)
-    console.log("detail =>", detail)
-    console.log("image_slider =>", image)
-    console.log("Status =>", status)
 
     let formData = new FormData();
     formData.append('name', name);
@@ -130,7 +124,9 @@ export default function NewPost() {
               required
               accept="image/*"
               type="file"
-              onChange={(e) => setImage(e.target.value)}
+              onChange={(e) => {
+                setImage(e.target.files[0])
+              }}
               style={textFieldStyle}
             />
             <TextField
@@ -138,7 +134,7 @@ export default function NewPost() {
               id="outlined"
               label="Status"
               type="number"
-              onChange={(e) => setStatus(e.target.files)}
+              onChange={(e) => setStatus(e.target.value)}
               style={textFieldStyle}
             />
             <Button

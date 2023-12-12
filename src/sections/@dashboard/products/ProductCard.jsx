@@ -472,9 +472,7 @@ export default function ShopProductCard() {
       >
         Product Baru
       </Button>
-      <div style={{
-              }}>
-      <DataGrid  rows={dataProduct} columns={columns} autoHeight/></div>
+      
       {/* Modal - Create */}
       <Modal
         open={isOpenCreate}
