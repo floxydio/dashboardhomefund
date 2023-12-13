@@ -16,10 +16,6 @@ export default function SettingCard() {
     query: '(min-width: 1224px)',
   });
 
-  // function handleEditClick(id) {
-  //   setDataSetting({ ...dataSetting, {dataSetting.id}: { mode: GridRowModes.Edit } });
-  // }
-
   function handleSaveClick() {
     setDataSetting({ ...dataSetting, 1: { mode: GridRowModes.View } });
   }
@@ -60,12 +56,12 @@ export default function SettingCard() {
     { field: 'product_setting', headerName: 'Product Setting', width: 180, editable: true },
     { field: 'saldo_setting', headerName: 'Saldo Setting', width: 180, editable: true },
     { field: 'slider_setting', headerName: 'Slider Setting', width: 180, editable: true },
-    { field: 'url_certificate', headerName: 'Url Certification', width: 180, editable: true },
+    { field: 'url_certificate', headerName: 'Url Sertifikasi', width: 180, editable: true },
     { field: 'url_introduction', headerName: 'Url Introduction', width: 180, editable: true },
     { field: 'url_product', headerName: 'Url Product', width: 180, editable: true },
-    { field: 'url_profile', headerName: 'Url Profile', width: 180, editable: true },
+    { field: 'url_profile', headerName: 'Url Profil', width: 180, editable: true },
     { field: 'url_slider', headerName: 'Url Slider', width: 180, editable: true },
-    { field: 'version_app', headerName: 'Version App', width: 180, editable: true },
+    { field: 'version_app', headerName: 'Versi Aplikasi', width: 180, editable: true },
     {
       field: 'wallet_setting',
       headerName: 'Wallet Setting',

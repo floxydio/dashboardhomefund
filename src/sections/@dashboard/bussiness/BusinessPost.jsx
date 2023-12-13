@@ -99,9 +99,8 @@ export default function BusinessPost() {
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          // localStorage.removeItem('token');
-          // window.location.href = '/login';
-          alert(err.response.data.message);
+          localStorage.removeItem('token');
+          window.location.href = '/login';
         } else {
           alert(err.response.data.message);
         }
@@ -113,7 +112,7 @@ export default function BusinessPost() {
   return (
     <>
       <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpen}>
-        New Post
+        Buat Postingan
       </Button>
       <Modal
         aria-labelledby="parent-modal-title"

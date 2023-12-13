@@ -24,12 +24,8 @@ import axiosNew from '../../../components/AxiosConfig';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { MutatingDots } from 'react-loader-spinner';
 import cryptoJs from 'crypto-js';
-<<<<<<< HEAD
-import { useMediaQuery } from 'react-responsive'
-import ImageIcon from '@mui/icons-material/Image';
-=======
 import { useMediaQuery } from 'react-responsive';
->>>>>>> 43102f1 (.)
+import ImageIcon from '@mui/icons-material/Image';
 // ----------------------------------------------------------------------
 
 const boxStyle = {
@@ -154,9 +150,9 @@ export default function SliderTable() {
           <TableHead>
             <TableRow>
               <TableCell>No</TableCell>
-              <TableCell>Name</TableCell>
+              <TableCell>Nama</TableCell>
               <TableCell>Detail</TableCell>
-              <TableCell>Image</TableCell>
+              <TableCell>Gambar</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
@@ -177,7 +173,7 @@ export default function SliderTable() {
                   <TableCell align="left">{result.detail}</TableCell>
                   <TableCell align="left">
                     <Button onClick={() => handleOpen(result.image)}>
-                      <ImageIcon/>
+                      <ImageIcon />
                     </Button>
                   </TableCell>
                   <TableCell align="left">

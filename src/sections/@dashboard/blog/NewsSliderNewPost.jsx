@@ -58,7 +58,6 @@ export default function NewPost() {
       .then((res) => {
         if (res.status === 201) {
           window.location.reload();
-          // console.log(res);
         }
       })
       .catch((err) => {
@@ -74,7 +73,7 @@ export default function NewPost() {
   return (
     <>
       <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpen}>
-        New Post
+        Buat Postingan
       </Button>
       <Modal
         open={open}
@@ -122,14 +121,6 @@ export default function NewPost() {
               onChange={(e) => setName(e.target.value)}
               style={textFieldStyle}
             />
-            {/* <TextField
-              required
-              id="outlined"
-              label="Detail"
-              type="text"
-              onChange={(e) => setDetail(e.target.value)}
-              style={textFieldStyle}
-            /> */}
             <ReactQuill
               theme="snow"
               value={detail}
