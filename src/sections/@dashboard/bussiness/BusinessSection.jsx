@@ -109,7 +109,7 @@ export default function BusinessSection() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
+              <TableCell>Nama</TableCell>
               <TableCell>File</TableCell>
               <TableCell>Deskripsi</TableCell>
               <TableCell>Link Prospectus</TableCell>

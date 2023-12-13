@@ -468,7 +468,7 @@ export default function ShopProductCard() {
           float: isMobile ? 'none' : 'right',
         }}
       >
-        Product Baru
+        Produk Baru
       </Button>
       {/* Modal - Create */}
       <Modal
@@ -508,7 +508,7 @@ export default function ShopProductCard() {
             variant="h6"
             component="h2"
           >
-            Masukan Data Product
+            Masukan Data Produk
           </Typography>
           <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
             <TextField
@@ -823,24 +823,24 @@ export default function ShopProductCard() {
           <TableHead>
             <TableRow>
               <TableCell>No</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Status Invesment</TableCell>
-              <TableCell>Complete Invesment</TableCell>
-              <TableCell>Minimun Invesment</TableCell>
+              <TableCell>Kategori</TableCell>
+              <TableCell>Judul</TableCell>
+              <TableCell>Lokasi</TableCell>
+              <TableCell>Status Investasi</TableCell>
+              <TableCell>Complete Investasi</TableCell>
+              <TableCell>Minimun Investasi</TableCell>
               <TableCell>Total Lot</TableCell>
-              <TableCell>Remaining Days</TableCell>
-              <TableCell>Product Image</TableCell>
-              <TableCell>Status Campaign</TableCell>
+              <TableCell>Hari Tersisa</TableCell>
+              <TableCell>Foto Produk</TableCell>
+              <TableCell>Status Produk</TableCell>
               <TableCell>Tenor</TableCell>
-              <TableCell>Percentage Imbal</TableCell>
-              <TableCell>Period Imbal</TableCell>
+              <TableCell>Persentasi Imbal</TableCell>
+              <TableCell>Periode Imbal</TableCell>
               <TableCell>Detail</TableCell>
-              <TableCell>Created At</TableCell>
-              <TableCell>Updated At</TableCell>
+              <TableCell>Dibuat pada</TableCell>
+              <TableCell>Diupdate pada</TableCell>
               <TableCell>Edit</TableCell>
-              <TableCell>Delete</TableCell>
+              <TableCell>Hapus</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
