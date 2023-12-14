@@ -92,32 +92,9 @@ export default function ShopProductCard() {
     productDetailId: 0,
     createdAt: new Date(),
   });
-  //   editId: 0,
-  //   editCategory: '',
-  //   editTitle: '',
-  //   editLocation: '',
-  //   editStatusInvestment: 0,
-  //   editTotalInvesment: 0,
-  //   editCompleteInvesment: 0,
-  //   editMinimumInvesment: 0,
-  //   editTotalLot: 0,
-  //   editTotalInvestor: 0,
-  //   editRemainingDays: new Date(),
-  //   // editBusinessId: 0,
-  //   editProductImage: '',
-  //   editStatusCampaign: 0,
-  //   editTenor: 0,
-  //   editPercentangeImbal: 0,
-  //   editPeriodImbal: 0,
-  //   editDetail: '',
-  //   // editProductDetailId: 0,
-  //   editUpdatedAt: new Date(),
-  // });
-
-  // const editId = editData.editId;
 
   const [editId, setEditId] = useState(0);
-  const [editCategory, setEditCategory] = useState('');
+  const [editCategory, setEditCategory] = useState('Rumah');
   const [editTitle, setEditTitle] = useState('');
   const [editLocation, setEditLocation] = useState('');
   const [editStatusInvestment, setEditStatusInvestment] = useState(0);
@@ -125,7 +102,7 @@ export default function ShopProductCard() {
   const [editMinimumInvesment, setEditMinimumInvesment] = useState(0);
   const [editTotalLot, setEditTotalLot] = useState(0);
   const [editRemainingDays, setEditRemainingDays] = useState(new Date());
-  const [editProductImage, setEditProductImage] = useState('');
+  const [editProductImage, setEditProductImage] = useState();
   const [editStatusCampaign, setEditStatusCampaign] = useState(0);
   const [editTenor, setEditTenor] = useState(0);
   const [editPercentangeImbal, setEditPercentangeImbal] = useState(0);
@@ -188,10 +165,10 @@ export default function ShopProductCard() {
   const openModalDelete = () => setIsOpenDelete(true);
   const closeModalDelete = () => setIsOpenDelete(false);
 
-  function deleteProduct(id) {
+  async function deleteProduct(id) {
     const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
 
-    axiosNew
+    await axiosNewsetEditCategory
       .delete(`/product/${id}`, {
         headers: {
           Authorization: decrypt.toString(CryptoJS.enc.Utf8),
@@ -238,9 +215,9 @@ export default function ShopProductCard() {
   }
 
   function handleOpen(id) {
-    function getProductImage() {
+    async function getProductImage() {
       const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-      axiosNew
+      await axiosNew
         .get(`/product/${id}`, {
           headers: {
             Authorization: decrypt.toString(CryptoJS.enc.Utf8),
@@ -249,7 +226,7 @@ export default function ShopProductCard() {
         })
         .then((result) => {
           if (result.status === 200) {
-            setImageArray(result.data.image);
+            setFiles(result.data.image);
             setOpen(true);
           }
         })
@@ -283,22 +260,6 @@ export default function ShopProductCard() {
   const handleCloseEditData = () => setOpenEditData(false);
 
   const [dataBusiness, setDataBusiness] = useState([]);
-
-  const handleChangeEditLocation = (e) => {
-    setEditLocation(e);
-  };
-
-  const handleChangeEditStatusInvestment = (e) => {
-    setEditStatusInvestment(e);
-  };
-
-  const handleChangeEditStatusCampaign = (e) => {
-    setEditStatusCampaign(e);
-  };
-
-  const handleChangeEditBusinessId = (e) => {
-    setEditData({ ...editData, editBusinessId: e.target.value });
-  };
 
   const inputChange = (e) => {
     const images = [];
@@ -372,7 +333,7 @@ export default function ShopProductCard() {
       .replace(/[^,\d]/g, '')
       .toString();
     const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    setEditCompleteInvesment(currency);
+    setEditCompleteInvesment({ editCompleteInvesment: currency });
   }
 
   function editMinimumInvesmentInputCurrencyToIDR(e) {
@@ -382,7 +343,7 @@ export default function ShopProductCard() {
       .replace(/[^,\d]/g, '')
       .toString();
     const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    setEditMinimumInvesment(currency);
+    setEditMinimumInvesment({ editMinimumInvesment: currency });
   }
 
   function truncate(str, n) {
@@ -398,12 +359,12 @@ export default function ShopProductCard() {
     formData.append('location', newData.location);
     formData.append('status_investment', newData.statusInvestment);
     formData.append('complete_invesment', newData.completeInvesment.toString().replaceAll('.', ''));
-    formData.append('total_invesment', newData.totalInvesment.toString().replace('.', ''));
+    formData.append('total_investment', newData.totalInvesment.toString().replace('.', ''));
     formData.append('minimum_investment', newData.minimumInvesment.toString().replaceAll('.', ''));
     formData.append('total_lot', newData.totalLot);
     formData.append('remaining_days', newData.remainingDays);
     formData.append('business_id', newData.businessId);
-    for (let i = 0; i < files.length; i++) {
+    for (let i = 0; i < files?.length; i++) {
       formData.append('image_product', files[i][0]);
     }
     formData.append('status_campaign', newData.statusCampaign);
@@ -412,6 +373,8 @@ export default function ShopProductCard() {
     formData.append('period_imbal', newData.period_imbal);
     formData.append('detail', newData.detail);
     formData.append('createdAt', newData.createdAt);
+
+    console.log(files);
 
     const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
     await axiosNew
@@ -436,16 +399,20 @@ export default function ShopProductCard() {
     e.preventDefault();
 
     let formData = new FormData();
-    formData.append('category', editCategory);
+    formData.append('category', 'Rumah');
     formData.append('title', editTitle);
     formData.append('location', editLocation);
     formData.append('status_investment', editStatusInvestment);
-    formData.append('complete_invesment', editCompleteInvesment);
-    formData.append('minimum_invesment', editMinimumInvesment);
+    formData.append('complete_invesment', editCompleteInvesment.toString().replaceAll('.', ''));
+    formData.append('minimum_invesment', editMinimumInvesment.toString().replaceAll('.', ''));
     formData.append('total_lot', editTotalLot);
     formData.append('remaining_days', editRemainingDays);
-    formData.append('product_image', editProductImage);
+    formData.append('image_product', editProductImage);
     formData.append('status_campaign', editStatusCampaign);
+    formData.append('tenor', editTenor);
+    formData.append('percentange_imbal', editPercentangeImbal);
+    formData.append('period_imbal', editPeriodImbal);
+    formData.append('detail', editDetail);
     formData.append('updatedAt', editUpdatedAt);
 
     const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
@@ -576,17 +543,6 @@ export default function ShopProductCard() {
                 ))}
               </Select>
             </FormControl>
-            {/* <TextField
-              required
-              id="outlined"
-              label="Total Investor"
-              value={newData.totalInvesment}
-              onChange={(e) => totalInvesmentInputCurrencyToIDR(e.target.value)}
-              InputProps={{
-                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Rp </span>,
-              }}
-              style={textFieldStyle}
-            /> */}
             <TextField
               required
               id="outlined"
@@ -620,17 +576,6 @@ export default function ShopProductCard() {
               onChange={(e) => setNewData({ ...newData, totalLot: e.target.value })}
               style={textFieldStyle}
             />
-            {/* <TextField
-              required
-              id="outlined"
-              label="Total Investor"
-              InputProps={{
-                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Orang</span>,
-              }}
-              type="number"
-              onChange={(e) => setNewData({ ...newData, totalInvestor: e.target.value })}
-              style={textFieldStyle}
-            /> */}
             <TextField
               required
               type="date"
@@ -639,25 +584,6 @@ export default function ShopProductCard() {
               onChange={(e) => setNewData({ ...newData, remainingDays: e.target.value })}
               style={textFieldStyle}
             />
-
-            {/* <FormControl style={textFieldStyle}>
-              <InputLabel id="demo-simple-select-autowidth-label">Business ID</InputLabel>
-              <Select
-                labelId="demo-simple-select-autowidth-label"
-                id="demo-simple-select-autowidth"
-                value={newData.businessId}
-                onChange={handleChangeBusinessId}
-                autoWidth
-                label="Business ID"
-                defaultValue=""
-              >
-                {dataBusiness.map((data) => (
-                  <MenuItem key={data.id} value={data.id}>
-                    {data.id}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
             <Stack>
               <div className="fileupload-view">
                 <div className="row justify-content-center m-0">
@@ -894,7 +820,6 @@ export default function ShopProductCard() {
                       onClick={() =>
                         handleFunctionEdit(
                           result.id,
-                          result.category,
                           result.title,
                           result.location,
                           result.status_investment,
@@ -1020,21 +945,24 @@ export default function ShopProductCard() {
           >
             Product Image
           </Typography>
-          {imageArray?.map((e, i) => (
-            <div key={i}>
-              <img
-                src={`https://279e-2400-9800-4e0-d302-dbdd-caa4-eee2-741f.ngrok-free.app/dashboard-api/static/product/${e}`}
-                style={{
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  marginBottom: 20,
-                  width: 290,
-                  objectFit: 'cover',
-                }}
-                alt="Test"
-              />
-            </div>
-          ))}
+          {files?.map((e, i) => {
+            console.log(e);
+            return (
+              <div key={i}>
+                <img
+                  src={`https://9ffb-116-206-8-32.ngrok-free.app/dashboard-api/static/product/${e}`}
+                  style={{
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    marginBottom: 20,
+                    width: 290,
+                    objectFit: 'cover',
+                  }}
+                  alt="product_image"
+                />
+              </div>
+            );
+          })}
         </Box>
       </Modal>
 
@@ -1079,15 +1007,6 @@ export default function ShopProductCard() {
             Edit Data Product
           </Typography>
           <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
-            <TextField
-              required
-              id="outlined"
-              label="Category"
-              type="text"
-              value={editCategory}
-              onChange={(e) => setEditCategory(e.target.value)}
-              style={textFieldStyle}
-            />
             <TextField
               required
               id="outlined"
@@ -1144,11 +1063,12 @@ export default function ShopProductCard() {
               id="outlined"
               label="Complete Invesment"
               type="number"
-              value={editCompleteInvesment}
+              defaultValue={editCompleteInvesment}
               InputProps={{
                 startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
               }}
-              onChange={(e) => editCompleteInvesmentInputCurrencyToIDR(e.target.value)}
+              // onChange={(e) => editCompleteInvesmentInputCurrencyToIDR(e.target.value)}
+              onChange={(e) => setEditCompleteInvesment(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
@@ -1160,7 +1080,8 @@ export default function ShopProductCard() {
               InputProps={{
                 startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
               }}
-              onChange={(e) => editMinimumInvesmentInputCurrencyToIDR(e.target.value)}
+              // onChange={(e) => editMinimumInvesmentInputCurrencyToIDR(e.target.value)}
+              onChange={(e) => setEditMinimumInvesment(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
@@ -1189,7 +1110,7 @@ export default function ShopProductCard() {
               required
               accept="image/*"
               type="file"
-              onChange={(e) => setEditProductImage(e.target.value)}
+              onChange={(e) => setImageProduct(e.target.value[0])}
               style={textFieldStyle}
             />
             <FormControl style={textFieldStyle}>
@@ -1198,7 +1119,7 @@ export default function ShopProductCard() {
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
                 value={editStatusCampaign}
-                onChange={handleChangeEditStatusCampaign}
+                onChange={(e) => setEditStatusCampaign(e.target.value)}
                 autoWidth
                 label="Status Campaign"
                 defaultValue=""
@@ -1255,16 +1176,14 @@ export default function ShopProductCard() {
               InputProps={{
                 endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>Bulan</span>,
               }}
-              onChange={(e) => setEditPeriodeImbal(e.target.value)}
+              onChange={(e) => setEditPeriodImbal(e.target.value)}
               style={textFieldStyle}
             />
-            <TextField
-              required
-              id="outlined"
-              label="Detail"
-              type="text"
+            <ReactQuill
+              theme="snow"
               value={editDetail}
-              onChange={(e) => setEditDetail(e.target.value)}
+              onChange={(e) => setEditDetail(e)}
+              placeholder="Input Deskripsi"
               style={textFieldStyle}
             />
             <Box
