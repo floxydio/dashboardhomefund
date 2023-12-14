@@ -98,6 +98,7 @@ export default function ProductNewPost() {
 
 
   const token = localStorage.getItem('token');
+  
   async function getDataProspectus() {
     setDataBusiness([]);
     const decrypt = cryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);

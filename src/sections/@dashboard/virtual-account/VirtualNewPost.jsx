@@ -13,6 +13,9 @@ import { useMediaQuery } from 'react-responsive'
 import { nanoid } from 'nanoid';
 import moment from 'moment';
 import ReactQuill from 'react-quill';
+import CryptoJS from 'crypto-js';
+import axiosNew from '../../../components/AxiosConfig';
+
 
 const boxStyle = {
   position: 'absolute',
@@ -37,23 +40,37 @@ export default function VirtualAccountNewPost() {
   const [newData, setNewData] = useState({
     name: '',
     icon: '',
-    description: '',
     vat: 0,
-    status: 0,
+    status: 1,
+    description: '',
+    type_va: 0,
+  });
+  
+  // Media Query
+  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-width: 1224px)',
   });
 
-  const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+  const token = localStorage.getItem('token')
 
+  // UseState Modal
   const [open, setOpen] = useState(false);
+  const [isOpenCreate, setIsOpenCreate] = useState(false); // Create Modal
+  const [openEditData, setOpenEditData] = useState(false); // Edit Modal
+  const [isOpenDelete, setIsOpenDelete] = useState(false); // Delete Modal
 
   const handleClose = () => setOpen(false);
-
   function handleOpen() {
     setOpen(true);
   }
 
   const [selectedFile, setSelectedFile] = useState([]);
   const [files, setFiles] = useState([]);
+  const [dataVA, setDataVA] = useState([]);
+
+  const openModalCreate = () => setIsOpenCreate(true);
+  const closeModalCreate = () => setIsOpenCreate(false);
 
   const inputChange = (e) => {
     const images = [];
@@ -90,18 +107,83 @@ export default function VirtualAccountNewPost() {
     }
   }
 
-  async function submitDataProduct(e) {
+  async function getVA() {
+    setDataVA([]);
 
+    const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+    await axiosNew
+      .get('/product', {
+        headers: {
+          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+        },
+      })
+      .then((result) => {
+        if(result.status === 200) {
+          setDataVA(result.data.data);
+        }
+      })
+      .catch((err) => {
+        if(err.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          alert(err.response.data.message);
+        }
+      });
+  }
+
+  async function submitDataVA(e) {
+    e.preventDefault();
+
+    let formData = new FormData();
+    formData.append('name', newData.name);
+    for (let i = 0; i < files.length; i++) {
+      formData.append('image_va', files[i][0]);
+    }
+    formData.append('vat', newData.vat);
+    formData.append('status', newData.status);
+    formData.append('description', newData.description);
+    formData.append('type_va', newData.type_va);
+
+    const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+    await axiosNew
+      .post('/virtualaccount', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+        },
+      })
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          setIsOpenCreate(false);
+          window.location.reload()
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      })
   }
 
   return (
     <>
-      <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpen}>
-        New Post
+      <Button 
+        variant="contained" 
+        startIcon={<Iconify 
+        icon="eva:plus-fill" 
+        />} 
+        onClick={openModalCreate}
+        style={{
+          width: isMobile ? '100%' : '',
+          marginRight: isMobile ? 20 : 0,
+          marginBottom: isMobile ? 30 : 50,
+          float: isMobile ? 'none' : 'right',
+        }}
+      >
+      New Post
       </Button>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={isOpenCreate}
+        onClose={closeModalCreate}
         sx={{
           height: 500,
           overflowY: 'scroll',
@@ -111,7 +193,11 @@ export default function VirtualAccountNewPost() {
           marginRight: 'auto'
         }}
       >
-        <Box sx={boxStyle} noValidate autoComplete="off">
+        <Box 
+          sx={boxStyle} 
+          noValidate 
+          autoComplete="off"
+        >
           <Typography
             style={{
               textAlign: 'center',
@@ -122,7 +208,6 @@ export default function VirtualAccountNewPost() {
           >
             Masukan Data Virtual Account
           </Typography>
-
           <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
           <TextField
             required
@@ -196,13 +281,6 @@ export default function VirtualAccountNewPost() {
               </div>
             </div>
           </Stack>
-          <ReactQuill 
-            theme="snow"
-            value={newData.description}
-            onChange={(e) => setNewData({ ...newData, description: e })}
-            placeholder="Deskripsi"
-            style={textFieldStyle}
-          />
           <TextField 
             required
             id="outlined"
@@ -219,11 +297,25 @@ export default function VirtualAccountNewPost() {
             onChange={(e) => setNewData({ ...newData, status: e.target.value })}
             style={textFieldStyle}
           />
+          <ReactQuill 
+            theme="snow"
+            value={newData.description}
+            onChange={(e) => setNewData({ ...newData, description: e })}
+            placeholder="Deskripsi"
+            style={textFieldStyle}
+          />
+          <TextField 
+            required
+            id="outlined"
+            label="Tipe VA"
+            type="number"
+            onChange={(e) => setNewData({ ...newData, type_va: e.target.value })}
+          />
           <Typography sx={{ marginTop: 4, marginBottom: 4 }}>
               Dibuat Pada: {moment(newData.createdAt).utc().format('Do MMMM YYYY')}
           </Typography>
             <Button
-              onClick={submitDataProduct}
+              onClick={submitDataVA}
               type="submit"
               sx={{
                 height: 45,
@@ -241,7 +333,7 @@ export default function VirtualAccountNewPost() {
               Submit
             </Button>
             <Button
-              onClick={() => setOpen(false)}
+              onClick={() => setIsOpenCreate(false)}
               type="submit"
               sx={{
                 height: 45,

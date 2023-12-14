@@ -62,29 +62,31 @@ export default function VirtualAccountCard() {
 
   const token = localStorage.getItem('token');
 
+  async function getVirtualAccount() {
+    setVirtualAccount([])
+    const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+    await axiosNew
+      .get('/virtualaccount', {
+        headers: {
+          Authorization: decrypt.toString(cryptoJs.enc.Utf8),
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setVirtualAccount(res.data.data);
+        }
+      }).catch((err) => {
+        if (err.response.status === 401) {
+          localStorage.removeItem("token")
+          window.location.href = "/login"
+        } else {
+          alert(err.response.data.message)
+        }
+      });
+  }
+
   useEffect(() => {
-    async function getVirtualAccout() {
-      const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-      await axiosNew
-        .get('/virtualaccount', {
-          headers: {
-            Authorization: decrypt.toString(cryptoJs.enc.Utf8),
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            setVirtualAccount(res.data.data);
-          }
-        }).catch((err) => {
-          if (err.response.status === 401) {
-            localStorage.removeItem("token")
-            window.location.href = "/login"
-          } else {
-            alert(err.response.data.message)
-          }
-        });
-    }
-    getVirtualAccout();
+    getVirtualAccount();
   }, []);
 
   return (
@@ -96,13 +98,16 @@ export default function VirtualAccountCard() {
               <TableCell>No</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Icon</TableCell>
-              <TableCell>Description</TableCell>
               <TableCell>VAT</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Type_VA</TableCell>
+              
             </TableRow>
           </TableHead>
           <TableBody>
             {virtualAccount.map((result, i) => {
+              console.log(result)
               return (
                 <TableRow sx={{ '&:last-child td, &:lastchild th': { border: 0 } }} key={result.id}>
                   <TableCell component="th" scope="row">
@@ -114,9 +119,11 @@ export default function VirtualAccountCard() {
                       <InsertDriveFileIcon />
                     </Button>
                   </TableCell>
-                  <TableCell align="left">{result.description}</TableCell>
                   <TableCell align="left">{result.vat}</TableCell>
                   <TableCell align="left">{result.status}</TableCell>
+                  <TableCell align="left">{result.description}</TableCell>
+                  <TableCell align="left">{result.type_va}</TableCell>
+                  
                 </TableRow>
               );
             })}
