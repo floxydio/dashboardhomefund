@@ -57,8 +57,7 @@ export default function VirtualAccountNewPost() {
   // UseState Modal
   const [open, setOpen] = useState(false);
   const [isOpenCreate, setIsOpenCreate] = useState(false); // Create Modal
-  const [openEditData, setOpenEditData] = useState(false); // Edit Modal
-  const [isOpenDelete, setIsOpenDelete] = useState(false); // Delete Modal
+
 
   const handleClose = () => setOpen(false);
   function handleOpen() {
@@ -105,31 +104,6 @@ export default function VirtualAccountNewPost() {
     } else {
       //alert ("No")
     }
-  }
-
-  async function getVA() {
-    setDataVA([]);
-
-    const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-    await axiosNew
-      .get('/product', {
-        headers: {
-          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-        },
-      })
-      .then((result) => {
-        if(result.status === 200) {
-          setDataVA(result.data.data);
-        }
-      })
-      .catch((err) => {
-        if(err.response.status === 401) {
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-        } else {
-          alert(err.response.data.message);
-        }
-      });
   }
 
   async function submitDataVA(e) {
