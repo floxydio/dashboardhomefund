@@ -92,8 +92,6 @@ export default function ShopProductCard() {
     productDetailId: 0,
     createdAt: new Date(),
   });
-
-  // const [editData, setEditData] = useState({
   //   editId: 0,
   //   editCategory: '',
   //   editTitle: '',
@@ -200,7 +198,7 @@ export default function ShopProductCard() {
         },
       })
       .then(() => {
-        // setIsOpenDelete(false);
+        setIsOpenDelete(false);
         getProduct();
       })
       .catch((err) => {
@@ -287,15 +285,15 @@ export default function ShopProductCard() {
   const [dataBusiness, setDataBusiness] = useState([]);
 
   const handleChangeEditLocation = (e) => {
-    setEditLocation((e) => e.target.value);
+    setEditLocation(e);
   };
 
   const handleChangeEditStatusInvestment = (e) => {
-    setEditStatusInvestment((e) => e.target.value);
+    setEditStatusInvestment(e);
   };
 
   const handleChangeEditStatusCampaign = (e) => {
-    setEditStatusCampaign((e) => e.target.value);
+    setEditStatusCampaign(e);
   };
 
   const handleChangeEditBusinessId = (e) => {
@@ -367,6 +365,26 @@ export default function ShopProductCard() {
     setNewData({ ...newData, minimumInvesment: currency });
   }
 
+  function editCompleteInvesmentInputCurrencyToIDR(e) {
+    const value = e;
+    const valueString = value
+      .toString()
+      .replace(/[^,\d]/g, '')
+      .toString();
+    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    setEditCompleteInvesment(currency);
+  }
+
+  function editMinimumInvesmentInputCurrencyToIDR(e) {
+    const value = e;
+    const valueString = value
+      .toString()
+      .replace(/[^,\d]/g, '')
+      .toString();
+    const currency = valueString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    setEditMinimumInvesment(currency);
+  }
+
   function truncate(str, n) {
     return str?.length > n ? str.substr(0, n - 1) + '...' : str;
   }
@@ -412,7 +430,6 @@ export default function ShopProductCard() {
       .catch((err) => {
         alert(err);
       });
-    // console.log(newData.detail)
   }
 
   async function submitEditProduct(e) {
@@ -862,7 +879,7 @@ export default function ShopProductCard() {
                   </TableCell>
                   <TableCell align="left">
                     <Button onClick={() => handleOpen(result.id)}>
-                      <ImageIcon/>
+                      <ImageIcon />
                     </Button>
                   </TableCell>
                   <TableCell align="left">{result.status_campaign}</TableCell>
@@ -898,7 +915,75 @@ export default function ShopProductCard() {
                     </Button>
                   </TableCell>
                   <TableCell align="left">
-                    <Button onClick={() => deleteProduct(result.id)}>Delete</Button>
+                    <div>
+                      <Button onClick={openModalDelete}>Delete</Button>
+                      <Modal open={isOpenDelete} onClose={closeModalDelete}>
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: isMobile ? '100%' : 500,
+                            bgcolor: 'background.paper',
+                            border: '2px solid #000',
+                            boxShadow: 24,
+                            overflowY: 'scroll',
+                            height: 250,
+                            p: 4,
+                          }}
+                          noValidate
+                          autoComplete="off"
+                        >
+                          <Typography
+                            variant="h5"
+                            sx={{
+                              textAlign: 'center',
+                              marginBottom: 3,
+                            }}
+                          >
+                            Delete Data
+                          </Typography>
+                          <Typography>Are You Sure Want To Delete This Data</Typography>
+                          <Button
+                            onClick={() => deleteProduct(result.id)}
+                            type="submit"
+                            sx={{
+                              height: 45,
+                              backgroundColor: '#4169E1',
+                              color: 'white',
+                              fontWeight: 'bold',
+                              borderColor: 'transparent',
+                              borderRadius: 20,
+                              marginTop: 2,
+                              '&:hover': {
+                                backgroundColor: '#4169E1',
+                              },
+                            }}
+                          >
+                            Ya
+                          </Button>
+                          <Button
+                            onClick={closeModalDelete}
+                            type="submit"
+                            sx={{
+                              height: 45,
+                              backgroundColor: 'red',
+                              color: 'white',
+                              fontWeight: 'bold',
+                              borderColor: 'transparent',
+                              borderRadius: 20,
+                              marginTop: 2,
+                              '&:hover': {
+                                backgroundColor: 'red',
+                              },
+                            }}
+                          >
+                            Tidak
+                          </Button>
+                        </Box>
+                      </Modal>
+                    </div>
                   </TableCell>
                 </TableRow>
               );
@@ -1018,7 +1103,7 @@ export default function ShopProductCard() {
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
                 value={editLocation}
-                onChange={handleChangeEditLocation}
+                onChange={(e) => setEditLocation(e.target.value)}
                 autoWidth
                 label="Location"
               >
@@ -1038,7 +1123,7 @@ export default function ShopProductCard() {
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
                 value={editStatusInvestment}
-                onChange={handleChangeEditStatusInvestment}
+                onChange={(e) => setEditStatusInvestment(e.target.value)}
                 autoWidth
                 label="Status Invesment"
                 defaultValue=""
@@ -1061,9 +1146,9 @@ export default function ShopProductCard() {
               type="number"
               value={editCompleteInvesment}
               InputProps={{
-                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
+                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
               }}
-              onChange={(e) => setEditCompleteInvesment(e.target.value)}
+              onChange={(e) => editCompleteInvesmentInputCurrencyToIDR(e.target.value)}
               style={textFieldStyle}
             />
             <TextField
@@ -1073,9 +1158,9 @@ export default function ShopProductCard() {
               type="number"
               value={editMinimumInvesment}
               InputProps={{
-                endAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
+                startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
               }}
-              onChange={(e) => setEditMinimumInvesment(e.target.value)}
+              onChange={(e) => editMinimumInvesmentInputCurrencyToIDR(e.target.value)}
               style={textFieldStyle}
             />
             <TextField

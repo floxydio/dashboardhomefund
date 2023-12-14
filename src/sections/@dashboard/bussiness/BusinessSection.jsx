@@ -22,7 +22,7 @@ export default function BusinessSection() {
   const [open, setOpen] = React.useState(false);
   const [docs, setDocs] = React.useState([]);
   const [id, setId] = React.useState(0);
-  // const handleOpen = () => setOpen(true);
+  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const style = {
@@ -38,30 +38,42 @@ export default function BusinessSection() {
 
   const token = localStorage.getItem('token');
 
-  // const docs = [
+  const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+
+  const headers = {
+    Authorization: decrypt.toString(cryptoJs.enc.Utf8),
+    'ngrok-skip-browser-warning': 'any',
+  };
+
+  // const docu = [
   //   {
-  //     uri: 'https://279e-2400-9800-4e0-d302-dbdd-caa4-eee2-741f.ngrok-free.app/dashboard-api/static/prospektus/prospektus_f065c174-311f-44db-822f-8d10fce0c615_PTIOTECH.pdf',
+  //     uri: 'https://9ffb-116-206-8-32.ngrok-free.app/dashboard-api/static/prospektus/prospektus_c3d8b53f-0bd0-43f7-9cd0-7a5f9c81982a_Test.pdf',
   //   },
   // ];
 
-  // function getPdf(id, file) {
-  //   setId(id);
-  //   setDocs(file);
-  //   setOpen(true);
-  // }
+  const linkDocs = 'https://9ffb-116-206-8-32.ngrok-free.app/dashboard-api/static/prospektus/';
 
-  async function getPdf(id) {
+  async function getPdf() {
     const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-    axiosNew
-      .get(`/prospektus/${id}`, {
+
+    await axiosNew
+      .get(`/prospektus`, {
         headers: {
           Authorization: decrypt.toString(cryptoJs.enc.Utf8),
         },
       })
       .then((result) => {
         if (result.status === 200) {
-          setDocs(result.data.data[0].file);
-          setOpen(true);
+          //Create a Blob from the PDF Stream
+          const file = new Blob([result.data.data[0].file], {
+            type: 'application/pdf',
+          });
+          //Build a URL from the file
+          const fileURL = URL.createObjectURL(`${linkDocs}${file}`);
+          //Open the URL on new Window
+          // const pdfWindow = window.open();
+          // pdfWindow.location.href = fileURL;
+          console.log(file);
         }
       })
       .catch((err) => {
@@ -109,6 +121,7 @@ export default function BusinessSection() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
+              <TableCell>No</TableCell>
               <TableCell>Nama</TableCell>
               <TableCell>File</TableCell>
               <TableCell>Deskripsi</TableCell>
@@ -116,11 +129,39 @@ export default function BusinessSection() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataProspectus?.map((row) => (
+            {dataProspectus?.map((row, i) => (
               <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell component="th" scope="row">
+                  {i + 1}
+                </TableCell>
                 <TableCell align="left">{row.name}</TableCell>
                 <TableCell align="left">
-                  <Button onClick={() => getPdf(row.id)}>View</Button>
+                  <div>
+                    <Button onClick={getPdf}>View</Button>
+                    {/* <Modal
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                    >
+                      <Box sx={style}>
+                        <DocViewer
+                          prefetchMethod="GET"
+                          requestHeader={headers}
+                          pluginRenderers={DocViewerRenderers}
+                          documents={docu}
+                          style={{ width: 'auto', height: 'auto' }}
+                          config={{
+                            header: {
+                              disableHeader: true,
+                              disableFileName: true,
+                              retainURLParams: true,
+                            },
+                          }}
+                        />
+                      </Box>
+                    </Modal> */}
+                  </div>
                 </TableCell>
                 <TableCell align="left">{row.deskripsi}</TableCell>
                 <TableCell align="left">{row.link_prospektus}</TableCell>
@@ -129,37 +170,6 @@ export default function BusinessSection() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          {docs?.map((data, i) => {
-            <div key={i}>
-              {/* <DocViewer
-                pluginRenderers={DocViewerRenderers}
-                documents={uri: }
-                style={{ width: 'auto', height: 'auto' }}
-                config={{
-                  header: {
-                    disableHeader: true,
-                    disableFileName: true,
-                    retainURLParams: true,
-                  },
-                }}
-              /> */}
-              {/* <iframe
-                src={`https://279e-2400-9800-4e0-d302-dbdd-caa4-eee2-741f.ngrok-free.app/dashboard-api/static/prospektus/${data}`}
-                width="100px"
-                height="100px"
-              /> */}
-            </div>;
-          })}
-          {/* <Typography>Test</Typography> */}
-        </Box>
-      </Modal>
     </>
   );
 }
