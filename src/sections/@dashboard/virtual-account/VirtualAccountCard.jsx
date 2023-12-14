@@ -55,7 +55,7 @@ export default function VirtualAccountCard() {
 
   const [loading, setLoading] = useState(false);
 
-  const [iconVirtual, setIconVirtual] = useState('');  
+  const [iconVirtual, setIconVirtual] = useState('');
   const [virtualAccount, setVirtualAccount] = useState([]);
   const [openEditData, setOpenEditData] = useState(false); // Edit Modal
   const [isOpenDelete, setIsOpenDelete] = useState(false); // Delete Modal
@@ -147,7 +147,7 @@ export default function VirtualAccountCard() {
         getVirtualAccount();
       })
       .catch((err) => {
-        if(err.response.status === 401) {
+        if (err.response.status === 401) {
           localStorage.removeItem('token');
           window.location.href = '/login';
         } else {
@@ -185,8 +185,8 @@ export default function VirtualAccountCard() {
 
   return (
     <>
-      <TableContainer 
-        component={Paper} 
+      <TableContainer
+        component={Paper}
         style={{ marginLeft: isMobile ? 20 : 0, marginRight: isMobile ? 20 : 0 }}
       >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -222,7 +222,7 @@ export default function VirtualAccountCard() {
                   <TableCell align="left">{result.type_va}</TableCell>
                   <TableCell align="left">
                     <Button
-                      onClick={() => 
+                      onClick={() =>
                         handleFunctionEdit(
                           result.id,
                           result.name,
@@ -240,75 +240,75 @@ export default function VirtualAccountCard() {
 
                   {/* Delete */}
                   <TableCell align="left">
-                      <div>
-                        <Button onClick={openModalDelete}>Delete</Button>
-                        <Modal open={isOpenDelete} onClose={closeModalDelete}>
-                          <Box
+                    <div>
+                      <Button onClick={openModalDelete}>Delete</Button>
+                      <Modal open={isOpenDelete} onClose={closeModalDelete}>
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: isMobile ? '100%' : 500,
+                            bgcolor: 'background.paper',
+                            border: '2px solid #000',
+                            boxShadow: 24,
+                            overflowY: 'scroll',
+                            height: 250,
+                            p: 4,
+                          }}
+                          noValidate
+                          autoComplete="off"
+                        >
+                          <Typography
+                            variant="h5"
                             sx={{
-                              position: 'absolute',
-                              top: '50%',
-                              left: '50%',
-                              transform: 'translate(-50%, -50%)',
-                              width: isMobile ? '100%' : 500,
-                              bgcolor: 'background.paper',
-                              border: '2px solid #000',
-                              boxShadow: 24,
-                              overflowY: 'scroll',
-                              height: 250,
-                              p: 4,
+                              textAlign: 'center',
+                              marginBottom: 3,
                             }}
-                            noValidate
-                            autoComplete="off"
                           >
-                            <Typography
-                              variant="h5"
-                              sx={{
-                                textAlign: 'center',
-                                marginBottom: 3,
-                              }}
-                            >
-                              Delete Data
-                            </Typography>
-                            <Typography>Are You Sure Want To Delete This Data</Typography>
-                            <Button
-                              onClick={() => deleteVA(result.id)}
-                              type="submit"
-                              sx={{
-                                height: 45,
+                            Delete Data
+                          </Typography>
+                          <Typography>Are You Sure Want To Delete This Data</Typography>
+                          <Button
+                            onClick={() => deleteVA(result.id)}
+                            type="submit"
+                            sx={{
+                              height: 45,
+                              backgroundColor: '#4169E1',
+                              color: 'white',
+                              fontWeight: 'bold',
+                              borderColor: 'transparent',
+                              borderRadius: 20,
+                              marginTop: 2,
+                              '&:hover': {
                                 backgroundColor: '#4169E1',
-                                color: 'white',
-                                fontWeight: 'bold',
-                                borderColor: 'transparent',
-                                borderRadius: 20,
-                                marginTop: 2,
-                                '&:hover': {
-                                  backgroundColor: '#4169E1',
-                                },
-                              }}
-                            >
-                              Ya
-                            </Button>
-                            <Button
-                              onClick={closeModalDelete}
-                              type="submit"
-                              sx={{
-                                height: 45,
+                              },
+                            }}
+                          >
+                            Ya
+                          </Button>
+                          <Button
+                            onClick={closeModalDelete}
+                            type="submit"
+                            sx={{
+                              height: 45,
+                              backgroundColor: 'red',
+                              color: 'white',
+                              fontWeight: 'bold',
+                              borderColor: 'transparent',
+                              borderRadius: 20,
+                              marginTop: 2,
+                              '&:hover': {
                                 backgroundColor: 'red',
-                                color: 'white',
-                                fontWeight: 'bold',
-                                borderColor: 'transparent',
-                                borderRadius: 20,
-                                marginTop: 2,
-                                '&:hover': {
-                                  backgroundColor: 'red',
-                                },
-                              }}
-                            >
-                              Tidak
-                            </Button>
-                          </Box>
-                        </Modal>
-                      </div>
+                              },
+                            }}
+                          >
+                            Tidak
+                          </Button>
+                        </Box>
+                      </Modal>
+                    </div>
                   </TableCell>
                 </TableRow>
               );
@@ -319,18 +319,18 @@ export default function VirtualAccountCard() {
 
       <Modal open={open} onClose={handleClose}>
         <Box sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: isMobile ? '100%' : 500,
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            overflowY: 'scroll',
-            height: 500,
-            p: 4,
-          }}
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: isMobile ? '100%' : 500,
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          boxShadow: 24,
+          overflowY: 'scroll',
+          height: 500,
+          p: 4,
+        }}
           noValidate
           autoComplete="off">
           {loading ? (
@@ -352,7 +352,7 @@ export default function VirtualAccountCard() {
                 Virtual Account Icon{' '}
               </Typography>
               <img
-                src={`https://homefund-beta.xyz/dashboard-api/static/virtualaccount/${iconVirtual}`}
+                src={`http://192.168.249.110:2500/dashboard-api/static/virtualaccount/${iconVirtual}`}
                 alt="Static API Image"
               />
             </>
@@ -390,7 +390,7 @@ export default function VirtualAccountCard() {
           noValidate
           autoComplete="off"
         >
-          <Typography 
+          <Typography
             style={{
               textAlign: 'center',
               marginBottom: '10',
@@ -401,7 +401,7 @@ export default function VirtualAccountCard() {
             Edit Data Virtual Account
           </Typography>
           <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
-            <TextField 
+            <TextField
               required
               id="outlined"
               label="Name"

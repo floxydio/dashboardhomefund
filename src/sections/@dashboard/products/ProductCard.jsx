@@ -17,6 +17,7 @@ import {
   Select,
   MenuItem,
   Stack,
+  Chip,
 } from '@mui/material';
 import Iconify from '../../../components/iconify';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
@@ -34,6 +35,9 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { DataGrid } from '@mui/x-data-grid';
 import ImageIcon from '@mui/icons-material/Image';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // ----------------------------------------------------------------------
 
 const textFieldStyle = {
@@ -111,37 +115,22 @@ export default function ShopProductCard() {
   const [editUpdatedAt, setEditUpdateAt] = useState(new Date());
 
   const handleFunctionEdit = (
-    id,
-    category,
-    title,
-    location,
-    statusInvestment,
-    completeInvesment,
-    minimumInvestment,
-    totalLot,
-    remainingDays,
-    productImage,
-    statusCampaign,
-    tenor,
-    percentangeImbal,
-    periodImbal,
-    detail
+    id, title, location, statusInvestment, completeInvestment, totalInvestment, minimumInvestment, totalLot, remainingDays, statusCampaign, tenor, percentangeImbal, periodImbal, detail
   ) => {
-    setEditId(id);
-    setEditCategory(category);
-    setEditTitle(title);
-    setEditLocation(location);
-    setEditStatusInvestment(statusInvestment);
-    setEditCompleteInvesment(completeInvesment);
-    setEditMinimumInvesment(minimumInvestment);
-    setEditTotalLot(totalLot);
-    setEditRemainingDays(remainingDays);
-    setEditProductImage(productImage);
-    setEditStatusCampaign(statusCampaign);
-    setEditTenor(tenor);
-    setEditPercentangeImbal(percentangeImbal);
-    setEditPeriodImbal(periodImbal);
-    setEditDetail(detail);
+    setEditId(id)
+    setEditTitle(title)
+    setEditLocation(location)
+    setEditStatusInvestment(statusInvestment)
+    setEditCompleteInvesment(completeInvestment)
+    setEditTotalLot(totalInvestment)
+    setEditMinimumInvesment(minimumInvestment)
+    setEditTotalLot(totalLot)
+    setEditRemainingDays(remainingDays)
+    setEditStatusCampaign(statusCampaign)
+    setEditTenor(tenor)
+    setEditPercentangeImbal(percentangeImbal)
+    setEditPeriodImbal(periodImbal)
+    setEditDetail(detail)
     setOpenEditData(true);
   };
 
@@ -346,53 +335,111 @@ export default function ShopProductCard() {
     setEditMinimumInvesment({ editMinimumInvesment: currency });
   }
 
-  function truncate(str, n) {
-    return str?.length > n ? str.substr(0, n - 1) + '...' : str;
+  const errorLoad = (message) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "dark",
+    });
   }
+
 
   async function submitDataProduct(e) {
     e.preventDefault();
+    if (newData.title === '') {
+      errorLoad('Field title belum diisi')
+    } else if (newData.location === '') {
+      errorLoad('Field location belum diisi')
+    } else if (newData.statusInvestment === '' || newData.statusInvestment === 0) {
+      errorLoad('Field status investment belum diisi')
+    } else if (newData.completeInvesment === '' || newData.completeInvesment === 0) {
+      errorLoad('Field complete investment belum diisi')
+    } else if (newData.minimumInvesment === '' || newData.minimumInvesment === 0) {
+      errorLoad('Field minimum investment belum diisi')
+    } else if (newData.totalLot === '' || newData.totalLot === 0) {
+      errorLoad('Field total lot belum diisi')
+    } else if (newData.remainingDays === '' || newData.remainingDays === null) {
+      errorLoad('Field remaining days belum diisi')
+    } else if (newData.statusCampaign === '' || newData.statusCampaign === 0) {
+      errorLoad('Field status campaign belum diisi')
+    } else if (newData.tenor === '' || newData.tenor === 0) {
+      errorLoad('Field tenor belum diisi')
+    } else if (newData.percentange_imbal === '' || newData.percentange_imbal === 0) {
+      errorLoad('Field percentange imbal belum diisi')
+    } else if (newData.detail === '') {
+      errorLoad('Field detail belum diisi')
+    } else if (files[0] === null || files[0] === undefined) {
+      errorLoad('Image belum ada')
+    } else {
+      let formData = new FormData();
+      formData.append('category', 'Rumah');
+      formData.append('title', newData.title);
+      formData.append('location', newData.location);
+      formData.append('status_investment', newData.statusInvestment);
+      formData.append('complete_invesment', newData.completeInvesment.toString().replaceAll('.', ''));
+      formData.append('total_investment', newData.totalInvesment.toString().replace('.', ''));
+      formData.append('minimum_investment', newData.minimumInvesment.toString().replaceAll('.', ''));
+      formData.append('total_lot', newData.totalLot);
+      formData.append('remaining_days', newData.remainingDays);
+      formData.append('business_id', newData.businessId);
+      for (let i = 0; i < files?.length; i++) {
+        formData.append('image_product', files[i][0]);
+      }
+      formData.append('status_campaign', newData.statusCampaign);
+      formData.append('tenor', newData.tenor);
+      formData.append('percentange_imbal', newData.percentange_imbal);
+      formData.append('period_imbal', newData.period_imbal);
+      formData.append('detail', newData.detail);
+      formData.append('createdAt', newData.createdAt);
 
-    let formData = new FormData();
-    formData.append('category', 'Rumah');
-    formData.append('title', newData.title);
-    formData.append('location', newData.location);
-    formData.append('status_investment', newData.statusInvestment);
-    formData.append('complete_invesment', newData.completeInvesment.toString().replaceAll('.', ''));
-    formData.append('total_investment', newData.totalInvesment.toString().replace('.', ''));
-    formData.append('minimum_investment', newData.minimumInvesment.toString().replaceAll('.', ''));
-    formData.append('total_lot', newData.totalLot);
-    formData.append('remaining_days', newData.remainingDays);
-    formData.append('business_id', newData.businessId);
-    for (let i = 0; i < files?.length; i++) {
-      formData.append('image_product', files[i][0]);
+
+      const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+      await axiosNew
+        .post('/product', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: decrypt.toString(CryptoJS.enc.Utf8),
+          },
+        })
+        .then((res) => {
+          if (res.status === 200 || res.status === 201) {
+            setIsOpenCreate(false);
+            getProduct();
+
+            // Reset
+            setNewData({
+              category: 'Rumah',
+              title: '',
+              location: '',
+              statusInvestment: 0,
+              completeInvesment: 0,
+              totalInvesment: 0,
+              minimumInvesment: 0,
+              totalLot: 0,
+              totalInvestor: 0,
+              remainingDays: null,
+              businessId: 0,
+              productImage: '',
+              statusCampaign: 0,
+              tenor: 0,
+              percentange_imbal: 0,
+              period_imbal: 0,
+              detail: '',
+              productDetailId: 0,
+              createdAt: new Date(),
+            })
+            setFiles([])
+          }
+        })
+
     }
-    formData.append('status_campaign', newData.statusCampaign);
-    formData.append('tenor', newData.tenor);
-    formData.append('percentange_imbal', newData.percentange_imbal);
-    formData.append('period_imbal', newData.period_imbal);
-    formData.append('detail', newData.detail);
-    formData.append('createdAt', newData.createdAt);
 
-    console.log(files);
 
-    const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-    await axiosNew
-      .post('/product', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-        },
-      })
-      .then((res) => {
-        if (res.status === 200 || res.status === 201) {
-          setIsOpenCreate(false);
-          getProduct();
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
   }
 
   async function submitEditProduct(e) {
@@ -441,6 +488,7 @@ export default function ShopProductCard() {
 
   return (
     <>
+      <ToastContainer />
       <Button
         variant="contained"
         startIcon={<Iconify icon="eva:plus-fill" />}
@@ -677,7 +725,7 @@ export default function ShopProductCard() {
                 autoWidth
                 label="Tenor"
                 defaultValue={500}
-                // value={500}
+              // value={500}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
@@ -766,12 +814,11 @@ export default function ShopProductCard() {
           <TableHead>
             <TableRow>
               <TableCell>No</TableCell>
-              <TableCell>Kategori</TableCell>
               <TableCell>Judul</TableCell>
               <TableCell>Lokasi</TableCell>
               <TableCell>Status Investasi</TableCell>
               <TableCell>Complete Investasi</TableCell>
-              <TableCell>Minimun Investasi</TableCell>
+              <TableCell>Minimum Investasi</TableCell>
               <TableCell>Total Lot</TableCell>
               <TableCell>Hari Tersisa</TableCell>
               <TableCell>Foto Produk</TableCell>
@@ -779,9 +826,6 @@ export default function ShopProductCard() {
               <TableCell>Tenor</TableCell>
               <TableCell>Persentasi Imbal</TableCell>
               <TableCell>Periode Imbal</TableCell>
-              <TableCell>Detail</TableCell>
-              <TableCell>Dibuat pada</TableCell>
-              <TableCell>Diupdate pada</TableCell>
               <TableCell>Edit</TableCell>
               <TableCell>Hapus</TableCell>
             </TableRow>
@@ -793,10 +837,15 @@ export default function ShopProductCard() {
                   <TableCell component="th" scope="row">
                     {i + 1}
                   </TableCell>
-                  <TableCell align="left">{result.category}</TableCell>
                   <TableCell align="left">{result.title}</TableCell>
                   <TableCell align="left">{result.location}</TableCell>
-                  <TableCell align="left">{result.status_investment}</TableCell>
+                  <TableCell align="left">{<Chip
+                    sx={{
+                      color: 'white',
+                    }}
+                    label={result.status_investment === 1 ? "Tersedia" : result.status_investment === 2 ? "Akan Datang" : "Terpenuhi"}
+                    color={result.status_investment === 3 ? "success" : "info"}
+                  />}</TableCell>
                   <TableCell align="left">Rp{result.complete_invesment.toLocaleString()}</TableCell>
                   <TableCell align="left">Rp{result.minimum_invesment.toLocaleString()}</TableCell>
                   <TableCell align="left">{result.total_lot.toLocaleString()}</TableCell>
@@ -808,31 +857,23 @@ export default function ShopProductCard() {
                       <ImageIcon />
                     </Button>
                   </TableCell>
-                  <TableCell align="left">{result.status_campaign}</TableCell>
+                  <TableCell align="left">{<Chip
+                    sx={{
+                      color: 'white',
+                    }}
+                    label={result.status_campaign === 1 ? "Pre-Order" : result.status_campaign === 2 ? "Pengumpulan Dana" : result.status_campaign === 3 ? "Pengumpulan selesai" : "Pembagian"}
+                    color={"info"}
+                  />}</TableCell>
                   <TableCell align="left">{result.tenor}</TableCell>
                   <TableCell align="left">{result.percentange_imbal}%</TableCell>
-                  <TableCell align="left">{result.period_imbal}%</TableCell>
-                  <TableCell align="left">{result.detail}</TableCell>
-                  <TableCell align="left">{moment(result.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
-                  <TableCell align="left">{moment(result.updatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
+                  <TableCell align="left">{result.period_imbal}</TableCell>
+                  {/* <TableCell align="left">{moment(result.createdAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
+                  <TableCell align="left">{moment(result.updatedAt).utc().format('MMMM Do YYYY, h:mm:ss a')}</TableCell> */}
                   <TableCell align="left">
                     <Button
                       onClick={() =>
                         handleFunctionEdit(
-                          result.id,
-                          result.title,
-                          result.location,
-                          result.status_investment,
-                          result.minimum_invesment,
-                          result.complete_invesment,
-                          result.minimum_invesment,
-                          result.total_lot,
-                          result.remaining_days,
-                          result.status_campaign,
-                          result.tenor,
-                          result.percentange_imbal,
-                          result.period_imbal,
-                          result.detail
+                          result.id, result.title, result.location, result.status_investment, result.complete_invesment, result.total_investment, result.minimum_invesment, result.total_lot, result.remaining_days, result.status_campaign, result.tenor, result.percentange_imbal, result.period_imbal, result.detail
                         )
                       }
                     >
@@ -946,11 +987,10 @@ export default function ShopProductCard() {
             Product Image
           </Typography>
           {files?.map((e, i) => {
-            console.log(e);
             return (
               <div key={i}>
                 <img
-                  src={`https://9ffb-116-206-8-32.ngrok-free.app/dashboard-api/static/product/${e}`}
+                  src={`http://192.168.249.110:2500/dashboard-api/static/product/${e}`}
                   style={{
                     marginLeft: 'auto',
                     marginRight: 'auto',
@@ -1216,7 +1256,7 @@ export default function ShopProductCard() {
               Submit
             </Button>
             <Button
-              onClick={() => setIsOpenCreate(false)}
+              onClick={() => setOpenEditData(false)}
               type="submit"
               sx={{
                 height: 45,

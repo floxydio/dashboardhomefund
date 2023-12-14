@@ -98,6 +98,10 @@ export default function SettingCard() {
         autoHeight
         hideFooterPagination
         hideFooterSelectedRowCount
+        processRowUpdate={(newRow, oldRow) => {
+          console.log(newRow)
+          console.log(oldRow)
+        }}
       />
     </>
   );
