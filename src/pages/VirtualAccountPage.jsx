@@ -9,20 +9,25 @@ export default function VirtualAccountPage() {
         <title>Dashboard: Virtual Account | HomeFund </title>
       </Helmet>
 
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            Virtual Account
-          </Typography>
-          <VirtualAccountNewPost />
-        </Stack>
+      <Stack direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        mb={5}
+        sx={{
+          paddingLeft: '40px',
+          paddingRight: '40px',
+        }}>
+        <Typography variant="h4" gutterBottom>
+          Virtual Account
+        </Typography>
+        <VirtualAccountNewPost />
+      </Stack>
 
-        <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
-          {/* <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+      <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
+        {/* <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
           </Stack> */}
-          <VirtualAccountCard />
-        </Stack>
-      </Container>
+        <VirtualAccountCard />
+      </Stack>
     </>
   );
 }

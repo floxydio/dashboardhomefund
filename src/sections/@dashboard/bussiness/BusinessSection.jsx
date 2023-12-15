@@ -97,7 +97,7 @@ export default function BusinessSection() {
                     <Button onClick={() => {
                       window.open(`${linkDocs}/${row.file}`, '_blank');
 
-                    }}>View</Button>
+                    }}>Lihat File</Button>
 
                   </div>
                 </TableCell>

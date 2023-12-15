@@ -7,7 +7,8 @@ import { LoadingButton } from '@mui/lab';
 import Iconify from '../../../components/iconify';
 import axiosNew from '../../../components/AxiosConfig';
 import cryptoJs from 'crypto-js';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
@@ -46,40 +47,59 @@ export default function LoginForm() {
           navigate('/dashboard', { replace: true });
         }
       }).catch((err) => {
-        alert(err.response.data.message)
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: "dark",
+        });
       });
   }
 
+  const handleKeyPress = (event) => {
+    event.preventDefault()
+    if (event.key === 'Enter') {
+      signInAccount()
+    }
+  };
   return (
     <>
-      <Stack spacing={3} sx={{ marginTop: 5 }}>
-        <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)} />
-        <TextField
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          onChange={(e) => setPassword(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Stack>
+      <ToastContainer />
+      <form onSubmit={handleKeyPress}>
+        <Stack spacing={3} sx={{ marginTop: 5 }}>
+          <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)} />
+          <TextField
+            name="password"
+            label="Password"
+            type={showPassword ? 'text' : 'password'}
+            onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Link href="https://google.com" target="_blank" variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
-      </Stack>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+          <Link href="https://google.com" target="_blank" variant="subtitle2" underline="hover">
+            Forgot password?
+          </Link>
+        </Stack>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={signInAccount}>
-        Masuk
-      </LoadingButton>
+        <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={signInAccount}>
+          Masuk
+        </LoadingButton>
+
+      </form>
     </>
   );
 }

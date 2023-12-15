@@ -45,7 +45,7 @@ export default function VirtualAccountNewPost() {
     description: '',
     type_va: 0,
   });
-  
+
   // Media Query
   const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
   const isDesktopOrLaptop = useMediaQuery({
@@ -140,11 +140,11 @@ export default function VirtualAccountNewPost() {
 
   return (
     <>
-      <Button 
-        variant="contained" 
-        startIcon={<Iconify 
-        icon="eva:plus-fill" 
-        />} 
+      <Button
+        variant="contained"
+        startIcon={<Iconify
+          icon="eva:plus-fill"
+        />}
         onClick={openModalCreate}
         style={{
           width: isMobile ? '100%' : '',
@@ -153,7 +153,7 @@ export default function VirtualAccountNewPost() {
           float: isMobile ? 'none' : 'right',
         }}
       >
-      New Post
+        New Post
       </Button>
       <Modal
         open={isOpenCreate}
@@ -167,9 +167,21 @@ export default function VirtualAccountNewPost() {
           marginRight: 'auto'
         }}
       >
-        <Box 
-          sx={boxStyle} 
-          noValidate 
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: isMobile ? '100%' : 500,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            overflowY: 'scroll',
+            height: 500,
+            p: 4,
+          }}
+          noValidate
           autoComplete="off"
         >
           <Typography
@@ -183,111 +195,111 @@ export default function VirtualAccountNewPost() {
             Masukan Data Virtual Account
           </Typography>
           <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
-          <TextField
-            required
-            id="outlined"
-            label="Nama"
-            type="text"
-            onChange={(e) => setNewData({ ...newData, name: e.target.value })}
-            style={textFieldStyle}
-          />
-          <Stack>
-            <div className="fileupload-view">
-              <div className="row justify-content-center m-0">
-                <div className="col-md-6">
-                  <div className="card mt-5">
-                    <div className="kb-data-box">
-                      <div className="kb-modal-data-title">
-                        <div className="kb-data-title">
-                          <h6>Upload Gambar</h6>
-                        </div>
-                      </div>
-                      <form>
-                        <div className="kb-file-upload">
-                          <div className="file-upload-box">
-                            <input 
-                              type="file"
-                              id="fileupload"
-                              className="file-upload-input"
-                              onChange={inputChange}
-                              multiple
-                            />
-                            <span>
-                              Tarik dan letakan atau <span className="file-link">Pilih gambar</span>
-                            </span>
+            <TextField
+              required
+              id="outlined"
+              label="Nama"
+              type="text"
+              onChange={(e) => setNewData({ ...newData, name: e.target.value })}
+              style={textFieldStyle}
+            />
+            <Stack>
+              <div className="fileupload-view">
+                <div className="row justify-content-center m-0">
+                  <div className="col-md-6">
+                    <div className="card mt-5">
+                      <div className="kb-data-box">
+                        <div className="kb-modal-data-title">
+                          <div className="kb-data-title">
+                            <h6>Upload Gambar</h6>
                           </div>
                         </div>
-                        <div className="kb-attach-box mb-3">
-                          {selectedFile.map((data) => {
-                            const {id ,filename, fileimage} = data;
-                            return (
-                              <div className="file-atc-box" key={id}>
-                                {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ? (
-                                  <div className="file-image">
-                                    {' '}
-                                    <img src={fileimage} alt="" />
-                                  </div>
-                                ) : (
-                                  <div className="file-image">
-                                    <i className="far fa-file-alt"></i>
-                                  </div>
-                                )}
-                                <div className="file-detail">
-                                  <h6 className="title-image">{filename}</h6>
-                                  <div className="file-actions">
-                                    <button 
-                                      type="button"
-                                      className="file-action-btn"
-                                      onClick={() => deleteSelectedFile(id)}
-                                    >
-                                      Hapus
-                                    </button>
+                        <form>
+                          <div className="kb-file-upload">
+                            <div className="file-upload-box">
+                              <input
+                                type="file"
+                                id="fileupload"
+                                className="file-upload-input"
+                                onChange={inputChange}
+                                multiple
+                              />
+                              <span>
+                                Tarik dan letakan atau <span className="file-link">Pilih gambar</span>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="kb-attach-box mb-3">
+                            {selectedFile.map((data) => {
+                              const { id, filename, fileimage } = data;
+                              return (
+                                <div className="file-atc-box" key={id}>
+                                  {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ? (
+                                    <div className="file-image">
+                                      {' '}
+                                      <img src={fileimage} alt="" />
+                                    </div>
+                                  ) : (
+                                    <div className="file-image">
+                                      <i className="far fa-file-alt"></i>
+                                    </div>
+                                  )}
+                                  <div className="file-detail">
+                                    <h6 className="title-image">{filename}</h6>
+                                    <div className="file-actions">
+                                      <button
+                                        type="button"
+                                        className="file-action-btn"
+                                        onClick={() => deleteSelectedFile(id)}
+                                      >
+                                        Hapus
+                                      </button>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </form>
+                              );
+                            })}
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Stack>
-          <TextField 
-            required
-            id="outlined"
-            label="VAT"
-            type="number"
-            onChange={(e) => setNewData({ ...newData, vat: e.target.value })}
-            style={textFieldStyle}
-          />
-          <TextField 
-            required
-            id="outlined"
-            label="Status"
-            type="number"
-            onChange={(e) => setNewData({ ...newData, status: e.target.value })}
-            style={textFieldStyle}
-          />
-          <ReactQuill 
-            theme="snow"
-            value={newData.description}
-            onChange={(e) => setNewData({ ...newData, description: e })}
-            placeholder="Deskripsi"
-            style={textFieldStyle}
-          />
-          <TextField 
-            required
-            id="outlined"
-            label="Tipe VA"
-            type="number"
-            onChange={(e) => setNewData({ ...newData, type_va: e.target.value })}
-          />
-          <Typography sx={{ marginTop: 4, marginBottom: 4 }}>
+            </Stack>
+            <TextField
+              required
+              id="outlined"
+              label="VAT"
+              type="number"
+              onChange={(e) => setNewData({ ...newData, vat: e.target.value })}
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Status"
+              type="number"
+              onChange={(e) => setNewData({ ...newData, status: e.target.value })}
+              style={textFieldStyle}
+            />
+            <ReactQuill
+              theme="snow"
+              value={newData.description}
+              onChange={(e) => setNewData({ ...newData, description: e })}
+              placeholder="Deskripsi"
+              style={textFieldStyle}
+            />
+            <TextField
+              required
+              id="outlined"
+              label="Tipe VA"
+              type="number"
+              onChange={(e) => setNewData({ ...newData, type_va: e.target.value })}
+            />
+            <Typography sx={{ marginTop: 4, marginBottom: 4 }}>
               Dibuat Pada: {moment(newData.createdAt).utc().format('Do MMMM YYYY')}
-          </Typography>
+            </Typography>
             <Button
               onClick={submitDataVA}
               type="submit"
@@ -302,8 +314,8 @@ export default function VirtualAccountNewPost() {
                 '&:hover': {
                   backgroundColor: 'darkblue',
                 },
-              }}    
-            > 
+              }}
+            >
               Submit
             </Button>
             <Button

@@ -20,6 +20,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { BarLoader } from 'react-spinners';
 import cryptoJs from 'crypto-js';
 import { useMediaQuery } from 'react-responsive';
+import ImageIcon from '@mui/icons-material/Image';
 
 
 const textFieldStyle = {
@@ -83,6 +84,7 @@ export default function VirtualAccountCard() {
   const [editDescription, setEditDescription] = useState("");
   const [editTypeVa, setEditTypeVa] = useState(0);
 
+  
 
   const handleFunctionEdit = (
     id,
@@ -198,7 +200,7 @@ export default function VirtualAccountCard() {
               <TableCell>VAT</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>Type_VA</TableCell>
+              <TableCell>Tipe</TableCell>
               <TableCell>Edit</TableCell>
               <TableCell>Hapus</TableCell>
             </TableRow>
@@ -213,7 +215,7 @@ export default function VirtualAccountCard() {
                   <TableCell align="left">{result.name}</TableCell>
                   <TableCell align="left">
                     <Button onClick={() => handleOpen(result.icon)}>
-                      <InsertDriveFileIcon />
+                      <ImageIcon />
                     </Button>
                   </TableCell>
                   <TableCell align="left">{result.vat}</TableCell>
@@ -317,7 +319,7 @@ export default function VirtualAccountCard() {
         </Table>
       </TableContainer>
 
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose} >
         <Box sx={{
           position: 'absolute',
           top: '50%',

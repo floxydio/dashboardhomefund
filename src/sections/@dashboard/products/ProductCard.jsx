@@ -890,12 +890,11 @@ export default function ShopProductCard() {
                             top: '50%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
-                            width: isMobile ? '100%' : 500,
+                            width: isMobile ? '70%' : 400,
                             bgcolor: 'background.paper',
                             border: '2px solid #000',
                             boxShadow: 24,
                             overflowY: 'scroll',
-                            height: 250,
                             p: 4,
                           }}
                           noValidate
@@ -908,45 +907,55 @@ export default function ShopProductCard() {
                               marginBottom: 3,
                             }}
                           >
-                            Delete Data
+                            Hapus Data
                           </Typography>
-                          <Typography>Are You Sure Want To Delete This Data</Typography>
-                          <Button
-                            onClick={() => deleteProduct(result.id)}
-                            type="submit"
-                            sx={{
-                              height: 45,
-                              backgroundColor: '#4169E1',
-                              color: 'white',
-                              fontWeight: 'bold',
-                              borderColor: 'transparent',
-                              borderRadius: 20,
-                              marginTop: 2,
-                              '&:hover': {
+                          <Typography>Apakah data tersebut yakin dihapus?</Typography>
+                          <div style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginTop: '30px'
+                          }}>
+                            <Button
+                              onClick={() => deleteProduct(result.id)}
+                              type="submit"
+                              sx={{
+                                height: 45,
+                                width: 100,
                                 backgroundColor: '#4169E1',
-                              },
-                            }}
-                          >
-                            Ya
-                          </Button>
-                          <Button
-                            onClick={closeModalDelete}
-                            type="submit"
-                            sx={{
-                              height: 45,
-                              backgroundColor: 'red',
-                              color: 'white',
-                              fontWeight: 'bold',
-                              borderColor: 'transparent',
-                              borderRadius: 20,
-                              marginTop: 2,
-                              '&:hover': {
+                                color: 'white',
+                                fontWeight: 'bold',
+                                borderColor: 'transparent',
+                                borderRadius: 20,
+                                marginTop: 2,
+                                '&:hover': {
+                                  backgroundColor: '#4169E1',
+                                },
+                              }}
+                            >
+                              Ya
+                            </Button>
+                            <Button
+                              onClick={closeModalDelete}
+                              type="submit"
+                              sx={{
+                                height: 45,
+                                width: 100,
                                 backgroundColor: 'red',
-                              },
-                            }}
-                          >
-                            Tidak
-                          </Button>
+                                color: 'white',
+                                fontWeight: 'bold',
+                                borderColor: 'transparent',
+                                borderRadius: 20,
+                                marginTop: 2,
+                                '&:hover': {
+                                  backgroundColor: 'red',
+                                },
+                              }}
+                            >
+                              Tidak
+                            </Button>
+
+                          </div>
                         </Box>
                       </Modal>
                     </div>
