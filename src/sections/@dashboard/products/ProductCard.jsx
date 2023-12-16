@@ -999,7 +999,7 @@ export default function ShopProductCard() {
             return (
               <div key={i}>
                 <img
-                  src={`http://192.168.249.110:2500/dashboard-api/static/product/${e}`}
+                  src={`https://569a-2400-9800-342-10cc-5431-264f-b4e6-997.ngrok-free.app/dashboard-api/static/product/${e}`}
                   style={{
                     marginLeft: 'auto',
                     marginRight: 'auto',

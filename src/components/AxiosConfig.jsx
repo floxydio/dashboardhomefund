@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosNew = axios.create({
-  baseURL: `http://192.168.249.110:2500/dashboard-api`,
+  baseURL: `https://569a-2400-9800-342-10cc-5431-264f-b4e6-997.ngrok-free.app/dashboard-api`,
   headers: {
     'ngrok-skip-browser-warning': 'any',
     // RoleUser: 1,

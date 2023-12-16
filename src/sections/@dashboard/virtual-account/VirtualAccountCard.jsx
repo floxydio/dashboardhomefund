@@ -84,7 +84,7 @@ export default function VirtualAccountCard() {
   const [editDescription, setEditDescription] = useState("");
   const [editTypeVa, setEditTypeVa] = useState(0);
 
-  
+
 
   const handleFunctionEdit = (
     id,
@@ -354,7 +354,7 @@ export default function VirtualAccountCard() {
                 Virtual Account Icon{' '}
               </Typography>
               <img
-                src={`http://192.168.249.110:2500/dashboard-api/static/virtualaccount/${iconVirtual}`}
+                src={`https://569a-2400-9800-342-10cc-5431-264f-b4e6-997.ngrok-free.app/dashboard-api/static/virtualaccount/${iconVirtual}`}
                 alt="Static API Image"
               />
             </>

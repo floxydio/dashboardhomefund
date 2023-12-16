@@ -41,7 +41,7 @@ export default function BusinessSection() {
   const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
 
 
-  const linkDocs = 'http://192.168.249.110:2500/dashboard-api/static/prospektus';
+  const linkDocs = 'https://569a-2400-9800-342-10cc-5431-264f-b4e6-997.ngrok-free.app/dashboard-api/static/prospektus';
 
 
   async function getDataProspectus() {
