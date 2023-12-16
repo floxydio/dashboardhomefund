@@ -230,7 +230,7 @@ export default function SliderTable() {
               data-testid="loader"
             />
           ) : (
-            <img src={`https://homefund-beta.xyz//dashboard-api/static/slider/${imageSlider}`} alt="Static API Image" />
+            <img src={`https://569a-2400-9800-342-10cc-5431-264f-b4e6-997.ngrok-free.app/dashboard-api/static/slider/${imageSlider}`} alt="Static API Image" />
           )}
         </Box>
       </Modal>
