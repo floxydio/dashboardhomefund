@@ -115,22 +115,35 @@ export default function ShopProductCard() {
   const [editUpdatedAt, setEditUpdateAt] = useState(new Date());
 
   const handleFunctionEdit = (
-    id, title, location, statusInvestment, completeInvestment, totalInvestment, minimumInvestment, totalLot, remainingDays, statusCampaign, tenor, percentangeImbal, periodImbal, detail
+    id,
+    title,
+    location,
+    statusInvestment,
+    completeInvestment,
+    totalInvestment,
+    minimumInvestment,
+    totalLot,
+    remainingDays,
+    statusCampaign,
+    tenor,
+    percentangeImbal,
+    periodImbal,
+    detail
   ) => {
-    setEditId(id)
-    setEditTitle(title)
-    setEditLocation(location)
-    setEditStatusInvestment(statusInvestment)
-    setEditCompleteInvesment(completeInvestment)
-    setEditTotalLot(totalInvestment)
-    setEditMinimumInvesment(minimumInvestment)
-    setEditTotalLot(totalLot)
-    setEditRemainingDays(remainingDays)
-    setEditStatusCampaign(statusCampaign)
-    setEditTenor(tenor)
-    setEditPercentangeImbal(percentangeImbal)
-    setEditPeriodImbal(periodImbal)
-    setEditDetail(detail)
+    setEditId(id);
+    setEditTitle(title);
+    setEditLocation(location);
+    setEditStatusInvestment(statusInvestment);
+    setEditCompleteInvesment(completeInvestment);
+    setEditTotalLot(totalInvestment);
+    setEditMinimumInvesment(minimumInvestment);
+    setEditTotalLot(totalLot);
+    setEditRemainingDays(remainingDays);
+    setEditStatusCampaign(statusCampaign);
+    setEditTenor(tenor);
+    setEditPercentangeImbal(percentangeImbal);
+    setEditPeriodImbal(periodImbal);
+    setEditDetail(detail);
     setOpenEditData(true);
   };
 
@@ -231,19 +244,6 @@ export default function ShopProductCard() {
     getProductImage();
   }
 
-  async function getDataProspectus() {
-    const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-    await axiosNew
-      .get('/prospektus', {
-        headers: {
-          Authorization: decrypt.toString(CryptoJS.enc.Utf8),
-        },
-      })
-      .then((result) => {
-        setDataBusiness(result.data.data);
-      });
-  }
-
   const handleClose = () => setOpen(false);
 
   const handleCloseEditData = () => setOpenEditData(false);
@@ -337,44 +337,43 @@ export default function ShopProductCard() {
 
   const errorLoad = (message) => {
     toast.error(message, {
-      position: "top-right",
+      position: 'top-right',
       autoClose: 2000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: false,
       draggable: false,
       progress: undefined,
-      theme: "dark",
+      theme: 'dark',
     });
-  }
-
+  };
 
   async function submitDataProduct(e) {
     e.preventDefault();
     if (newData.title === '') {
-      errorLoad('Field title belum diisi')
+      errorLoad('Field title belum diisi');
     } else if (newData.location === '') {
-      errorLoad('Field location belum diisi')
+      errorLoad('Field location belum diisi');
     } else if (newData.statusInvestment === '' || newData.statusInvestment === 0) {
-      errorLoad('Field status investment belum diisi')
+      errorLoad('Field status investment belum diisi');
     } else if (newData.completeInvesment === '' || newData.completeInvesment === 0) {
-      errorLoad('Field complete investment belum diisi')
+      errorLoad('Field complete investment belum diisi');
     } else if (newData.minimumInvesment === '' || newData.minimumInvesment === 0) {
-      errorLoad('Field minimum investment belum diisi')
+      errorLoad('Field minimum investment belum diisi');
     } else if (newData.totalLot === '' || newData.totalLot === 0) {
-      errorLoad('Field total lot belum diisi')
+      errorLoad('Field total lot belum diisi');
     } else if (newData.remainingDays === '' || newData.remainingDays === null) {
-      errorLoad('Field remaining days belum diisi')
+      errorLoad('Field remaining days belum diisi');
     } else if (newData.statusCampaign === '' || newData.statusCampaign === 0) {
-      errorLoad('Field status campaign belum diisi')
+      errorLoad('Field status campaign belum diisi');
     } else if (newData.tenor === '' || newData.tenor === 0) {
-      errorLoad('Field tenor belum diisi')
+      errorLoad('Field tenor belum diisi');
     } else if (newData.percentange_imbal === '' || newData.percentange_imbal === 0) {
-      errorLoad('Field percentange imbal belum diisi')
+      errorLoad('Field percentange imbal belum diisi');
     } else if (newData.detail === '') {
-      errorLoad('Field detail belum diisi')
+      errorLoad('Field detail belum diisi');
     } else if (files[0] === null || files[0] === undefined) {
-      errorLoad('Image belum ada')
+      errorLoad('Image belum ada');
     } else {
       let formData = new FormData();
       formData.append('category', 'Rumah');
@@ -396,7 +395,6 @@ export default function ShopProductCard() {
       formData.append('period_imbal', newData.period_imbal);
       formData.append('detail', newData.detail);
       formData.append('createdAt', newData.createdAt);
-
 
       const decrypt = CryptoJS.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
       await axiosNew
@@ -432,14 +430,11 @@ export default function ShopProductCard() {
               detail: '',
               productDetailId: 0,
               createdAt: new Date(),
-            })
-            setFiles([])
+            });
+            setFiles([]);
           }
-        })
-
+        });
     }
-
-
   }
 
   async function submitEditProduct(e) {
@@ -451,7 +446,7 @@ export default function ShopProductCard() {
     formData.append('location', editLocation);
     formData.append('status_investment', editStatusInvestment);
     formData.append('complete_invesment', editCompleteInvesment.toString().replaceAll('.', ''));
-    formData.append('minimum_invesment', editMinimumInvesment.toString().replaceAll('.', ''));
+    formData.append('minimum_investment', editMinimumInvesment.toString().replaceAll('.', ''));
     formData.append('total_lot', editTotalLot);
     formData.append('remaining_days', editRemainingDays);
     formData.append('image_product', editProductImage);
@@ -482,7 +477,7 @@ export default function ShopProductCard() {
   }
 
   useEffect(() => {
-    getDataProspectus();
+    // getDataProspectus();
     getProduct();
   }, []);
 
@@ -725,7 +720,7 @@ export default function ShopProductCard() {
                 autoWidth
                 label="Tenor"
                 defaultValue={500}
-              // value={500}
+                // value={500}
               >
                 <MenuItem value={500} disabled>
                   <em>Pilih Status Tenor</em>
@@ -839,13 +834,23 @@ export default function ShopProductCard() {
                   </TableCell>
                   <TableCell align="left">{result.title}</TableCell>
                   <TableCell align="left">{result.location}</TableCell>
-                  <TableCell align="left">{<Chip
-                    sx={{
-                      color: 'white',
-                    }}
-                    label={result.status_investment === 1 ? "Tersedia" : result.status_investment === 2 ? "Akan Datang" : "Terpenuhi"}
-                    color={result.status_investment === 3 ? "success" : "info"}
-                  />}</TableCell>
+                  <TableCell align="left">
+                    {
+                      <Chip
+                        sx={{
+                          color: 'white',
+                        }}
+                        label={
+                          result.status_investment === 1
+                            ? 'Tersedia'
+                            : result.status_investment === 2
+                            ? 'Akan Datang'
+                            : 'Terpenuhi'
+                        }
+                        color={result.status_investment === 3 ? 'success' : 'info'}
+                      />
+                    }
+                  </TableCell>
                   <TableCell align="left">Rp{result.complete_invesment.toLocaleString()}</TableCell>
                   <TableCell align="left">Rp{result.minimum_invesment.toLocaleString()}</TableCell>
                   <TableCell align="left">{result.total_lot.toLocaleString()}</TableCell>
@@ -857,13 +862,25 @@ export default function ShopProductCard() {
                       <ImageIcon />
                     </Button>
                   </TableCell>
-                  <TableCell align="left">{<Chip
-                    sx={{
-                      color: 'white',
-                    }}
-                    label={result.status_campaign === 1 ? "Pre-Order" : result.status_campaign === 2 ? "Pengumpulan Dana" : result.status_campaign === 3 ? "Pengumpulan selesai" : "Pembagian"}
-                    color={"info"}
-                  />}</TableCell>
+                  <TableCell align="left">
+                    {
+                      <Chip
+                        sx={{
+                          color: 'white',
+                        }}
+                        label={
+                          result.status_campaign === 1
+                            ? 'Pre-Order'
+                            : result.status_campaign === 2
+                            ? 'Pengumpulan Dana'
+                            : result.status_campaign === 3
+                            ? 'Pengumpulan selesai'
+                            : 'Pembagian'
+                        }
+                        color={'info'}
+                      />
+                    }
+                  </TableCell>
                   <TableCell align="left">{result.tenor}</TableCell>
                   <TableCell align="left">{result.percentange_imbal}%</TableCell>
                   <TableCell align="left">{result.period_imbal}</TableCell>
@@ -873,7 +890,20 @@ export default function ShopProductCard() {
                     <Button
                       onClick={() =>
                         handleFunctionEdit(
-                          result.id, result.title, result.location, result.status_investment, result.complete_invesment, result.total_investment, result.minimum_invesment, result.total_lot, result.remaining_days, result.status_campaign, result.tenor, result.percentange_imbal, result.period_imbal, result.detail
+                          result.id,
+                          result.title,
+                          result.location,
+                          result.status_investment,
+                          result.complete_invesment,
+                          result.total_investment,
+                          result.minimum_invesment,
+                          result.total_lot,
+                          result.remaining_days,
+                          result.status_campaign,
+                          result.tenor,
+                          result.percentange_imbal,
+                          result.period_imbal,
+                          result.detail
                         )
                       }
                     >
@@ -910,12 +940,14 @@ export default function ShopProductCard() {
                             Hapus Data
                           </Typography>
                           <Typography>Apakah data tersebut yakin dihapus?</Typography>
-                          <div style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginTop: '30px'
-                          }}>
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginTop: '30px',
+                            }}
+                          >
                             <Button
                               onClick={() => deleteProduct(result.id)}
                               type="submit"
@@ -954,7 +986,6 @@ export default function ShopProductCard() {
                             >
                               Tidak
                             </Button>
-
                           </div>
                         </Box>
                       </Modal>
@@ -999,7 +1030,7 @@ export default function ShopProductCard() {
             return (
               <div key={i}>
                 <img
-                  src={`https://569a-2400-9800-342-10cc-5431-264f-b4e6-997.ngrok-free.app/dashboard-api/static/product/${e}`}
+                  src={`${import.meta.env.VITE_API_URL}/dashboard-api/static/product/${e}`}
                   style={{
                     marginLeft: 'auto',
                     marginRight: 'auto',
@@ -1116,7 +1147,6 @@ export default function ShopProductCard() {
               InputProps={{
                 startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
               }}
-              // onChange={(e) => editCompleteInvesmentInputCurrencyToIDR(e.target.value)}
               onChange={(e) => setEditCompleteInvesment(e.target.value)}
               style={textFieldStyle}
             />
@@ -1129,7 +1159,6 @@ export default function ShopProductCard() {
               InputProps={{
                 startAdornment: <span style={{ marginRight: 5, color: 'grey', fontWeight: 'bold' }}>RP</span>,
               }}
-              // onChange={(e) => editMinimumInvesmentInputCurrencyToIDR(e.target.value)}
               onChange={(e) => setEditMinimumInvesment(e.target.value)}
               style={textFieldStyle}
             />

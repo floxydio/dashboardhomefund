@@ -72,6 +72,32 @@ export default function SliderTable() {
 
   const token = localStorage.getItem('token');
 
+  async function getSlider() {
+    setSlider([]);
+
+    const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
+    await axiosNew
+      .get('/slider', {
+        headers: {
+          Authorization: decrypt.toString(cryptoJs.enc.Utf8),
+        },
+      })
+      .then((result) => {
+        if (result.status === 200) {
+          setSlider(result.data.data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          alert(err.response.data.message);
+        }
+      });
+  }
+
   async function editSlider() {
     setLoadingEdit(true);
 
@@ -92,41 +118,8 @@ export default function SliderTable() {
       )
       .then((result) => {
         if (result.status === 200 || result.status === 201) {
-          async function getSlider() {
-            await axiosNew.get('/slider').then((result) => {
-              setSlider(result.data.data);
-              setLoading(false);
-              handleCloseEdit();
-            });
-          }
           getSlider();
           setLoadingEdit(false);
-        }
-      })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-        } else {
-          alert(err.response.data.message);
-        }
-      });
-  }
-
-  async function getSlider() {
-    setSlider([]);
-
-    const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
-    await axiosNew
-      .get('/slider', {
-        headers: {
-          Authorization: decrypt.toString(cryptoJs.enc.Utf8),
-        },
-      })
-      .then((result) => {
-        if (result.status === 200) {
-          setSlider(result.data.data);
-          setLoading(false);
         }
       })
       .catch((err) => {
@@ -158,7 +151,7 @@ export default function SliderTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {slider.map((result, i) => {
+            {slider?.map((result, i) => {
               return (
                 <TableRow
                   sx={{
@@ -217,6 +210,7 @@ export default function SliderTable() {
           </TableBody>
         </Table>
       </TableContainer>
+
       {/* Modal For Image */}
       <Modal open={open} onClose={handleClose}>
         <Box sx={boxStyle} noValidate autoComplete="off">
@@ -230,7 +224,10 @@ export default function SliderTable() {
               data-testid="loader"
             />
           ) : (
-            <img src={`https://569a-2400-9800-342-10cc-5431-264f-b4e6-997.ngrok-free.app/dashboard-api/static/slider/${imageSlider}`} alt="Static API Image" />
+            <img
+              src={`${import.meta.env.VITE_API_URL}/dashboard-api/static/slider/${imageSlider}`}
+              alt="Static API Image"
+            />
           )}
         </Box>
       </Modal>

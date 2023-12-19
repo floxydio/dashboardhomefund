@@ -51,12 +51,13 @@ export default function NewPost() {
     await axiosNew
       .post('/slider', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
           Authorization: decrypt.toString(cryptoJs.enc.Utf8),
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
         },
       })
       .then((res) => {
-        if (res.status === 201) {
+        if (res.status === 200 || res.status === 201) {
           window.location.reload();
         }
       })
@@ -124,7 +125,7 @@ export default function NewPost() {
             <ReactQuill
               theme="snow"
               value={detail}
-              onChange={(e) => setDetail(e.target.value)}
+              onChange={(e) => setDetail(e)}
               placeholder="Input Deskripsi"
               style={textFieldStyle}
             />
