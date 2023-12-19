@@ -40,9 +40,7 @@ export default function BusinessSection() {
 
   const decrypt = cryptoJs.AES.decrypt(token, `${import.meta.env.VITE_KEY_ENCRYPT}`);
 
-
-  const linkDocs = 'https://569a-2400-9800-342-10cc-5431-264f-b4e6-997.ngrok-free.app/dashboard-api/static/prospektus';
-
+  const linkDocs = `${import.meta.env.VITE_API_URL}/dashboard-api/static/prospektus`;
 
   async function getDataProspectus() {
     setDataProspectus([]);
@@ -94,11 +92,13 @@ export default function BusinessSection() {
                 <TableCell align="left">{row.name}</TableCell>
                 <TableCell align="left">
                   <div>
-                    <Button onClick={() => {
-                      window.open(`${linkDocs}/${row.file}`, '_blank');
-
-                    }}>Lihat File</Button>
-
+                    <Button
+                      onClick={() => {
+                        window.open(`${linkDocs}/${row.file}`, '_blank');
+                      }}
+                    >
+                      Lihat File
+                    </Button>
                   </div>
                 </TableCell>
                 <TableCell align="left">{row.deskripsi}</TableCell>
